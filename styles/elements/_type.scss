@@ -1,0 +1,92 @@
+$ff-backup--sans: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+$ff-backup--serif: Georgia, 'Times New Roman', serif;
+
+$ff-body: 'source-sans-pro', #{$ff-backup--sans};
+$ff-headline: 'adelle', #{$ff-backup--serif};
+
+$fs-small: 0.85em;
+
+$fs-normal: 1em;
+
+$fs-large: 1.4em;
+$fs-larger: 2em;
+$fs-largest: 3em;
+
+$text-sizing: (
+  small: (
+    font-size: 0.85rem,
+    line-height: 1.25
+  ),
+  base: (
+    font-size: 1rem,
+    line-height: 1.5,
+    margin-bottom: 1rem
+  ),
+  large: (
+    font-size: 1.5rem,
+    line-height: 1.2,
+    margin-bottom: 2rem
+  ),
+  larger: (
+    font-size: 2rem,
+    line-height: 1,
+    margin-bottom: 2rem
+  ),
+  larger--space: (
+    font-size: 2rem,
+    line-height: 1,
+    margin-bottom: 4rem
+  ),
+  largest: (
+    font-size: 3rem,
+    line-height: 1
+  ),
+  massive: (
+    font-size: 4rem,
+    line-height: 1
+  )
+);
+
+@function text-properties-for($text-size) {
+  @return map-get($text-sizing, $text-size);
+}
+
+@mixin text($text-size, $margin: false) {
+  $text-size-properties: text-properties-for($text-size);
+
+  @if $text-size-properties != null {
+    font-size: map-get($text-size-properties, "font-size");
+    line-height: map-get($text-size-properties, "line-height");
+    @if $margin == true {
+      margin-bottom: map-get($text-size-properties, "margin-bottom");
+    }
+  } @else {
+    @warn "Text size '#{$text-size}' is not defined";
+  }
+}
+
+
+@mixin type2() {
+  font-size: $fs-larger;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
+
+html {
+  font-size: 16px;
+  @include respond-above("medium") {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-size: 100%;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+strong {
+  font-weight: 700;
+}

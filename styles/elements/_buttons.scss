@@ -1,0 +1,60 @@
+%button {
+  @extend %input-layout;
+  /* Reset */
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  /* Layout */
+  display: inline-block;
+  /* Looks */
+  font-family: $ff-body;
+  background: $c-link;
+  color: $c-text--light;
+  border-color: $c-link;
+  text-decoration: none;
+  border-radius: 3px;
+  font-weight: 600;
+
+  transition: background 0.2s ease-in-out;
+  .fa {
+    margin-right: 0.2em;
+  }
+
+  &.is-disabled {
+    opacity: 0.4;
+  }
+
+  &:hover {
+    border: 0;
+    color: $c-text--light;
+    background: $c-link--hover;
+    /*.fa {
+      transform: translateX(0.2em);
+    }*/
+  }
+}
+
+.button, button/*input[type="button"], input[type="submit"], button*/ {
+  @extend %button;
+  font-size: $fs-normal;
+}
+
+.button--primary {
+  @extend %button;
+  //font-size: $fs-normal;
+}
+
+.button--big, /*input[type="button"], input[type="submit"], button*/ {
+  @extend %button;
+  font-size: $fs-large;
+  padding: .6em 1.6em;
+}
+
+.button--secondary {
+  @extend %button;
+  background: linear-gradient(lighten(#444, 5%), darken(#444, 5%));
+  font-size: $fs-normal;
+  &:hover {
+    background-color: #444;
+  }
+}

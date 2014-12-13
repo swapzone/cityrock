@@ -1,1 +1,9 @@
 *~
+.idea/
+.sass-cache/
+bower_components/
+node_modules/
+typings/
+admin/
+site/styles/
+site/scripts/

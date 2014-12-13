@@ -1,0 +1,55 @@
+%basic {
+  @include container;
+  padding-top: 5em;
+  padding-bottom: 5em;
+
+  .page-heading {
+    @include span(12 of 12);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    @include respond-above("medium") {
+      margin-top: $layout-vpadding;
+      margin-bottom: $layout-vpadding;
+    }
+  }
+
+  div {
+    @include span(12 of 12);
+    margin-bottom: 1.4em;
+    line-height: 1.4em;
+  }
+
+  h2 {
+    @include span(12 of 12);
+    text-align: center;
+    margin-bottom: 2.5em;
+  }
+
+  ul {
+    list-style: none;
+
+    span {
+      display: block;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  @include respond-above("medium") {
+    div {
+      @include span(10 of 12);
+      @include push(1 of 12);
+    }
+  }
+}
+
+.container-basic {
+  background-color: $c-background;
+  //color: rgba(white, 0.8);
+  color: $c-text;
+}
+
+.basic {
+  @extend %basic;
+}
+

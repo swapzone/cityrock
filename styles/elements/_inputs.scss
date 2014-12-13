@@ -1,0 +1,116 @@
+$inputs-text: 'input[type="text"], input[type="password"], input[type="email"], textarea';
+$inputs-check: 'input[type="checkbox"], input[type="radio"]';
+
+/*
+ * Text Inputs
+ */
+
+%input-layout {
+  border: 1px #ccc solid;
+  border-radius: 3px;
+  padding: .4em .6em;
+  font-size: $fs-normal;
+  line-height: 1.4em;
+}
+
+%input {
+  @extend %input-layout;
+  font-family: $ff-body;
+  display: block;
+  border-color: #ccc;
+  width: 100%;
+  background: white;
+  position: relative;
+
+  transition: border-color 0.2s ease;
+  &:focus {
+    border-color: $c-primary;
+    outline: 0;
+  }
+}
+
+#{$inputs-text} {
+  @extend %input;
+
+}
+
+/*
+ * Checkboxes
+ */
+input[type="checkbox"] {
+  display: none;
+  & + label::before {
+    @include fa-icon();
+    content: $fa-var-square-o;
+    width: 1em;
+    color: $c-text;
+    vertical-align: middle;
+    margin-right: .5em;
+  }
+  &:checked + label::before {
+    content: $fa-var-check-square-o;
+  }
+  & + label {
+    cursor: pointer;
+    display: block;
+  }
+}
+
+/*
+ * Radio Buttons
+ */
+input[type=radio] {
+  display: none;
+  & + label::before {
+    @include fa-icon();
+    content: $fa-var-circle-o;
+    width: 1em;
+    color: $c-text;
+    vertical-align: middle;
+    margin-right: .5em;
+  }
+  &:checked + label::before {
+    content: $fa-var-dot-circle-o;
+  }
+  & + label {
+    cursor: pointer;
+    display: block;
+  }
+  &:focus + label::before {
+    color: $c-primary;
+  }
+}
+
+
+
+fieldset.is-invalid {
+  #{$inputs-text} {
+    border-color: $c-error;
+  }
+  #{$inputs-check} {
+    & + label::before {
+      color: $c-error;
+    }
+  }
+}
+
+.email {
+  display: block;
+  position: relative;
+}
+
+
+.email::after {
+  @include fa-icon();
+  content: $fa-var-envelope-o;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 50;
+  line-height: 1.4em;
+  height: 100%;
+  padding: .4em .6em;
+  width: 2.2em;
+  color: #ccc;
+}

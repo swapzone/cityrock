@@ -1,0 +1,46 @@
+$logo-width: 280px;
+$header-line-height: 1em;
+$header-vpadding: 1.4em;
+$header-vborder: 0.2em;
+$header-height: $header-line-height + 2 * $header-vpadding + $header-vborder;
+
+%menu-entry {
+  display: block;
+  font-weight: 600;
+  line-height: $header-line-height;
+  color: $c-text;
+  text-decoration: none;
+  padding: $header-vpadding 2em;
+  text-decoration: none;
+  border-bottom: $header-vborder rgba($c-primary, 0) solid;
+  transition: border-color 0.3s ease;
+}
+
+
+%header {
+  @include clearfix;
+  position: fixed;
+  z-index: 10000;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  background-color: white;
+  color: $c-text;
+  text-align: center;
+  border: 1px #ddd solid;
+
+  nav {
+
+    li a {
+      @extend %menu-entry;
+      padding: $header-vpadding;
+    }
+    ul {
+
+    }
+  }
+}
+
+.header {
+  @extend %header;
+}

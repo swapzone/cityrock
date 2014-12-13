@@ -1,0 +1,39 @@
+// Neutral color palette
+$palette-neutral--xdark: #222222;
+$palette-neutral--dark: #3b3b3b;
+$palette-neutral--light: #efefef;
+$palette-neutral--xlight: #fbfbfb;
+
+// Primary color palette
+$palette-orange: #fa7000;
+$palette-orange: #ef7e18;
+$palette-orange--light: lighten($palette-orange, 5%);
+$palette-orange--xlight: #fff8f2; //#ffeee1;
+$palette-yellow: #FCCA46;
+$palette-blue: #233D4D;
+$palette-red--dark: #B83C30; // dark red from illustration
+
+// Apply colors
+$c-primary:     $palette-orange;
+$c-link:        $palette-orange;
+$c-link--hover: $palette-orange--light;
+$c-text:        $palette-neutral--xdark;
+$c-text--light: $palette-neutral--light;
+$c-text--light: $palette-orange--xlight;
+$c-background:  $palette-neutral--xlight;
+$c-background--alternate:  $palette-neutral--light;
+$c-background--dark:  $palette-neutral--xdark;
+$c-error: $palette-red--dark;
+$c-disabled: $palette-neutral--dark;
+
+$c-footer-background:  $palette-neutral--xdark;
+$c-footer-text:  $palette-neutral--light;
+
+
+// Sascha's colors
+$c-footer-background: #1c1914;
+$c-footer-heading: #4b4b4b;
+$c-footer-quote: #eae1d9;
+$c-font-dark-bg: #ffeee1;
+$c-font-light-bg: #0e0800;
+$c-front-quote: #beb7b1;
