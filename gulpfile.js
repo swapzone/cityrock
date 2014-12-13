@@ -35,7 +35,6 @@ gulp.task('scripts', function() {
     'bower_components/lodash/dist/lodash.js',
     'bower_components/jquery/dist/jquery.js',
     'bower_components/v.js/V.js',
-    'bower_components/jquery-waypoints/waypoints.js',
     'scripts/*.ts'
   ])
   .pipe(plumber(plumberErrorHandler))
@@ -61,7 +60,7 @@ gulp.task('fonts', function() {
 
   return gulp.src('bower_components/font-awesome/fonts/*')
     .pipe(gulp.dest(dest));
-})
+});
 
 gulp.task('styles', function() {
   var dest = path.join(destPath, 'styles');

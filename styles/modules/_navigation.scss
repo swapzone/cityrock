@@ -1,0 +1,61 @@
+$logo-width: 280px;
+
+%menu-entry {
+  display: block;
+  font-weight: 600;
+  line-height: 1em;
+  color: black;
+  text-decoration: none;
+  padding: 1em 1.5em;
+  border-bottom: 0.2em rgba(black, 0) solid;
+  transition: border-color 0.3s ease;
+}
+
+%navigation {
+  @include clearfix;
+
+  ul {
+    display: none;
+  }
+
+  &.is-expanded {
+    background-color: white;
+    ul {
+      display: block;
+      border: 1px solid #eee;
+      li {
+        text-align: left;
+      }
+
+      li:not(:last-child) {
+        border-bottom: 1px solid #eee;
+      }
+    }
+
+    a {
+      @extend %menu-entry;
+    }
+  }
+
+  @include respond-above("medium") {
+    ul {
+      display: block;
+      list-style: none;
+    }
+
+    li {
+      margin: 0.8em 0;
+      padding-bottom: 0.3em;
+      line-height: 1em;
+      font-weight: 700;
+    }
+  }
+
+  @include respond-above("large") {
+
+  }
+}
+
+.navigation {
+  @extend %navigation;
+}

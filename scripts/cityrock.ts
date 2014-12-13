@@ -7,7 +7,7 @@ module cityrock {
   export function initialize(): void {
 
     var html = $('html');
-    //var header = $('#header');
+    var navigation = $('#navigation');
 
     /*
     $('.form-subscribe-email input')
@@ -26,21 +26,22 @@ module cityrock {
     $('#form-subscribe').on('submit', function(event) {
       return $('#form-subscribe').validate({affectsParent: 'fieldset'});
     });
+    */
 
-    $('.header-menu-toggle').on('click', function(event) {
+    // responsive menu
+    $('.navigation-menu-toggle').on('click', function(event) {
       event.preventDefault();
 
-      $('#header').toggleClass('is-expanded');
+      $(navigation).toggleClass('is-expanded');
       $(this).find('i').toggleClass('fa-bars fa-close');
     });
 
-    $(header).find('a:not(.header-menu-toggle)').on('click', function(event) {
+    $(navigation).find('a:not(.navigation-menu-toggle)').on('click', function(event) {
       //event.preventDefault();
 
-      $(header).removeClass('is-expanded');
-      $('.header-menu-toggle i').addClass('fa-bars').removeClass('fa-close');
+      $(navigation).removeClass('is-expanded');
+      $('.navigation-menu-toggle i').addClass('fa-bars').removeClass('fa-close');
     });
-    */
 
     /**
      * Special treatment for our friends from Cupertino

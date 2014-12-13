@@ -1,12 +1,12 @@
 body {
   font-family: $ff-body;
-  background: $c-background;
-  color: $c-text;
+  background: #fff;
+  color: #000;
 }
 
 p {
   font-size: $fs-normal;
-  line-height: 1.6em;
+  line-height: 1.0em;
 }
 
 a {
@@ -14,7 +14,7 @@ a {
   text-decoration: none;
 
   &:hover {
-    //color: lighten($c-primary, 5%);
+    color: lighten($c-primary, 5%);
     border-bottom: 2px $c-primary solid;
   }
 }
