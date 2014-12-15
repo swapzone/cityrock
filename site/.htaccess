@@ -40,10 +40,10 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 	# www.yoursite.com/product/123
   # ----------------------------------------------------------------------------------------------- 
 
-	RewriteRule ^courses/([^/.]+)/?$ courses.php?id=$1 [L]
-	RewriteRule ^users/([^/.]+)/?$ users.php?id=$1 [L]
+	RewriteRule ^course/([^/.]+)/?$ course.php?id=$1 [L]
+	RewriteRule ^user/([^/.]+)/?$ user.php?id=$1 [L]
 
-	RewriteRule ^courses/([^/.]+)/registrants/?$ registrants.php?id=$1 [L]
+	RewriteRule ^course/([^/.]+)/registrants/?$ registrants.php?id=$1 [L]
 
   # -----------------------------------------------------------------------------------------------
   # Add .php extension from a PHP file for example yoursite.com/wallpaper.php to 

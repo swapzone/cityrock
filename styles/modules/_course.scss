@@ -1,0 +1,61 @@
+.course-list {
+  display: table;
+
+  padding: 2em 0;
+
+  .course-list-heading {
+    display: table-header-group;
+    font-weight: 600;
+
+    span {
+      display: table-cell;
+      padding: 0 0.8em 0.8em 0;
+    }
+
+    span.no-mobile {
+      display: none;
+    }
+  }
+
+  .course-list-item {
+    display: table-row;
+
+    span {
+      display: table-cell;
+      padding: 0 1em 0.5em 0;
+    }
+
+    span.no-mobile {
+      display: none;
+    }
+  }
+
+
+  @include respond-above("medium") {
+
+    .course-list-heading {
+      span.no-mobile {
+        display: table-cell;
+      }
+
+      span.mobile {
+        display: none;
+      }
+    }
+
+    .course-list-item {
+      span.no-mobile {
+        display: table-cell;
+      }
+
+      span.mobile {
+        display: none;
+      }
+    }
+  }
+
+
+  @include respond-above("large") {
+
+  }
+}

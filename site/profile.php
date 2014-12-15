@@ -2,14 +2,7 @@
 
 include_once('_init.php');
 
-$navigation = "
-	<ul>
-		<li><a href='#'>Test</a></li>		
-		<li><a href='#'>Test 2</a></li>	
-	</ul>";
-
-
-$content = "Test Content";
+$content = "<h2>Nutzerprofil</h2>";
 
 include('_main.php');
 ?>

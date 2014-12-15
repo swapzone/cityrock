@@ -2,6 +2,9 @@
 // add session for user authentication
 session_start();
 
+if(isset($_GET['logout']))
+	unset($_SESSION['authenticated']);
+
 // check if user is authenticated
 if(!$_SESSION['authenticated']) {
 
@@ -9,6 +12,7 @@ if(!$_SESSION['authenticated']) {
 	if(isset($_POST['username']) && isset($_POST['password'])) {
 		if(login($_POST['username'], $_POST['password'])) {
 			$_SESSION['authenticated'] = true;
+			$profile = "<a href='./index.php?logout'>Logout</a>";
 		}
 	}
 	else {
@@ -19,7 +23,9 @@ if(!$_SESSION['authenticated']) {
 
 		include_once('login.php');
 	}
-} 
+}
+else
+	$profile = "<a href='./index.php?logout'>Logout</a>";
 
 if(!$content_class)
 	$content_class = "basic";
@@ -51,7 +57,7 @@ if(!$content_class)
 				<!-- user profile -->
 				<div class="header-profile">
 					<?php echo $profile; ?>
-			</div>
+				</div>
 			<?php endif; ?>			
 		</div>
 	</header>
