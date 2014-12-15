@@ -1,0 +1,30 @@
+%footer {
+  @include container;
+  padding: 2em 0;
+  text-align: right;
+
+  img {
+    width: 3em;
+  }
+
+  .reference {
+    @include span(10 of 12);
+    @include push(1 of 12);
+  }
+
+  @include respond-above("medium") {
+
+    .reference {
+      @include span(8 of 12);
+      @include push(1 of 12);
+    }
+  }
+
+  @include respond-above("large") {
+
+  }
+}
+
+.footer {
+  @extend %footer;
+}

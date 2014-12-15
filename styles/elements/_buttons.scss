@@ -8,8 +8,8 @@
   display: inline-block;
   /* Looks */
   font-family: $ff-body;
-  background: $c-link;
-  color: $c-text;
+  background: $c-primary;
+  color: #fff;
   border-color: $c-link;
   text-decoration: none;
   border-radius: 3px;
@@ -26,11 +26,7 @@
 
   &:hover {
     border: 0;
-    color: $c-text;
-    background: $c-link--hover;
-    /*.fa {
-      transform: translateX(0.2em);
-    }*/
+    background: lighten($c-primary, 10%);
   }
 }
 

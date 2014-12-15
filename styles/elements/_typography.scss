@@ -10,11 +10,11 @@ p {
 }
 
 a {
-  color: $c-primary;
+  color: $c-link;
   text-decoration: none;
 
   &:hover {
-    color: lighten($c-primary, 5%);
-    border-bottom: 2px $c-primary solid;
+    color: lighten($c-link, 5%);
+    border-bottom: 2px $c-link solid;
   }
 }

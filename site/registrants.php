@@ -9,7 +9,7 @@ $navigation = "
 	</ul>";
 
 
-$content = "Test Content";
+$content = "Registrants for course id=" . $_GET['id'] . ".";
 
 include('_main.php');
 ?>

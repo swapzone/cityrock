@@ -8,11 +8,10 @@ $palette-neutral--xlight: #fbfbfb;
 $palette-orange: #ef7e18;
 
 // Apply colors
-$c-background: #fff;
-$c-primary: #105d8c;
 $c-text: #000;
 $c-error: red;
-$c-link: #000;
-$c-link--hover: gray;
-$c-header-bg: #00245a;
 $c-navigation: #105d8c;
+
+// CityRock
+$c-primary: #319aca;
+$c-link: $c-primary;

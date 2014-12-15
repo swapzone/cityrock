@@ -22,9 +22,18 @@ $header-padding: 1em;
     }
   }
 
+  .header-navigation-hide {
+
+    display: none;
+  }
+
   .header-info {
     float: right;
     margin-right: 1em;
+
+    a:hover {
+      border-bottom: none;
+    }
 
     .header-logo {
       width: $header-height - $header-padding -1em;

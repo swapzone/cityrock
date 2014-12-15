@@ -1,0 +1,41 @@
+%login {
+  @include container;
+
+  padding: 2em 0;
+
+  h1 {
+    margin-bottom: 0.4em;
+  }
+
+  .content {
+    @include span(10 of 12);
+    @include push(1 of 12);
+  }
+
+  input {
+    margin-bottom: 0.2em;
+  }
+
+  .button {
+    margin-top: 0.8em;
+    float: right;
+  }
+
+  @include respond-above("medium") {
+
+    padding: 5em 0;
+
+    .content {
+      @include span(8 of 12);
+      @include push(1 of 12);
+    }
+  }
+
+  @include respond-above("large") {
+
+  }
+}
+
+.login {
+  @extend %login;
+}

@@ -31,7 +31,6 @@ $inputs-check: 'input[type="checkbox"], input[type="radio"]';
 
 #{$inputs-text} {
   @extend %input;
-
 }
 
 /*
