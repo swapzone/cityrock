@@ -69,5 +69,6 @@ else {
 	}
 }
 
+$content_class = "user";
 include('_main.php');
 ?>

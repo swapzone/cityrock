@@ -12,7 +12,8 @@ $logo-width: 280px;
 }
 
 %navigation {
-  @include clearfix;
+  @include span(12 of 12);
+  margin-bottom: 0.3em;
 
   ul {
     display: none;
@@ -21,8 +22,11 @@ $logo-width: 280px;
   &.is-expanded {
     background-color: white;
     ul {
+      position: absolute;
       display: block;
       border: 1px solid #eee;
+      background-color: white;
+      z-index: 1000;
       li {
         text-align: left;
       }
@@ -38,6 +42,10 @@ $logo-width: 280px;
   }
 
   @include respond-above("medium") {
+    @include span(3 of 12);
+    padding-top: 3em;
+
+
     ul {
       display: block;
       list-style: none;

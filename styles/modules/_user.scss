@@ -1,33 +1,51 @@
-.user-list {
-  display: table;
-  padding: 1em 0;
+%user {
+  @extend %layout;
 
-  .user-list-heading {
-    display: table-header-group;
-    font-weight: 600;
+  .user-list {
+    display: table;
+    padding: 1em 0;
 
-    span {
-      display: table-cell;
-      padding: 0 1.2em 0.8em 0;
+    .user-list-heading {
+      display: table-header-group;
+      font-weight: 600;
+
+      span {
+        display: table-cell;
+        padding: 0 1.2em 0.8em 0;
+      }
     }
-  }
 
-  .user-list-item {
-    display: table-row;
+    .user-list-item {
+      display: table-row;
 
-    span {
-      display: table-cell;
-      padding: 0 1.2em 0.5em 0;
+      span {
+        display: table-cell;
+        padding: 0 1.2em 0.5em 0;
+      }
     }
-  }
 
-  .delete {
-    display: block;
-    background-color: $c-error;
-    color: black;
+    input {
+      margin-bottom: 0.8em;
+    }
 
-    &:hover {
-      background: lighten($c-error, 20%);
+    label {
+      display: block;
+      margin-bottom: 0.3em;
+    }
+
+    .button {
+      margin-top: 0.8em;
+      float: right;
+    }
+
+    .delete {
+      display: block;
+      background-color: $c-error;
+      color: black;
+
+      &:hover {
+        background: lighten($c-error, 20%);
+      }
     }
   }
 
@@ -35,8 +53,11 @@
 
   }
 
-
   @include respond-above("large") {
 
   }
+}
+
+.user {
+  @extend %user;
 }

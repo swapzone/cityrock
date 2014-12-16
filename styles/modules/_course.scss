@@ -1,7 +1,10 @@
-.course-list {
-  display: table;
+%course {
+  @extend %layout;
 
-  padding: 2em 0;
+  .course-list {
+    display: table;
+    padding: 2em 0;
+  }
 
   .course-list-heading {
     display: table-header-group;
@@ -30,8 +33,34 @@
     }
   }
 
+  .course-filter {
+    display: inline-block;
+    margin-right: 1em;
+
+    span {
+      display: inline-block;
+      background-color: lighten($c-primary, 40%);
+      padding: 0.6em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.active {
+        background-color: $c-primary;
+        color: white;
+      }
+    }
+  }
+
+  .no-mobile {
+    display: none;
+  }
 
   @include respond-above("medium") {
+
+    .mobile {
+      display: none;
+    }
 
     .course-list-heading {
       span.no-mobile {
@@ -54,8 +83,12 @@
     }
   }
 
-
   @include respond-above("large") {
 
   }
+
+}
+
+.course {
+  @extend %course;
 }

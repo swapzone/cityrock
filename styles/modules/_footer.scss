@@ -1,7 +1,6 @@
 %footer {
   @include container;
-  padding: 2em 0;
-  text-align: right;
+  margin-top: 2em;
 
   img {
     width: 3em;
@@ -10,14 +9,12 @@
   .reference {
     @include span(10 of 12);
     @include push(1 of 12);
+
+    text-align: right;
   }
 
   @include respond-above("medium") {
 
-    .reference {
-      @include span(10 of 12);
-      @include push(1 of 12);
-    }
   }
 
   @include respond-above("large") {

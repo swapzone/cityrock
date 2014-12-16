@@ -1,81 +1,24 @@
-%basic {
-  @include container;
-
-  h1, h2, h3 {
-    margin-bottom: 0.8em;
-  }
-
-  .navigation {
-    @include span(12 of 12);
-    margin-bottom: 0.3em;
-
-    ul {
-      list-style: none;
-    }
-  }
-
-  .content {
-    @include span(12 of 12);
-    padding-top: 0.3em;
-  }
-
-  .action-bar {
-
-    .course-filter {
-      display: inline-block;
-      margin-right: 1em;
-
-      span {
-        display: inline-block;
-        background-color: rgba(0, 130, 0, .3);
-        padding: 0.6em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &.active {
-          background-color: rgba(0, 130, 0, 1);
-          color: white;
-        }
-      }
-
-    }
-
-    .new {
-      display: inline-block;
-      padding: 0.5em 0.7em;
-      background-color: #008200;
-      color: white;
-      border: none;
-      margin-top: 0.3em;
-
-      &:hover {
-        border: none;
-        background: lighten(#008200, 5%);
-      }
-    }
-
-    .no-mobile {
-      display: none;
-    }
-  }
-
+%layout {
+  @include span(12 of 12);
+  padding: 0.8em;
+  margin-bottom: 2em;
 
   @include respond-above("medium") {
 
-    .navigation {
-      @include span(3 of 12);
-      padding-top: 3em;
-    }
-
-    .content {
-      @include span(9 of 12);
-      padding-top: 3em;
-    }
+    @include span(9 of 12);
+    padding: 3em 0;
 
     .mobile {
       display: none;
     }
+  }
+}
+
+%basic {
+  @extend %layout;
+
+  @include respond-above("medium") {
+
   }
 }
 
@@ -85,5 +28,9 @@
 
 body {
   background-color: #efefef;
+}
+
+h2, h3 {
+  margin-bottom: 0.8em;
 }
 

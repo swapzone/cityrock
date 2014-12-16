@@ -32,6 +32,14 @@ function addUser($username, $password, $role) {
 	return false;
 }
 
+function storeSettings($settings) {
+
+	// TODO implement
+
+	// returns true on success
+	return true;
+}
+
 function getMonth($date_string) {
 	$date = new DateTime($date_string);
 
@@ -45,7 +53,7 @@ function renderNavigation($entries) {
 			<li class='active'><a href='./course'>Kursverwaltung</a></li>		
 			<li><a href='./user'>Nutzerverwaltung</a></li>	
 			<li><a href='./settings'>Einstellungen</a></li>
-			<li class='mobile'><a href='./profile'>Profil</a></li>";
+			<li class='mobile'><a href='./index?logout'>Logout</a></li>";
 
 	foreach($entries as $entry) {
 		$menu_string .= "		

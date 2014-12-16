@@ -48,7 +48,7 @@ if(!$content_class)
  				<a href="#" class="navigation-menu-toggle"><i class="fa fa-bars"></i>Menü</a>
 			</nav>
 			<div class="header-info">
-				<a href="http://www.cityrock.com" target="_blank">
+				<a href="http://www.cityrock.de" target="_blank">
 					<img src="<?php echo $root_directory; ?>/images/logo.jpg" alt="[cityrock] Logo" class="header-logo">
 				</a>
 				<h1>Verwaltungsplattform</h1>
@@ -62,22 +62,20 @@ if(!$content_class)
 		</div>
 	</header>
 	
-	<div class="main">
+	<div class="container">
+		<?php if(!$hide_navigation && count($navigation)): ?>
+		<!-- navigation -->
+		<nav class="navigation" id="navigation">
+			<?php echo $navigation; ?>
+		</nav>
+		<?php endif; ?>
+	
+		<!-- content -->
 		<div class="<?php echo $content_class; ?>">
-			<?php if(count($navigation)): ?>
-			<!-- navigation -->
-			<nav class="navigation" id="navigation">
-				<?php echo $navigation; ?>
-			</nav>
-			<?php endif; ?>
-		
-			<!-- content -->
-			<div class="content">
-				<?php 
-					echo "<h1>" . $title . "</h1>";
-					echo "<p>" . $content . "</p>"; 
-				?>
-			</div>
+			<?php 
+				echo "<h1>" . $title . "</h1>";
+				echo "<p>" . $content . "</p>"; 
+			?>
 		</div>
 	</div>
 

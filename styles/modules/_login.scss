@@ -1,15 +1,11 @@
 %login {
-  @include container;
+  @include span(10 of 12);
+  @include push(1 of 12);
 
   padding: 2em 0;
 
   h1 {
     margin-bottom: 0.4em;
-  }
-
-  .content {
-    @include span(10 of 12);
-    @include push(1 of 12);
   }
 
   input {
@@ -22,13 +18,10 @@
   }
 
   @include respond-above("medium") {
+    @include span(8 of 12);
+    @include push(1 of 12);
 
     padding: 5em 0;
-
-    .content {
-      @include span(8 of 12);
-      @include push(1 of 12);
-    }
   }
 
   @include respond-above("large") {

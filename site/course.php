@@ -33,14 +33,13 @@ else {
 	}
 	else {
 		$content = "
-			<div class='action-bar'>
-				<!-- COURSE FILTER -->
-				<div class='course-filter' id='filter'>
-					<span class='all active'>Alle</span>
-					<span>Schnupper</span>
-					<span>Toprope</span>
-					<span>Vorstieg</span>
-				</div>
+			<h2>Kursübersicht</h2>
+			<!-- COURSE FILTER -->
+			<div class='course-filter' id='filter'>
+				<span class='all active'>Alle</span>
+				<span>Schnupper</span>
+				<span>Toprope</span>
+				<span>Vorstieg</span>
 			</div>
 			<div class='course-list'>
 				<span class='course-list-heading'>
@@ -95,11 +94,10 @@ else {
 
 		$content .= "
 			</div>
-			<div class='action-bar'>
-				<a href='./course/new' class='button new'>Kurs hinzufügen</a>
-			</div>";
+			<a href='./course/new' class='button'>Kurs hinzufügen</a>";
 	}
 }
 
+$content_class = "course";
 include('_main.php');
 ?>
