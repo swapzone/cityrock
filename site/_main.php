@@ -51,7 +51,7 @@ if(!$content_class)
 				<a href="http://www.cityrock.de" target="_blank">
 					<img src="<?php echo $root_directory; ?>/images/logo.jpg" alt="[cityrock] Logo" class="header-logo">
 				</a>
-				<h1>Verwaltungsplattform</h1>
+				<h1>Rockit Dashboard</h1>
 			</div>
 			<?php if(count($profile)): ?>
 				<!-- user profile -->
@@ -73,8 +73,8 @@ if(!$content_class)
 		<!-- content -->
 		<div class="<?php echo $content_class; ?>">
 			<?php 
-				echo "<h1>" . $title . "</h1>";
-				echo "<p>" . $content . "</p>"; 
+				echo "<h2>" . $title . "</h2>";
+				echo "<p>{$content}</p>"; 
 			?>
 		</div>
 	</div>

@@ -47,6 +47,10 @@ function getMonth($date_string) {
 	return date('F', $date); 
 }
 
+function getRegistrants($course_id) {
+
+}
+
 function renderNavigation($entries) {
 
 	$root_directory = "/cityrock";

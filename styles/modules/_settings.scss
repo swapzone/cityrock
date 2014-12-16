@@ -1,22 +1,9 @@
 %settings {
   @extend %layout;
-
-  input, textarea {
-    margin-bottom: 0.8em;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.3em;
-  }
-
-  .button {
-    margin-top: 0.8em;
-  }
+  @extend %form;
 
   p {
     font-style: italic;
-    margin-bottom: 0.5em;
   }
 
   @include respond-above("medium") {

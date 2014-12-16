@@ -5,7 +5,7 @@ include_once('_init.php');
 $title = "Login";
 
 $content = "
-	<form action='index.php' method='post'>
+	<form method='post'>
 		<input type='text' placeholder='Username' name='username' />
 		<input type='password' name='password' />
 		<input type='submit' value='Anmelden' class='button' />

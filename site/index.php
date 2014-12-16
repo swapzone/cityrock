@@ -2,9 +2,8 @@
 
 include_once('_init.php');
 
-$content = "
-	<h2>Herzlich Willkommen!</h2>
-	<p>Du bist auf der Verwaltungsplattform des [cityrock] Stuttgart gelandet.</p>";
+$title = "Herzlich Willkommen!";
+$content = "Du bist auf der Verwaltungsplattform des [cityrock] Stuttgart gelandet.";
 
 include('_main.php');
 ?>

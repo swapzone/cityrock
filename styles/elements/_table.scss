@@ -1,0 +1,42 @@
+%table-cell {
+  display: table-cell;
+  padding: 0 1.5em 0.5em 0;
+
+  &.no-mobile {
+    display: none;
+  }
+
+  @include respond-above("medium") {
+    &.no-mobile {
+      display: table-cell;
+    }
+  }
+}
+
+%table {
+  .list {
+    display: table;
+    padding: 1em 0;
+  }
+
+  .list-heading {
+    display: table-header-group;
+    font-weight: 600;
+
+    span {
+      @extend %table-cell;
+    }
+  }
+
+  .list-item {
+    display: table-row;
+
+    span {
+      @extend %table-cell;
+    }
+  }
+
+  .list-item.no-mobile {
+    display: none;
+  }
+}

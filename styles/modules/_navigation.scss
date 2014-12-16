@@ -45,7 +45,6 @@ $logo-width: 280px;
     @include span(3 of 12);
     padding-top: 3em;
 
-
     ul {
       display: block;
       list-style: none;
@@ -56,6 +55,10 @@ $logo-width: 280px;
       padding-bottom: 0.3em;
       line-height: 1em;
       font-weight: 700;
+    }
+
+    li.mobile {
+      display: none;
     }
   }
 

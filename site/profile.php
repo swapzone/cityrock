@@ -2,7 +2,8 @@
 
 include_once('_init.php');
 
-$content = "<h2>Nutzerprofil</h2>";
+$title = "Nutzerprofil";
+$content = "Eine Übersicht über das Nutzerprofil.";
 
 include('_main.php');
 ?>

@@ -6,10 +6,10 @@ body {
 
 p {
   font-size: $fs-normal;
-  line-height: 1.0em;
+  line-height: 1.4em;
 }
 
-a {
+a, .link {
   color: $c-link;
   text-decoration: none;
 

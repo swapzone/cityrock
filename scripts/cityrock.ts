@@ -73,12 +73,12 @@ module cityrock {
       $(event.target).addClass('active');
 
       if ($(event.target).hasClass('all')) {
-        $('.course-list-item').each(function (index, element) {
+        $('.list-item').each(function (index, element) {
           $(element).show(0);
         });
       }
       else {
-        $('.course-list-item').each(function (index, element) {
+        $('.list-item').each(function (index, element) {
           if ($(element).attr('class').indexOf($(event.target).text().toLocaleLowerCase()) === -1) {
             $(element).hide(0);
           }

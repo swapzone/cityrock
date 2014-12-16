@@ -3,18 +3,18 @@
 include_once('_init.php');
 
 if(isset($_POST['subject'])) {
-	if(storeSettings($_POST))
-		$content = "
-			<2>Einstellungen</h2>
-			<p>Einstellungen wurden gespeichert.</p>";
-	else 
-		$content = "
-			<2>Einstellungen</h2>
-			<p>Fehler! Einstellungen konnte nicht gespeichert werden.</p>";
+	if(storeSettings($_POST)) {
+		$title = "Einstellungen";
+		$content = "Einstellungen wurden gespeichert.";
+	}
+	else {
+		$title = "Einstellungen";
+		$content = "Fehler! Einstellungen konnte nicht gespeichert werden.";
+	}
 }
 else {
+	$title = "Einstellungen";
 	$content = "
-		<h2>Einstellungen</h2>
 		<form>
 			<h3>Email Editor</h3>
 			<label for='subject'>Betreff</label> 

@@ -2,10 +2,8 @@
 
 include_once('_init.php');
 
-$navigation = "";
-
-
-$content = "ERROR";
+$title = "Fehler";
+$content = "Die angeforderte Seite konnte nicht gefunden werden.";
 
 include('_main.php');
 ?>

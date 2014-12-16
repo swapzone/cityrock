@@ -1,37 +1,7 @@
 %course {
   @extend %layout;
-
-  .course-list {
-    display: table;
-    padding: 2em 0;
-  }
-
-  .course-list-heading {
-    display: table-header-group;
-    font-weight: 600;
-
-    span {
-      display: table-cell;
-      padding: 0 0.8em 0.8em 0;
-    }
-
-    span.no-mobile {
-      display: none;
-    }
-  }
-
-  .course-list-item {
-    display: table-row;
-
-    span {
-      display: table-cell;
-      padding: 0 1em 0.5em 0;
-    }
-
-    span.no-mobile {
-      display: none;
-    }
-  }
+  @extend %table;
+  @extend %form;
 
   .course-filter {
     display: inline-block;

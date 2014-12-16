@@ -22,3 +22,23 @@ $susy: (
 .clearfix {
   @include clearfix;
 }
+
+%layout {
+  @include span(12 of 12);
+  padding: 0.8em;
+  margin-bottom: 2em;
+
+  .no-mobile {
+    display: none;
+  }
+
+  @include respond-above("medium") {
+
+    @include span(9 of 12);
+    padding: 3em 0;
+
+    .mobile {
+      display: none;
+    }
+  }
+}
