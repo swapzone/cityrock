@@ -27,6 +27,8 @@
   &:hover {
     border: 0;
     background: lighten($c-primary, 10%);
+    color: #fff;
+    border-bottom: none;
   }
 }
 

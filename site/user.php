@@ -64,7 +64,7 @@ else {
 		$content .= "
 				</div>
 				<div class='action-bar'>
-					<a href='./user/new' class='button new mobile'>Nutzer hinzufügen</a>
+					<a href='./user/new' class='button'>Nutzer hinzufügen</a>
 				</div>";
 	}
 }
