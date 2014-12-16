@@ -48,16 +48,19 @@ function getMonth($date_string) {
 }
 
 function renderNavigation($entries) {
- $menu_string = "
+
+	$root_directory = "/cityrock";
+
+	$menu_string = "
 		<ul>
-			<li class='active'><a href='./course'>Kursverwaltung</a></li>		
-			<li><a href='./user'>Nutzerverwaltung</a></li>	
-			<li><a href='./settings'>Einstellungen</a></li>
-			<li class='mobile'><a href='./index?logout'>Logout</a></li>";
+			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>		
+			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>	
+			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
+			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>";
 
 	foreach($entries as $entry) {
 		$menu_string .= "		
-			<li class='mobile'><a href='./{$entry}'>{$entry}</a></li>";
+			<li class='mobile'><a href='{$root_directory}/{$entry}'>{$entry}</a></li>";
 	}
 
 	$menu_string .= "

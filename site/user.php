@@ -24,7 +24,7 @@ else {
 					<input type='text' placeholder='Nutzername' name='username' id='username'>
 					<label for='password'>Passwort (gut merken!)</label>
 					<input type='password' placeholder='Passwort' name='password' id='password'>
-					<input type='submit'>
+					<input type='submit' class='button' value='Hinzufügen'>
 				</form>";
 		}
 	}
