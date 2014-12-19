@@ -21,11 +21,48 @@ module cityrock {
     var html = $('html');
     var navigation = $('#navigation');
 
+    // add day link
+    $('#add-day').on('click', function(event) {
+
+      var numberOfDays:number = $(event.target).parent().parent().find('input[name=days]').val();
+      var index:number = Number(numberOfDays)  + 1;
+
+      // set new value for days input
+      $(event.target).parent().parent().find('input[name=days]').val(index.toString());
+
+      var label:string = "<label for='date-" + index + "'>Datum Tag " + index + " (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>";
+      $(event.target).before($(label));
+      var input:string = "<input type='text' placeholder='z.B. 02.10.2015' name='date-" + index + "'>";
+      $(event.target).before($(input));
+      var label:string = "<label for='time-" + index + "'>Startuhrzeit Tag " + index + " (in der Form <span class='italic'>hh:mm</span>)</label>";
+      $(event.target).before($(label));
+      var input:string = "<input type='text' placeholder='z.B. 09:00' name='time-" + index + "'>";
+      $(event.target).before($(input));
+      var label:string = "<label for='duraration-" + index + "'>Dauer Tag " + index + " (in Minuten)</label>";
+      $(event.target).before($(label));
+      var input:string = "<input type='text' name='duration-" + index + "'>";
+      $(event.target).before($(input));
+    });
+
     // confirmation links
     $('.confirm').on('click', function(event) {
 
       if(confirm("Bist du dir sicher?"))
         $(event.target).parent().submit();
+    });
+
+    // move registrant links
+    $('.move').on('click', function(event) {
+
+      // TODO implementation
+      alert('Noch nicht implementiert.');
+    });
+
+    // print button
+    $('#print').on('click', function(event) {
+
+      // TODO implementation
+      alert('Noch nicht implementiert.');
     });
 
     // responsive menu

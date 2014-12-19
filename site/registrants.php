@@ -19,7 +19,7 @@ $content .= "
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
 			<span>
 				<form action='{$root_directory}/confirmation' method='post'>
 					<input type='hidden' name='confirmation' value='true'>
@@ -35,7 +35,7 @@ $content .= "
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
 			<span>
 				<form action='{$root_directory}/confirmation' method='post'>
 					<input type='hidden' name='confirmation' value='true'>
@@ -51,7 +51,7 @@ $content .= "
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
 			<span>
 				<form action='{$root_directory}/confirmation' method='post'>
 					<input type='hidden' name='confirmation' value='true'>
@@ -73,7 +73,7 @@ foreach($registrants as $registrant) {
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='' class=''>verschieben</a></span>
+			<span class='no-mobile registrant-move'><a href='' class='move'>verschieben</a></span>
 			<span>
 				<form action='{$root_directory}/confirmation' method='post'>
 					<input type='hidden' name='confirmation' value='true'>
@@ -90,7 +90,7 @@ foreach($registrants as $registrant) {
 $content .= "
 	</div>
 	<a href='{$root_directory}/course' class='button'>Zurück</a>
-	<a href='#' class='button'>Drucken</a>";
+	<a href='#' class='button' id='print'>Drucken</a>";
 
 include('_main.php');
 ?>

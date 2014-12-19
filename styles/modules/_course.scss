@@ -3,7 +3,8 @@
   @extend %table;
   @extend %form;
 
-  form {
+
+  form.inline {
     display: inline-block;
   }
 
@@ -28,6 +29,12 @@
 
   .button {
     margin-right: 0.4em;
+  }
+
+  .add-day {
+    display: block;
+    margin-top: -0.2em;
+    margin-bottom: 1em;
   }
 
   .no-mobile {

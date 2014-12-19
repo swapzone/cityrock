@@ -28,16 +28,18 @@ else {
 						<option>Schnupper</option>
 					</select>
 					<label for='date'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
-					<input type='text' placeholder='z.B. 02.10.2015' name='date' id='date'>
+					<input type='text' placeholder='z.B. 02.10.2015' name='date'>
 					<label for='time'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-					<input type='text' placeholder='z.B. 09:00' name='time' id='time'>
+					<input type='text' placeholder='z.B. 09:00' name='time'>
 					<label for='duraration'>Dauer (in Minuten)</label>
-					<input type='text' name='duration' id='duration'>
+					<input type='text' name='duration'>
+					<span class='add-day'>
+						<a href='#' id='add-day'>Tag hinzufügen</a>
+					</span>
 					<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
-					<input type='text' name='registrants' id='registrants'>
+					<input type='text' name='registrants'>
 					<input type='hidden' value='1' name='days'>			
 					<a href='./' class='button error'>Abbrechen</a>	
-					<a href='' class='button'>Tag hinzufügen</a>
 					<input type='submit' value='Erstellen' class='button'>
 				</form>";
 		}
@@ -69,7 +71,7 @@ else {
 					</span>
 				</span>
 				<span>
-					<form action='{$root_directory}/confirmation' method='post'>
+					<form class='inline' action='{$root_directory}/confirmation' method='post'>
 						<input type='hidden' name='confirmation' value='true'>
 						<input type='hidden' name='action' value='delete'>
 						<input type='hidden' name='description' value='Kurs'>
