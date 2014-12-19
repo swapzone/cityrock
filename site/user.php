@@ -3,7 +3,7 @@
 include_once('_init.php');
 
 if(isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
-	$success = addUser($_POST['username'], $_POST['password'], 1);
+	$success = addUser($_POST['username'], md5($_POST['password']), $_POST['role']);
 	
 	if($success) {
 		$title = "Neuer Nutzer";
@@ -21,9 +21,18 @@ else {
 			$content = "
 			 	<form method='post' onsubmit='return cityrock.validateForm(this);'>
 					<label for='username'>Nutzername</label>
-					<input type='text' placeholder='Nutzername' name='username' id='username'>
+					<input type='text' placeholder='Nutzername' name='username'>
 					<label for='password'>Passwort (gut merken!)</label>
-					<input type='password' placeholder='Passwort' name='password' id='password'>
+					<input type='password' placeholder='Passwort' name='password'>
+					<label for='role'>Zugewiesene Rolle</label>
+					<select name='role'>";
+					
+			foreach(getRoles() as $role) {
+				$content .= "<option value='{$role['id']}'>{$role['title']}</option>";
+			}		
+
+			$content .= "
+					</select>
 					<input type='hidden' name='new' value='true'>
 					<a href='./' class='button error'>Abbrechen</a>	
 					<input type='submit' class='button' value='Hinzufügen'>
@@ -40,43 +49,28 @@ else {
 					<span></span>
 				</span>";
 
-		$content .= "
-					<span class='list-item'>
-						<span>Vincent</span>
-						<span>Administrator</span>
-						<span></span>
-					</span>
-					<span class='list-item'>
-						<span>Empfang</span>
-						<span>Administrator</span>
-						<span>
-							<form action='{$root_directory}/confirmation' method='post'>
-								<input type='hidden' name='confirmation' value='true'>
-								<input type='hidden' name='action' value='delete'>
-								<input type='hidden' name='description' value='Nutzer'>
-								<input type='hidden' name='table' value='staff'>
-								<input type='hidden' name='id' value='123'>
-								<a href='#' class='confirm'>löschen</a>
-							</form>		
-						</span>
-					</span>";
-
 		$users = getUsers();
 
 		foreach($users as $user) {
 			$content .= "
 					<span class='list-item'>
-						<span>Vincent</span>
-						<span>Administrator</span>
-						<span>
+						<span>{$user['username']}</span>
+						<span>{$user['roles']}</span>
+						<span>";
+			
+			if($user['deletable']) {
+				$content .= "
 							<form action='{$root_directory}/confirmation' method='post'>
 								<input type='hidden' name='confirmation' value='true'>
 								<input type='hidden' name='action' value='delete'>
 								<input type='hidden' name='description' value='Nutzer'>
-								<input type='hidden' name='table' value='staff'>
+								<input type='hidden' name='table' value='user'>
 								<input type='hidden' name='id' value='{$user['id']}'>
 								<a href='#' class='confirm'>löschen</a>
-							</form>		
+							</form>";
+			}
+
+			$content .= "	
 						</span>
 					</span>";
 		}
