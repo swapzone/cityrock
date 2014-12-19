@@ -2,6 +2,8 @@
 
 include_once('_init.php');
 
+$course_types = getCourseTypes();
+
 if(isset($_POST['type'])) {
 	// add all given dates
 	$dates = array();
@@ -10,9 +12,9 @@ if(isset($_POST['type'])) {
 	while($counter < 6) {
 		if($_POST['date-' . $counter]) {
 			$date = array(
-				"date" => $_POST['date-' . $counter],
-				"time" => $_POST['time-' . $counter],
-				"duration" => $_POST['duration-' . $counter]
+				"date" => $_POST["date-$counter"],
+				"time" => $_POST["time-$counter"],
+				"duration" => $_POST["duration-$counter"]
 			);
 
 			$dates[] = $date;
@@ -20,7 +22,6 @@ if(isset($_POST['type'])) {
 		else {
 			break;
 		}
-
 		$counter++;
 	}
 
@@ -42,10 +43,13 @@ else {
 			$content = "
 				<form method='post' onsubmit='return cityrock.validateForm(this);'>
 					<label for='type'>Kurstyp</label>
-					<select name='type' id='type'>
-						<option>Vorstieg</option>
-						<option>Toprope</option>
-						<option>Schnupper</option>
+					<select name='type' id='type'>";
+	
+			foreach($course_types as $key=>$title) {
+				$content .= "<option value='{$key}'>{$title}</option>";
+			}
+
+			$content .= "
 					</select>
 					<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
 					<input type='text' placeholder='z.B. 02.10.2015' name='date-1'>
@@ -66,7 +70,7 @@ else {
 		else {
 			$course_id = $_GET["id"];
 			$course = getCourse($course_id);
-			
+			$registrants = getRegistrants($course_id);
 
 			$title = "Kursdetails";
 			$content = "
@@ -75,20 +79,33 @@ else {
 						<span>Kurs ID</span><span>{$course_id}</span>
 					</span>
 					<span class='list-item'>
-						<span>Kurstyp</span><span>Vorstieg</span>
+						<span>Kurstyp</span><span>{$course_types[$course['course_type_id']]}</span>
 					</span>
 					<span class='list-item'>
-						<span>Maximale Teilnehmerzahl</span><span>15</span>
+						<span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
 					</span>
 					<span class='list-item'>
-						<span>Bereits registrierte Teilnehmer</span><span>8 ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
+						<span>Bereits registrierte Teilnehmer</span>
+						<span>" . count($registrants) ." ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
+					</span>";
+			
+			$counter = 1;
+			foreach($course['dates'] as $date) {
+			
+				$content .= "
+					<span class='list-item'>
+						<span>Datum (Tag $counter)</span>
+						<span>{$date['date']->format('d.m.Y')}</span>
 					</span>
 					<span class='list-item'>
-						<span>Datum (Tag 1)</span><span>12.12.2015</span>
-					</span>
-					<span class='list-item'>
-						<span>Uhrzeit (Tag 1)</span><span>12:00 - 17:00 Uhr</span>
-					</span>
+						<span>Uhrzeit (Tag $counter)</span>
+						<span>{$date['date']->format('h:i')} - " . getEndTime($date['date'], $date['duration']) . " Uhr</span> 
+					</span>";
+				
+				$counter++;
+			}
+
+			$content .= "
 				</span>
 				<span>
 					<form class='inline' action='{$root_directory}/confirmation' method='post'>
@@ -108,10 +125,13 @@ else {
 		$content = "
 			<!-- COURSE FILTER -->
 			<div class='course-filter' id='filter'>
-				<span class='all active'>Alle</span>
-				<span>Schnupper</span>
-				<span>Toprope</span>
-				<span>Vorstieg</span>
+				<span class='all active'>Alle</span>";
+
+		foreach($course_types as $key=>$title) {
+			$content .= "<span>{$title}</span>";
+		}
+
+		$content .= "
 			</div>
 			<div class='list'>
 				<span class='list-heading'>
@@ -121,48 +141,25 @@ else {
 					<span></span>
 				</span>";
 
-		$content .= "
-				<span class='list-item vorstieg'>
-					<span>Vorstiegskurs</span>
-					<span>10.12.2015</span>
-					<span class='no-mobile'>
-						15 (<a href='./course/123/registrants'>anzeigen</a>)
-					</span>
-					<span><a href='./course/123'>Details</a></span>
-				</span>
-				<span class='list-item vorstieg'>
-					<span>Vorstiegskurs</span>
-					<span>15.12.2015</span>
-					<span class='no-mobile'>
-						10 (<a href='./course/123/registrants'>anzeigen</a>)
-					</span>
-					<span><a href='./course/123'>Details</a></span>
-				</span>
-				<span class='list-item toprope'>
-					<span>Toprope</span>
-					<span>21.12.2015</span>
-					<span class='no-mobile'>
-						15 (<a href='./course/123/registrants'>anzeigen</a>)
-				</span>
-					<span><a href='./course/123'>Details</a></span>
-				</span>";
-
 		$courses = getCourses();
-
+		
 		$month = null;
 		foreach($courses as $course) {
-
+			
 			if(getMonth($course['date']) != $month) {
 				$month = getMonth($course['date']);
 				$content .= "<span class='course-list-month'>{$month}</span>";
 			}
+
+			$item_class = strtolower($course_types[$course['course_type_id']]);			
+
 			$content .= "
-				<span class='list-item vorstieg'>
-					<span>Vorstiegskurs</span>
-					<span>10.12.2015</span>
-					<span class='no-mobile'>15</span>
-					<span class='no-mobile'><a href='./course/123/registrants'>Liste</a></span>
-					<span><a href='./course/123'>Details</a></span>
+				<span class='list-item $item_class'>
+					<span>{$course_types[$course['course_type_id']]}</span>
+					<span>{$course['date']->format('d.m.Y')}</span>
+					<span class='no-mobile'>{$course['max_participants']}</span>
+					<span class='no-mobile'><a href='./course/{$course['id']}/registrants'>Liste</a></span>
+					<span><a href='./course/{$course['id']}'>Details</a></span>
 				</span>";
 		}
 

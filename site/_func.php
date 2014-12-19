@@ -4,28 +4,135 @@
 /* Course functionality																											 */
 /*****************************************************************************/
 
-function getCourses($course_type) {
+/**
+ *
+ */
+function getCourses($course_type_id) {
+
+	$db = createConnection();
 	
-	// TODO sort by date descending
+	$sql = "SELECT id, course_type_id, max_participants FROM course";
+	if(isset($course_type_id)) 
+		$sql .= "WHERE course_type_id=$course_type_id;";
+	else 
+		$sql .= ";";
+
+	$result = $db->query($sql);
+
+	$course_array = array();
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+	   	$course_array[] = $row;
+		}
+	} 
+
+	foreach($course_array as $key=>$course) {
+		$result = $db->query("SELECT start FROM date WHERE course_id={$course['id']} ORDER BY start;");
+
+		if ($result->num_rows > 0) {
+			$course_array[$key]['date'] = new DateTime($result->fetch_assoc()['start']);
+		} 
+	}
+
+	$db->close();
+
+	usort($course_array, "courseSort");
+	return $course_array;
 }
 
+/**
+ *
+ */
 function getCourse($course_id) {
 
-	// TODO
+	$db = createConnection();
 
+	$result = $db->query("SELECT max_participants, course_type_id FROM course WHERE id=$course_id;");
+	
+	if ($result->num_rows > 0) {
+		$result = $result->fetch_assoc();
+	} 
+
+	$dates = $db->query("SELECT start, duration FROM date WHERE course_id={$course_id} ORDER BY start;");
+
+	$dates_array = array();
+	if ($dates->num_rows > 0) {
+		while($row = $dates->fetch_assoc()) {
+	   	$dates_array[] = 
+				[
+					"date" => new DateTime($row['start']),
+					"duration" => $row['duration']
+				];
+		}
+	} 
+	
+	$result['dates'] = $dates_array;
+
+	$db->close();
+
+	return $result;
 }
 
+/**
+ *
+ */
+function getCourseTypes() {
+
+	$db = createConnection();
+	
+	$result = $db->query("SELECT id, title FROM course_type;");
+
+	$course_type_array = array();
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+	   	$course_type_array[$row['id']] = $row['title'];
+		}
+	} 
+
+	$db->close();
+
+	return $course_type_array;
+}
+
+/**
+ *
+ */
 function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 
-	// TODO
+	$db = createConnection();
+	
+	$result = $db->query("INSERT INTO course (course_type_id, max_participants, min_staff) 
+							VALUES ($course_type, $num_registrants, $num_staff);");
+	$course_id = $db->insert_id;
+	
+	if($result) {
+		echo "Course was created. ";
+		foreach($dates as $date) {
+			echo $date['date'] . " ";
+			echo $date['time'] . " ";
+			echo $date['duration'] . " ";
+			echo "Course ID: " . $course_id;
 
-	return true;
+			$datetime_string = $date['date'] . " " . $date['time'];
+			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
+			$mysql_time = $datetime->format('Y-m-d H:i:s');
+
+			$result = $db->query("INSERT INTO date (start, duration, course_id) VALUES ('$mysql_time', {$date['duration']}, $course_id);");
+		}
+	}
+
+	$db->close();
+
+	return $result;
 }
 
 /*****************************************************************************/
 /* User functionality																												 */
 /*****************************************************************************/
 
+/**
+ *
+ */
 function getUsers() {
 
 	$db = createConnection();
@@ -73,10 +180,14 @@ function addUser($username, $password, $role) {
 	if($result)
 		$result = $db->query("INSERT INTO user_has_role (user_id, role_id) VALUES ((SELECT id FROM user WHERE username='$username'), $role);");
 
+	$db->close();
+
 	return $result;
 }
 
-
+/**
+ *
+ */
 function getRoles() {
 	
 	$db = createConnection();
@@ -98,12 +209,18 @@ function getRoles() {
 /* Registrants functionality																								 */
 /*****************************************************************************/
 
+/**
+ *
+ */
 function getRegistrants($course_id) {
 	
 	// TODO
 
 }
 
+/**
+ *
+ */
 function moveRegistrant($item_id) {
 
 	// TODO
@@ -115,6 +232,9 @@ function moveRegistrant($item_id) {
 /* Database functionality																										 */
 /*****************************************************************************/
 
+/**
+ *
+ */
 function createConnection() {
 
 	$servername = "localhost";
@@ -135,6 +255,9 @@ function createConnection() {
 /* General functionality																										 */
 /*****************************************************************************/
 
+/**
+ *
+ */
 function login($username, $password) {
 
 	$db = createConnection();
@@ -149,6 +272,9 @@ function login($username, $password) {
 	return false;
 }
 
+/**
+ *
+ */
 function deleteItem($item_id, $table_name) {
 	
 	$db = createConnection();
@@ -159,6 +285,9 @@ function deleteItem($item_id, $table_name) {
 	return $result;
 }
 
+/**
+ *
+ */
 function storeSettings($settings) {
 
 	// TODO implement
@@ -167,13 +296,35 @@ function storeSettings($settings) {
 	return true;
 }
 
-function getMonth($date_string) {
-	$date = new DateTime($date_string);
+/**
+ *
+ */
+function courseSort($a, $b) {
 
-	// see http://php.net/manual/en/function.date.php
-	return date('F', $date); 
+    return $a->date > $b->date;
 }
 
+/**
+ *
+ */
+function getMonth($date) {
+
+	$months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+	return $months[$date->format('n')-1]; 
+}
+
+/**
+ *
+ */
+function getEndTime($date, $duration) {
+	$date->add(new DateInterval('PT'. $duration .'M'));
+	
+	return $date->format('h:i');
+}
+
+/**
+ *
+ */
 function renderNavigation($entries) {
 
 	$root_directory = "/cityrock";
