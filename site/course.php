@@ -3,8 +3,28 @@
 include_once('_init.php');
 
 if(isset($_POST['type'])) {
-	// TODO implement add logic for multiple dates
-	$success = addCourse($_POST['type']);
+	// add all given dates
+	$dates = array();
+
+	$counter = 1;
+	while($counter < 6) {
+		if($_POST['date-' . $counter]) {
+			$date = array(
+				"date" => $_POST['date-' . $counter],
+				"time" => $_POST['time-' . $counter],
+				"duration" => $_POST['duration-' . $counter]
+			);
+
+			$dates[] = $date;
+		}
+		else {
+			break;
+		}
+
+		$counter++;
+	}
+
+	$success = addCourse($_POST['type'], $_POST['registrants'], 2, $dates);
 	
 	if($success) {
 		$title = "Neuer Kurs";
@@ -27,12 +47,12 @@ else {
 						<option>Toprope</option>
 						<option>Schnupper</option>
 					</select>
-					<label for='date'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
-					<input type='text' placeholder='z.B. 02.10.2015' name='date'>
-					<label for='time'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-					<input type='text' placeholder='z.B. 09:00' name='time'>
-					<label for='duraration'>Dauer (in Minuten)</label>
-					<input type='text' name='duration'>
+					<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
+					<input type='text' placeholder='z.B. 02.10.2015' name='date-1'>
+					<label for='time-1'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
+					<input type='text' placeholder='z.B. 09:00' name='time-1'>
+					<label for='duraration-1'>Dauer (in Minuten)</label>
+					<input type='text' name='duration-1'>
 					<span class='add-day'>
 						<a href='#' id='add-day'>Tag hinzufügen</a>
 					</span>
