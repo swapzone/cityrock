@@ -19,7 +19,7 @@ else {
 		if($_GET["id"] == "new") {
 			$title = "Neuer Nutzer";
 			$content = "
-			 	<form method='post'>
+			 	<form method='post' onsubmit='return cityrock.validateForm(this);'>
 					<label for='username'>Nutzername</label>
 					<input type='text' placeholder='Nutzername' name='username' id='username'>
 					<label for='password'>Passwort (gut merken!)</label>
@@ -49,7 +49,16 @@ else {
 					<span class='list-item'>
 						<span>Empfang</span>
 						<span>Administrator</span>
-						<span><a href='#'>löschen</a></span>
+						<span>
+							<form action='{$root_directory}/confirmation' method='post'>
+								<input type='hidden' name='confirmation' value='true'>
+								<input type='hidden' name='action' value='delete'>
+								<input type='hidden' name='description' value='Nutzer'>
+								<input type='hidden' name='table' value='staff'>
+								<input type='hidden' name='id' value='123'>
+								<a href='#' class='confirm'>löschen</a>
+							</form>		
+						</span>
 					</span>";
 
 		$users = getUsers();
@@ -59,7 +68,16 @@ else {
 					<span class='list-item'>
 						<span>Vincent</span>
 						<span>Administrator</span>
-						<span><a href='#' class='button delete inactive'>löschen</a></span>
+						<span>
+							<form action='{$root_directory}/confirmation' method='post'>
+								<input type='hidden' name='confirmation' value='true'>
+								<input type='hidden' name='action' value='delete'>
+								<input type='hidden' name='description' value='Nutzer'>
+								<input type='hidden' name='table' value='staff'>
+								<input type='hidden' name='id' value='{$user['id']}'>
+								<a href='#' class='confirm'>löschen</a>
+							</form>		
+						</span>
 					</span>";
 		}
 

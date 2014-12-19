@@ -48,11 +48,29 @@ function getMonth($date_string) {
 }
 
 function getRegistrants($course_id) {
+	
+	// TODO
 
 }
 
 function getCourse($course_id) {
 
+	// TODO
+
+}
+
+function deleteItem($item_id, $table_name) {
+	
+	// TODO
+
+	return true;
+}
+
+function moveRegistrant($item_id) {
+
+	// TODO
+
+	return true;
 }
 
 function renderNavigation($entries) {

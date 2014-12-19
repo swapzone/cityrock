@@ -4,29 +4,29 @@
 module cityrock {
   'use strict';
 
+  export function validateForm(form) {
+
+    var empty = $(form).find("input").filter(function() {
+      return this.value === "";
+    });
+    if(empty.length) {
+      alert('Bitte alle Felder ausfüllen!');
+    }
+
+    return !empty.length;
+  }
+
   export function initialize():void {
 
     var html = $('html');
     var navigation = $('#navigation');
 
-    /*
-     $('.form-subscribe-email input')
-     .on('focus', function() {
-     $('.form-subscribe-email').addClass('is-focused');
-     }).on('blur', function() {
-     $('.form-subscribe-email').removeClass('is-focused');
-     });
+    // confirmation links
+    $('.confirm').on('click', function(event) {
 
-     // subscription forms
-     $('#form-subscribe-submit').on('click', function(event) {
-     event.preventDefault();
-     $('#form-subscribe').submit();
-     });
-
-     $('#form-subscribe').on('submit', function(event) {
-     return $('#form-subscribe').validate({affectsParent: 'fieldset'});
-     });
-     */
+      if(confirm("Bist du dir sicher?"))
+        $(event.target).parent().submit();
+    });
 
     // responsive menu
     $('.navigation-menu-toggle').on('click', function (event) {

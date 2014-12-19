@@ -3,6 +3,10 @@
   @extend %table;
   @extend %form;
 
+  form {
+    display: inline-block;
+  }
+
   .course-filter {
     display: inline-block;
     margin-right: 1em;

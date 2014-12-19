@@ -2,8 +2,9 @@
 
 include_once('_init.php');
 
-if(isset($_POST['username']) && isset($_POST['password'])) {
-	$success = addUser($_POST['username'], $_POST['password'], 1);
+if(isset($_POST['type'])) {
+	// TODO implement add logic for multiple dates
+	$success = addCourse($_POST['type']);
 	
 	if($success) {
 		$title = "Neuer Kurs";
@@ -19,7 +20,7 @@ else {
 		if($_GET["id"] == "new") {
 			$title = "Neuer Kurs";
 			$content = "
-				<form method='post'>
+				<form method='post' onsubmit='return cityrock.validateForm(this);'>
 					<label for='type'>Kurstyp</label>
 					<select name='type' id='type'>
 						<option>Vorstieg</option>
@@ -66,6 +67,16 @@ else {
 					<span class='list-item'>
 						<span>Uhrzeit (Tag 1)</span><span>12:00 - 17:00 Uhr</span>
 					</span>
+				</span>
+				<span>
+					<form action='{$root_directory}/confirmation' method='post'>
+						<input type='hidden' name='confirmation' value='true'>
+						<input type='hidden' name='action' value='delete'>
+						<input type='hidden' name='description' value='Kurs'>
+						<input type='hidden' name='table' value='course'>
+						<input type='hidden' name='id' value='{$course_id}'>
+						<a href='#' class='button error confirm'>löschen</a>
+					</form>		
 				</span>
 				<a href='./' class='button'>Zurück</a>";
 		}

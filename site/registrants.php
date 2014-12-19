@@ -19,27 +19,52 @@ $content .= "
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#'>verschieben</a></span>
-			<span><a href='#'>löschen</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span>
+				<form action='{$root_directory}/confirmation' method='post'>
+					<input type='hidden' name='confirmation' value='true'>
+					<input type='hidden' name='action' value='delete'>
+					<input type='hidden' name='description' value='Teilnehmer'>
+					<input type='hidden' name='table' value='registrant'>
+					<input type='hidden' name='id' value='123'>
+					<a href='#' class='confirm'>löschen</a>
+				</form>		
+			</span>
 		</span>
 		<span class='list-item'>
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#'>verschieben</a></span>
-			<span><a href='#'>löschen</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span>
+				<form action='{$root_directory}/confirmation' method='post'>
+					<input type='hidden' name='confirmation' value='true'>
+					<input type='hidden' name='action' value='delete'>
+					<input type='hidden' name='description' value='Teilnehmer'>
+					<input type='hidden' name='table' value='registrant'>
+					<input type='hidden' name='id' value='123'>
+					<a href='#' class='confirm'>löschen</a>
+				</form>		
+			</span>
 		</span>
 		<span class='list-item'>
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#'>verschieben</a></span>
-			<span><a href='#'>löschen</a></span>
+			<span class='no-mobile registrant-move'><a href='#' class=''>verschieben</a></span>
+			<span>
+				<form action='{$root_directory}/confirmation' method='post'>
+					<input type='hidden' name='confirmation' value='true'>
+					<input type='hidden' name='action' value='delete'>
+					<input type='hidden' name='description' value='Teilnehmer'>
+					<input type='hidden' name='table' value='registrant'>
+					<input type='hidden' name='id' value='123'>
+					<a href='#' class='confirm'>löschen</a>
+				</form>		
+			</span>
 		</span>";
 
-// TODO add course ID
-$registrants = getRegistrants(123);
-
+$registrants = getRegistrants($_GET['id']);
 
 foreach($registrants as $registrant) {
 
@@ -48,8 +73,17 @@ foreach($registrants as $registrant) {
 			<span>Max Mustermann</span>
 			<span>10.12.1988</span>
 			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move link'>verschieben</span>
-			<span><a href='#'>löschen</a></span>
+			<span class='no-mobile registrant-move'><a href='' class=''>verschieben</a></span>
+			<span>
+				<form action='{$root_directory}/confirmation' method='post'>
+					<input type='hidden' name='confirmation' value='true'>
+					<input type='hidden' name='action' value='delete'>
+					<input type='hidden' name='description' value='Teilnehmer'>
+					<input type='hidden' name='table' value='registrant'>
+					<input type='hidden' name='id' value='{$registrant['id']}'>
+					<a href='#' class='confirm'>löschen</a>
+				</form>		
+			</span>
 		</span>";
 }
 
