@@ -106,12 +106,7 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 	$course_id = $db->insert_id;
 	
 	if($result) {
-		echo "Course was created. ";
 		foreach($dates as $date) {
-			echo $date['date'] . " ";
-			echo $date['time'] . " ";
-			echo $date['duration'] . " ";
-			echo "Course ID: " . $course_id;
 
 			$datetime_string = $date['date'] . " " . $date['time'];
 			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);

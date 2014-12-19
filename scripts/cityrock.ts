@@ -1,10 +1,11 @@
 /// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="../bower_components/v.js/V.d.ts" />
 
 module cityrock {
   'use strict';
 
   export function validateForm(form) {
+
+    // TODO: check on wrong date/time/duration format
 
     var empty = $(form).find("input").filter(function() {
       return this.value === "";

@@ -52,11 +52,11 @@ else {
 			$content .= "
 					</select>
 					<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
-					<input type='text' placeholder='z.B. 02.10.2015' name='date-1'>
+					<input type='text' placeholder='z.B. 02.10.2015' name='date-1' class='date'>
 					<label for='time-1'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-					<input type='text' placeholder='z.B. 09:00' name='time-1'>
+					<input type='text' placeholder='z.B. 09:00' name='time-1' class='time'>
 					<label for='duraration-1'>Dauer (in Minuten)</label>
-					<input type='text' name='duration-1'>
+					<input type='text' name='duration-1' class='duration'>
 					<span class='add-day'>
 						<a href='#' id='add-day'>Tag hinzufügen</a>
 					</span>
