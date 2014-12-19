@@ -51,6 +51,10 @@ function getRegistrants($course_id) {
 
 }
 
+function getCourse($course_id) {
+
+}
+
 function renderNavigation($entries) {
 
 	$root_directory = "/cityrock";

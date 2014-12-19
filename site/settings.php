@@ -24,6 +24,7 @@ else {
 			<label for='time'>Wieviel Tage vor dem Kurs soll die Email verschickt werden?</label> 
 			<input type='text' placeholder='2' name='time' id='time'>
 			<p>Keine weiteren Einstellungen vorhanden.</p>
+			<a href='./' class='button error'>Abbrechen</a>	
 			<input type='submit' value='Speichern' class='button'>
 		</form>";
 }

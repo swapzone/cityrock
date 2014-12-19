@@ -20,14 +20,54 @@ else {
 			$title = "Neuer Kurs";
 			$content = "
 				<form method='post'>
-					<label for='username'>Kurstyp</label>
-					<input type='text' placeholder='Nutzername' name='username' id='username'>
-					<input type='submit' value'Erstellen' class='button'>
+					<label for='type'>Kurstyp</label>
+					<select name='type' id='type'>
+						<option>Vorstieg</option>
+						<option>Toprope</option>
+						<option>Schnupper</option>
+					</select>
+					<label for='date'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
+					<input type='text' placeholder='z.B. 02.10.2015' name='date' id='date'>
+					<label for='time'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
+					<input type='text' placeholder='z.B. 09:00' name='time' id='time'>
+					<label for='duraration'>Dauer (in Minuten)</label>
+					<input type='text' name='duration' id='duration'>
+					<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
+					<input type='text' name='registrants' id='registrants'>
+					<input type='hidden' value='1' name='days'>			
+					<a href='./' class='button error'>Abbrechen</a>	
+					<a href='' class='button'>Tag hinzufügen</a>
+					<input type='submit' value='Erstellen' class='button'>
 				</form>";
 		}
 		else {
+			$course_id = $_GET["id"];
+			$course = getCourse($course_id);
+			
+
 			$title = "Kursdetails";
-			$content = "Für Kurs mit der ID=" . $_GET["id"] . ".";
+			$content = "
+				<span class='list'>
+					<span class='list-item'>
+						<span>Kurs ID</span><span>{$course_id}</span>
+					</span>
+					<span class='list-item'>
+						<span>Kurstyp</span><span>Vorstieg</span>
+					</span>
+					<span class='list-item'>
+						<span>Maximale Teilnehmerzahl</span><span>15</span>
+					</span>
+					<span class='list-item'>
+						<span>Bereits registrierte Teilnehmer</span><span>8 ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
+					</span>
+					<span class='list-item'>
+						<span>Datum (Tag 1)</span><span>12.12.2015</span>
+					</span>
+					<span class='list-item'>
+						<span>Uhrzeit (Tag 1)</span><span>12:00 - 17:00 Uhr</span>
+					</span>
+				</span>
+				<a href='./' class='button'>Zurück</a>";
 		}
 	}
 	else {

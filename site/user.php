@@ -2,7 +2,7 @@
 
 include_once('_init.php');
 
-if(isset($_POST['username']) && isset($_POST['password'])) {
+if(isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
 	$success = addUser($_POST['username'], $_POST['password'], 1);
 	
 	if($success) {
@@ -24,6 +24,8 @@ else {
 					<input type='text' placeholder='Nutzername' name='username' id='username'>
 					<label for='password'>Passwort (gut merken!)</label>
 					<input type='password' placeholder='Passwort' name='password' id='password'>
+					<input type='hidden' name='new' value='true'>
+					<a href='./' class='button error'>Abbrechen</a>	
 					<input type='submit' class='button' value='Hinzufügen'>
 				</form>";
 		}

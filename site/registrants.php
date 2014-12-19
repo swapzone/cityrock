@@ -55,6 +55,7 @@ foreach($registrants as $registrant) {
 
 $content .= "
 	</div>
+	<a href='{$root_directory}/course' class='button'>Zurück</a>
 	<a href='#' class='button'>Drucken</a>";
 
 include('_main.php');

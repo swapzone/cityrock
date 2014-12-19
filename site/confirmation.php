@@ -2,8 +2,12 @@
 
 include_once('_init.php');
 
-$title = "Achtung";
-$content = "Test Content";
+if(isset($_POST['confirmation'])) {
 
-include('_main.php');
+	
+	include('_main.php');
+}
+else {
+	include('error.php');
+}
 ?>

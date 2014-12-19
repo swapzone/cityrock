@@ -16,9 +16,6 @@
   font-weight: 600;
 
   transition: background 0.2s ease-in-out;
-  .fa {
-    margin-right: 0.2em;
-  }
 
   &.is-disabled {
     opacity: 0.4;
@@ -29,6 +26,14 @@
     background: lighten($c-primary, 10%);
     color: #fff;
     border-bottom: none;
+  }
+}
+
+.button.error {
+  background: $c-error;
+
+  &:hover {
+    background: lighten($c-error, 10%);
   }
 }
 
