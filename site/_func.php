@@ -128,9 +128,6 @@ function createConnection() {
 		die("Connection failed: " . $db->connect_error);
 	} 
 
-	// close the connection
-	// $db->close();
-
 	return $db;
 }
 
@@ -140,15 +137,19 @@ function createConnection() {
 
 function login($username, $password) {
 
-	// TODO Write login logic 
+	$db = createConnection();
 
-	return true;
+	$result = $db->query("SELECT password FROM user WHERE username='{$username}';");
+	$db->close();
+
+	if ($result->num_rows > 0) {
+		$row = $result->fetch_assoc();
+		return $row['password'] === md5($password);			
+	} 	
+	return false;
 }
 
 function deleteItem($item_id, $table_name) {
-
-	//echo $item_id . " ";
-	//echo $table_name;
 	
 	$db = createConnection();
 

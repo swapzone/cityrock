@@ -14,6 +14,14 @@ if(!$_SESSION['authenticated']) {
 			$_SESSION['authenticated'] = true;
 			$profile = "<a href='./index.php?logout'>Logout</a>";
 		}
+		else {
+			$profile = null;
+			$title = null;
+			$navigation = null;
+			$content = null;
+
+			include_once('login.php');
+		}
 	}
 	else {
 		$profile = null;
@@ -26,7 +34,7 @@ if(!$_SESSION['authenticated']) {
 }
 else
 	$profile = "<a href='./index.php?logout'>Logout</a>";
-
+	
 if(!$content_class)
 	$content_class = "basic";
 ?>
