@@ -10,7 +10,7 @@ if(isset($_POST['type'])) {
 
 	$counter = 1;
 	while($counter < 6) {
-		if($_POST['date-' . $counter]) {
+		if($_POST["date-$counter"]) {
 			$date = array(
 				"date" => $_POST["date-$counter"],
 				"time" => $_POST["time-$counter"],
@@ -157,8 +157,7 @@ else {
 				<span class='list-item $item_class'>
 					<span>{$course_types[$course['course_type_id']]}</span>
 					<span>{$course['date']->format('d.m.Y')}</span>
-					<span class='no-mobile'>{$course['max_participants']}</span>
-					<span class='no-mobile'><a href='./course/{$course['id']}/registrants'>Liste</a></span>
+					<span class='no-mobile'>max. {$course['max_participants']} ( <a href='./course/{$course['id']}/registrants'>Liste</a> )</span>
 					<span><a href='./course/{$course['id']}'>Details</a></span>
 				</span>";
 		}

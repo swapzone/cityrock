@@ -14,65 +14,15 @@ $content = "
 			<span></span>
 		</span>";
 
-$content .= "
-		<span class='list-item'>
-			<span>Max Mustermann</span>
-			<span>10.12.1988</span>
-			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
-			<span>
-				<form action='{$root_directory}/confirmation' method='post'>
-					<input type='hidden' name='confirmation' value='true'>
-					<input type='hidden' name='action' value='delete'>
-					<input type='hidden' name='description' value='Teilnehmer'>
-					<input type='hidden' name='table' value='registrant'>
-					<input type='hidden' name='id' value='123'>
-					<a href='#' class='confirm'>löschen</a>
-				</form>		
-			</span>
-		</span>
-		<span class='list-item'>
-			<span>Max Mustermann</span>
-			<span>10.12.1988</span>
-			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
-			<span>
-				<form action='{$root_directory}/confirmation' method='post'>
-					<input type='hidden' name='confirmation' value='true'>
-					<input type='hidden' name='action' value='delete'>
-					<input type='hidden' name='description' value='Teilnehmer'>
-					<input type='hidden' name='table' value='registrant'>
-					<input type='hidden' name='id' value='123'>
-					<a href='#' class='confirm'>löschen</a>
-				</form>		
-			</span>
-		</span>
-		<span class='list-item'>
-			<span>Max Mustermann</span>
-			<span>10.12.1988</span>
-			<span class='no-mobile'>Musterstadt</span>
-			<span class='no-mobile registrant-move'><a href='#' class='move'>verschieben</a></span>
-			<span>
-				<form action='{$root_directory}/confirmation' method='post'>
-					<input type='hidden' name='confirmation' value='true'>
-					<input type='hidden' name='action' value='delete'>
-					<input type='hidden' name='description' value='Teilnehmer'>
-					<input type='hidden' name='table' value='registrant'>
-					<input type='hidden' name='id' value='123'>
-					<a href='#' class='confirm'>löschen</a>
-				</form>		
-			</span>
-		</span>";
-
 $registrants = getRegistrants($_GET['id']);
 
 foreach($registrants as $registrant) {
 
 	$content .= "
 		<span class='list-item'>
-			<span>Max Mustermann</span>
-			<span>10.12.1988</span>
-			<span class='no-mobile'>Musterstadt</span>
+			<span>{$registrant['first_name']} {$registrant['last_name']}</span>
+			<span>{$registrant['birthday']}</span>
+			<span class='no-mobile'>{$registrant['city']}</span>
 			<span class='no-mobile registrant-move'><a href='' class='move'>verschieben</a></span>
 			<span>
 				<form action='{$root_directory}/confirmation' method='post'>

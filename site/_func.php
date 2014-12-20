@@ -11,7 +11,8 @@ function getCourses($course_type_id) {
 
 	$db = createConnection();
 	
-	$sql = "SELECT id, course_type_id, max_participants FROM course";
+	$sql = "SELECT id, course_type_id, max_participants 
+					FROM course";
 	if(isset($course_type_id)) 
 		$sql .= "WHERE course_type_id=$course_type_id;";
 	else 
@@ -25,12 +26,17 @@ function getCourses($course_type_id) {
 	   	$course_array[] = $row;
 		}
 	} 
-
+	
 	foreach($course_array as $key=>$course) {
-		$result = $db->query("SELECT start FROM date WHERE course_id={$course['id']} ORDER BY start;");
+		
+		$result = $db->query("SELECT start 
+													FROM date 
+													WHERE course_id={$course['id']} 
+													ORDER BY start;");
 
 		if ($result->num_rows > 0) {
-			$course_array[$key]['date'] = new DateTime($result->fetch_assoc()['start']);
+			$row = $result->fetch_assoc();
+			$course_array[$key]['date'] = new DateTime($row['start']);
 		} 
 	}
 
@@ -47,13 +53,18 @@ function getCourse($course_id) {
 
 	$db = createConnection();
 
-	$result = $db->query("SELECT max_participants, course_type_id FROM course WHERE id=$course_id;");
+	$result = $db->query("SELECT max_participants, course_type_id 
+												FROM course 
+												WHERE id=$course_id;");
 	
 	if ($result->num_rows > 0) {
 		$result = $result->fetch_assoc();
 	} 
 
-	$dates = $db->query("SELECT start, duration FROM date WHERE course_id={$course_id} ORDER BY start;");
+	$dates = $db->query("SELECT start, duration 
+											 FROM date 
+											 WHERE course_id={$course_id} 
+											 ORDER BY start;");
 
 	$dates_array = array();
 	if ($dates->num_rows > 0) {
@@ -102,9 +113,9 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 	$db = createConnection();
 	
 	$result = $db->query("INSERT INTO course (course_type_id, max_participants, min_staff) 
-							VALUES ($course_type, $num_registrants, $num_staff);");
+												VALUES ($course_type, $num_registrants, $num_staff);");
 	$course_id = $db->insert_id;
-	
+
 	if($result) {
 		foreach($dates as $date) {
 
@@ -112,10 +123,11 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
 			$mysql_time = $datetime->format('Y-m-d H:i:s');
 
-			$result = $db->query("INSERT INTO date (start, duration, course_id) VALUES ('$mysql_time', {$date['duration']}, $course_id);");
+			$result = $db->query("INSERT INTO date (start, duration, course_id) 
+														VALUES ('$mysql_time', {$date['duration']}, $course_id);");
 		}
 	}
-
+	
 	$db->close();
 
 	return $result;
@@ -132,7 +144,8 @@ function getUsers() {
 
 	$db = createConnection();
 
-	$result = $db->query("SELECT id, username, first_name, last_name, deletable FROM user;");
+	$result = $db->query("SELECT id, username, first_name, last_name, deletable 
+												FROM user;");
 
 	$user_array = array();
 	if ($result->num_rows > 0) {
@@ -144,7 +157,12 @@ function getUsers() {
 	foreach($user_array as $key => $user) {
 		$id = $user['id'];
 
-		$roles = $db->query("SELECT title FROM role WHERE id=(SELECT role_id FROM user_has_role WHERE user_id=$id);"); 
+		$roles = $db->query("SELECT title 
+												 FROM role 
+												 WHERE id=(
+													SELECT role_id 
+													FROM user_has_role 
+													WHERE user_id=$id);"); 
 		
 		$role_string = "";
 		if ($roles->num_rows > 0) {
@@ -171,9 +189,13 @@ function addUser($username, $password, $role) {
 
 	$db = createConnection();
 
-	$result = $db->query("INSERT INTO user (username, password) VALUES ('$username', '$password');");
+	$result = $db->query("INSERT INTO user (username, password) 
+												VALUES ('$username', '$password');");
 	if($result)
-		$result = $db->query("INSERT INTO user_has_role (user_id, role_id) VALUES ((SELECT id FROM user WHERE username='$username'), $role);");
+		$result = $db->query("INSERT INTO user_has_role (user_id, role_id) 
+													VALUES ((SELECT id 
+																	 FROM user 
+																	 WHERE username='$username'), $role);");
 
 	$db->close();
 
@@ -209,8 +231,27 @@ function getRoles() {
  */
 function getRegistrants($course_id) {
 	
-	// TODO
+	$db = createConnection();
 
+	$result = $db->query("SELECT id, first_name, last_name, birthday, city 
+												FROM registrant AS a
+												WHERE EXISTS (
+													SELECT 1
+													FROM course_has_registrant AS b
+													WHERE b.course_id={$course_id} AND a.id=b.registrant_id 
+													GROUP BY b.registrant_id
+													HAVING count(*) > 0);");
+
+	$registrants_array = array();
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+	   	$registrants_array[] = $row;
+		}
+	} 
+	$db->close();
+
+	//echo "Number of registrants: " . count($registrants_array);
+	return $registrants_array;
 }
 
 /**
@@ -257,7 +298,9 @@ function login($username, $password) {
 
 	$db = createConnection();
 
-	$result = $db->query("SELECT password FROM user WHERE username='{$username}';");
+	$result = $db->query("SELECT password 
+												FROM user 
+												WHERE username='{$username}';");
 	$db->close();
 
 	if ($result->num_rows > 0) {
@@ -295,8 +338,7 @@ function storeSettings($settings) {
  *
  */
 function courseSort($a, $b) {
-
-    return $a->date > $b->date;
+	return $a->date > $b->date;
 }
 
 /**
