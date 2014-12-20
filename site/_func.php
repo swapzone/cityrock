@@ -133,6 +133,39 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 	return $result;
 }
 
+/**
+ *
+ */
+function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
+
+	$db = createConnection();
+	
+	$db->query("UPDATE course 
+							SET course_type_id=$course_type, 
+									max_participants=$num_registrants,
+									min_staff=$num_staff 
+							WHERE id=$id;");
+
+	$result = $db->query("DELETE FROM date 
+												WHERE course_id=$id;");
+
+	if($result) {
+		foreach($dates as $date) {
+
+			$datetime_string = $date['date'] . " " . $date['time'];
+			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
+			$mysql_time = $datetime->format('Y-m-d H:i:s');
+
+			$result = $db->query("INSERT INTO date (start, duration, course_id) 
+														VALUES ('$mysql_time', {$date['duration']}, $id);");
+		}
+	}
+	
+	$db->close();
+
+	return $result;
+}
+
 /*****************************************************************************/
 /* User functionality																												 */
 /*****************************************************************************/

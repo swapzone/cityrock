@@ -3,20 +3,60 @@
 module cityrock {
   'use strict';
 
+  /**
+   *
+   *
+   * @param form
+   * @returns {boolean}
+   */
   export function validateForm(form) {
 
-    // TODO: check on wrong date/time/duration format
-
-    var empty = $(form).find("input").filter(function() {
-      return this.value === "";
+    // check time format
+    var empty = $(form).find(".time").filter(function() {
+      //alert(this.value);
+      return !(this.value).match(/\d{2}:\d{2}/);
     });
+
     if(empty.length) {
-      alert('Bitte alle Felder ausfüllen!');
+      alert('Bitte das richtige Zeitformat beachten!');
+    }
+    else {
+      // check date format
+      empty = $(form).find(".date").filter(function() {
+        return !(this.value).match(/\d{2}.\d{2}.\d{4}/);
+      });
+
+      if(empty.length) {
+        alert('Bitte das richtige Datumsformat beachten!');
+      }
+      else {
+        // check duration format
+        empty = $(form).find(".duration").filter(function() {
+          return !(this.value % 1 === 0);
+        });
+
+        if(empty.length) {
+          alert('Bitte nur ganzzahlige Werte für die Kursdauer angeben!');
+        }
+        else {
+          // check if all fields are filled with content
+          empty = $(form).find("input").filter(function() {
+            return this.value === "";
+          });
+          if(empty.length) {
+            alert('Bitte alle Felder ausfüllen!');
+          }
+        }
+      }
     }
 
     return !empty.length;
   }
 
+  /**
+   *
+   *
+   */
   export function initialize():void {
 
     var html = $('html');
@@ -32,22 +72,34 @@ module cityrock {
         // set new value for days input
         $(event.target).parent().parent().find('input[name=days]').val(index.toString());
 
-        var label:string = "<label for='date-" + index + "'>Datum Tag " + index + " (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>";
+        var container:string = "<div class='day-container'>";
+        $(event.target).before($(container));
+        var heading:string = "<h3 class='inline'>Tag " + index + "</h3><span>(<a href='#' class='remove-day'>entfernen</a>)</span>";
+        $(event.target).before($(heading));
+        var label:string = "<label for='date-" + index + "'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>";
         $(event.target).before($(label));
-        var input:string = "<input type='text' placeholder='z.B. 02.10.2015' name='date-" + index + "'>";
+        var input:string = "<input type='text' placeholder='z.B. 02.10.2015' name='date-" + index + "' class='date'>";
         $(event.target).before($(input));
-        var label:string = "<label for='time-" + index + "'>Startuhrzeit Tag " + index + " (in der Form <span class='italic'>hh:mm</span>)</label>";
+        var label:string = "<label for='time-" + index + "'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>";
         $(event.target).before($(label));
-        var input:string = "<input type='text' placeholder='z.B. 09:00' name='time-" + index + "'>";
+        var input:string = "<input type='text' placeholder='z.B. 09:00' name='time-" + index + "' class='time'>";
         $(event.target).before($(input));
-        var label:string = "<label for='duraration-" + index + "'>Dauer Tag " + index + " (in Minuten)</label>";
+        var label:string = "<label for='duraration-" + index + "'>Dauer (in Minuten)</label>";
         $(event.target).before($(label));
-        var input:string = "<input type='text' name='duration-" + index + "'>";
+        var input:string = "<input type='text' name='duration-" + index + "' class='duration'>";
         $(event.target).before($(input));
+        var container:string = "</div>";
+        $(event.target).before($(container));
       }
       else {
         alert('Es können nicht mehr als 5 Tage hinzugefügt werden.');
       }
+    });
+
+    // remove day link
+    $('.remove-day').on('click', function(event) {
+
+      $(event.target).parent().parent().remove();
     });
 
     // confirmation links
@@ -95,13 +147,9 @@ module cityrock {
 
       // add class 'apple' to html element
       $(html).addClass('apple');
-
-      // something else?
     }
     else {
       $(html).addClass('no-apple');
-
-      // something else?
     }
 
     // Course Overview Filter

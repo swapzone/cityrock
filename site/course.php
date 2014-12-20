@@ -4,6 +4,9 @@ include_once('_init.php');
 
 $course_types = getCourseTypes();
 
+/***********************************************************************/
+/* Process form data																								   */
+/***********************************************************************/
 if(isset($_POST['type'])) {
 	// add all given dates
 	$dates = array();
@@ -19,25 +22,37 @@ if(isset($_POST['type'])) {
 
 			$dates[] = $date;
 		}
-		else {
-			break;
-		}
 		$counter++;
 	}
 
-	$success = addCourse($_POST['type'], $_POST['registrants'], 2, $dates);
-	
-	if($success) {
-		$title = "Neuer Kurs";
-		$content = "Kurs wurde erstellt.";	
-	}	
+	if(isset($_POST['id'])) {
+		// update course
+		$success = updateCourse($_POST['id'], $_POST['type'], $_POST['registrants'], 2, $dates);
+
+		$title = "Kurs editieren";
+		
+		if($success)		
+			$content = "Kurs wurde erfolgreich editiert.";	
+		else 
+			$content = "Fehler: Kurs konnte nicht editiert werden.";	
+	}
 	else {
+		// create course
+		$success = addCourse($_POST['type'], $_POST['registrants'], 2, $dates);
+
 		$title = "Neuer Kurs";
-		$content = "Fehler: Kurs konnte nicht erstellt werden.";	
+		
+		if($success)		
+			$content = "Kurs wurde erfolgreich erstellt.";	
+		else 
+			$content = "Fehler: Kurs konnte nicht erstellt werden.";	
 	}
 }
 else {
 	if(isset($_GET["id"])) {
+		/***********************************************************************/
+		/* Course new 																											   */
+		/***********************************************************************/
 		if($_GET["id"] == "new") {
 			$title = "Neuer Kurs";
 			$content = "
@@ -68,59 +83,120 @@ else {
 				</form>";
 		}
 		else {
-			$course_id = $_GET["id"];
-			$course = getCourse($course_id);
-			$registrants = getRegistrants($course_id);
+			/***********************************************************************/
+			/* Course edit																											   */
+			/***********************************************************************/
+			if(isset($_GET["action"]) && $_GET["action"] == "edit") {
+				$course_id = $_GET["id"];
+				$course = getCourse($course_id);
+				$number_of_days = count($course['dates']);
 
-			$title = "Kursdetails";
-			$content = "
-				<span class='list'>
-					<span class='list-item'>
-						<span>Kurs ID</span><span>{$course_id}</span>
-					</span>
-					<span class='list-item'>
-						<span>Kurstyp</span><span>{$course_types[$course['course_type_id']]}</span>
-					</span>
-					<span class='list-item'>
-						<span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
-					</span>
-					<span class='list-item'>
-						<span>Bereits registrierte Teilnehmer</span>
-						<span>" . count($registrants) ." ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
-					</span>";
-			
-			$counter = 1;
-			foreach($course['dates'] as $date) {
-			
+				$title = "Kurs editieren";
+				$content = "
+					<form method='post' onsubmit='return cityrock.validateForm(this);'>
+						<label for='type'>Kurstyp</label>
+						<select name='type' id='type'>";
+	
+				foreach($course_types as $key=>$title) {
+					if($course['course_type_id'] == $key)
+						$content .= "<option selected value='{$key}'>{$title}</option>";
+					else
+						$content .= "<option value='{$key}'>{$title}</option>";
+				}
+
 				$content .= "
-					<span class='list-item'>
-						<span>Datum (Tag $counter)</span>
-						<span>{$date['date']->format('d.m.Y')}</span>
-					</span>
-					<span class='list-item'>
-						<span>Uhrzeit (Tag $counter)</span>
-						<span>{$date['date']->format('h:i')} - " . getEndTime($date['date'], $date['duration']) . " Uhr</span> 
-					</span>";
-				
-				$counter++;
-			}
+						</select>";
+			
+				$counter = 1;
+				foreach($course['dates'] as $date) {		
+					$content .= "
+						<div class='day-container'>
+							<h3 class='inline'>Tag {$counter}</h3><span>(<a href='#' class='remove-day'>entfernen</a>)</span>
+							<label for='date-{$counter}'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
+							<input type='text' value='{$date['date']->format('d.m.Y')}' name='date-{$counter}' class='date'>
+							<label for='{$counter}'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
+							<input type='text' value='{$date['date']->format('h:i')}' name='time-{$counter}' class='time'>
+							<label for='duraration-{$counter}'>Dauer (in Minuten)</label>
+							<input type='text' name='duration-{$counter}' class='duration' value='{$date['duration']}'>
+						</div>";
+			
+					$counter++;
+				}
 
-			$content .= "
-				</span>
-				<span>
-					<form class='inline' action='{$root_directory}/confirmation' method='post'>
-						<input type='hidden' name='confirmation' value='true'>
-						<input type='hidden' name='action' value='delete'>
-						<input type='hidden' name='description' value='Kurs'>
-						<input type='hidden' name='table' value='course'>
-						<input type='hidden' name='id' value='{$course_id}'>
-						<a href='#' class='button error confirm'>löschen</a>
-					</form>		
-				</span>
-				<a href='./' class='button'>Zurück</a>";
+				$content .= "
+						<span class='add-day'>
+							<a href='#' id='add-day'>Tag hinzufügen</a>
+						</span>
+						<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
+						<input type='text' name='registrants' value='{$course['max_participants']}'>
+						<input type='hidden' value='{$number_of_days}' name='days'>	
+						<input type='hidden' value='{$course_id}' name='id'>			
+						<a href='./' class='button error'>Abbrechen</a>	
+						<input type='submit' value='Speichern' class='button'>
+					</form>";
+			}
+			else {
+				/***********************************************************************/
+				/* Course details																										   */
+				/***********************************************************************/
+				$course_id = $_GET["id"];
+				$course = getCourse($course_id);
+				$registrants = getRegistrants($course_id);
+
+				$title = "Kursdetails";
+				$content = "
+					<span class='list'>
+						<span class='list-item'>
+							<span>Kurs ID</span><span>{$course_id}</span>
+						</span>
+						<span class='list-item'>
+							<span>Kurstyp</span><span>{$course_types[$course['course_type_id']]}</span>
+						</span>
+						<span class='list-item'>
+							<span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
+						</span>
+						<span class='list-item'>
+							<span>Bereits registrierte Teilnehmer</span>
+							<span>" . count($registrants) ." ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
+						</span>";
+		
+				$counter = 1;
+				foreach($course['dates'] as $date) {
+		
+					$content .= "
+						<span class='list-item'>
+							<span>Datum (Tag $counter)</span>
+							<span>{$date['date']->format('d.m.Y')}</span>
+						</span>
+						<span class='list-item'>
+							<span>Uhrzeit (Tag $counter)</span>
+							<span>{$date['date']->format('h:i')} - " . getEndTime($date['date'], $date['duration']) . " Uhr</span> 
+						</span>";
+			
+					$counter++;
+				}
+
+				$content .= "
+					</span>
+					<span>
+						<form class='inline' action='{$root_directory}/confirmation' method='post'>
+							<input type='hidden' name='confirmation' value='true'>
+							<input type='hidden' name='action' value='delete'>
+							<input type='hidden' name='description' value='Kurs'>
+							<input type='hidden' name='table' value='course'>
+							<input type='hidden' name='id' value='{$course_id}'>
+							<a href='#' class='button error confirm'>löschen</a>
+						</form>		
+					</span>
+					<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Editieren</a>
+					<a href='{$root_directory}/course' class='button'>Zurück</a>";
+			}
 		}
 	}
 	else {
+		/***********************************************************************/
+		/* Course overview																									   */
+		/***********************************************************************/
 		$title = "Kursübersicht";
 		$content = "
 			<!-- COURSE FILTER -->
