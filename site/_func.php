@@ -75,11 +75,8 @@ function getCourse($course_id) {
 	$dates_array = array();
 	if ($dates->num_rows > 0) {
 		while($row = $dates->fetch_assoc()) {
-	   	$dates_array[] = 
-				[
-					"date" => new DateTime($row['start']),
-					"duration" => $row['duration']
-				];
+	   	$dates_array[] = array( "date" => new DateTime($row['start']),
+					"duration" => $row['duration']);
 		}
 	} 
 	
@@ -429,7 +426,7 @@ function courseSort($a, $b) {
  */
 function getMonth($date) {
 
-	$months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+	$months = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
 	return $months[$date->format('n')-1]; 
 }
 
