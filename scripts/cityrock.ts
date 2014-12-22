@@ -116,13 +116,6 @@ module cityrock {
       alert('Noch nicht implementiert.');
     });
 
-    // print button
-    $('#print').on('click', function(event) {
-
-      // TODO implementation
-      alert('Noch nicht implementiert.');
-    });
-
     // responsive menu
     $('.navigation-menu-toggle').on('click', function (event) {
       event.preventDefault();

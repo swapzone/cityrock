@@ -42,7 +42,8 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 
 	RewriteRule ^course/([^/.]+)/?$ course.php?id=$1 [L]
 	RewriteRule ^course/([^/.]+)/registrants/?$ registrants.php?id=$1 [L]
-	RewriteRule ^course/([^/.]+)/?([^/.]+)/?$ course.php?id=$1&action=$2 [L]
+	RewriteRule ^course/([^/.]+)/registrants/([^/.]+)/?$ registrants.php?id=$1&action=$2 [L]
+	RewriteRule ^course/([^/.]+)/([^/.]+)/?$ course.php?id=$1&action=$2 [L]
 
 	RewriteRule ^user/([^/.]+)/?$ user.php?id=$1 [L]
 

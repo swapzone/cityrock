@@ -49,6 +49,30 @@ function getCourses($course_type_id) {
 /**
  *
  */
+function getCourseDate($course_id) {
+
+	$db = createConnection();
+
+	$dates = $db->query("SELECT start 
+											 FROM date 
+											 WHERE course_id={$course_id} 
+											 ORDER BY start;");
+
+	$dates_array = array();
+	if ($dates->num_rows > 0) {
+		while($row = $dates->fetch_assoc()) {
+	   	$dates_array[] = new DateTime($row['start']);
+		}
+	} 
+
+	$db->close();
+
+	return $dates_array;
+}
+
+/**
+ *
+ */
 function getCourse($course_id) {
 
 	$db = createConnection();
