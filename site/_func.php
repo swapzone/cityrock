@@ -271,7 +271,7 @@ function getRegistrants($course_id) {
 												WHERE EXISTS (
 													SELECT 1
 													FROM course_has_registrant AS b
-													WHERE b.course_id={$course_id} AND a.id=b.registrant_id 
+													WHERE b.course_id={$course_id} AND a.id=b.registrant_id AND b.confirmed=1
 													GROUP BY b.registrant_id
 													HAVING count(*) > 0);");
 
@@ -283,7 +283,6 @@ function getRegistrants($course_id) {
 	} 
 	$db->close();
 
-	//echo "Number of registrants: " . count($registrants_array);
 	return $registrants_array;
 }
 
@@ -340,6 +339,9 @@ function login($username, $password) {
 
 	$db = createConnection();
 
+	// make sure that the user isn't trying to do some SQL injection
+	$username = $db->real_escape_string($username);
+
 	$result = $db->query("SELECT password 
 												FROM user 
 												WHERE username='{$username}';");
@@ -363,17 +365,6 @@ function deleteItem($item_id, $table_name) {
 	$db->close();
 
 	return $result;
-}
-
-/**
- *
- */
-function storeSettings($settings) {
-
-	// TODO implement
-
-	// returns true on success
-	return true;
 }
 
 /**
