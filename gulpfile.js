@@ -1,15 +1,16 @@
 var gulp = require('gulp');
 
-var uglify     = require('gulp-uglify'),
-    rename     = require('gulp-rename'),
-    ts         = require('gulp-typescript'),
-    sass       = require('gulp-ruby-sass'),
-    concat     = require('gulp-concat'),
-    gulpif     = require('gulp-if'),
-    cssmin     = require('gulp-cssmin'),
-    notify     = require('gulp-notify'),
-    plumber    = require('gulp-plumber'),
-    livereload = require('gulp-livereload');
+var uglify      = require('gulp-uglify'),
+    rename      = require('gulp-rename'),
+    ts          = require('gulp-typescript'),
+    sass        = require('gulp-ruby-sass'),
+    prefixer    = require('gulp-autoprefixer'),
+    concat      = require('gulp-concat'),
+    gulpif      = require('gulp-if'),
+    cssmin      = require('gulp-cssmin'),
+    notify      = require('gulp-notify'),
+    plumber     = require('gulp-plumber'),
+    livereload  = require('gulp-livereload');
 
 var path = require('path');
 
@@ -72,10 +73,15 @@ gulp.task('styles', function() {
     .pipe(
       gulpif(
         /[.]scss$/,
-        sass({ style: 'expanded' })
+        sass({ style: 'expanded', 'sourcemap=none': true })
       )
     )
     .pipe(concat('style.css'))
+    .pipe(gulp.dest(dest))
+    .pipe(prefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp.dest(dest))
     .pipe(cssmin())
     .pipe(rename({suffix: '.min'}))
