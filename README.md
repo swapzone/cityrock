@@ -11,6 +11,7 @@ The course administration platform for CityRock.
 
 ## Dependencies
 * [FPDF Printer](http://www.fpdf.org/) class for PHP
+* [Config_Lite](https://github.com/pear/Config_Lite/blob/master/docs/examples)
 * [Registration Form](http://code.tutsplus.com/tutorials/how-to-code-a-signup-form-with-email-confirmation--net-6860)
 
 
