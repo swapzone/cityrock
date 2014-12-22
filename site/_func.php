@@ -1,11 +1,14 @@
 <?php
-
 /*****************************************************************************/
 /* Course functionality																											 */
 /*****************************************************************************/
 
 /**
+ * Finds all courses with the given course type or all courses if no type is 
+ * given.
  *
+ * @param int $course_type_id
+ * @return array of course arrays
  */
 function getCourses($course_type_id) {
 
@@ -47,7 +50,10 @@ function getCourses($course_type_id) {
 }
 
 /**
+ * Find the course with the given id.
  *
+ * @param int $course_id
+ * @return array of courses
  */
 function getCourse($course_id) {
 
@@ -85,7 +91,9 @@ function getCourse($course_id) {
 }
 
 /**
+ * Finds all course types.
  *
+ * @return array of course types with $key='id' and $value='title'
  */
 function getCourseTypes() {
 
@@ -105,8 +113,14 @@ function getCourseTypes() {
 	return $course_type_array;
 }
 
-/**
+/** 
+ * Inserts a course with the given parameters into the database.
  *
+ * @param int $course_type
+ * @param int $num_registrants
+ * @param int $num_staff
+ * @param array $dates array of dates
+ * @return boolean true in case it was successful
  */
 function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 
@@ -133,8 +147,15 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 	return $result;
 }
 
-/**
+/** 
+ * Updates a course with the given id and parameters.
  *
+ * @param int $id
+ * @param int $course_type
+ * @param int $num_registrants
+ * @param int $num_staff
+ * @param array $dates array of dates
+ * @return boolean true in case it was successful
  */
 function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 
@@ -171,7 +192,9 @@ function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 /*****************************************************************************/
 
 /**
+ * Finds and returns all users.
  *
+ * @return array of user arrays
  */
 function getUsers() {
 
@@ -212,11 +235,12 @@ function getUsers() {
 }
 
 /**
+ * Adds a new user to the database with the given parameters.
  *
- * $role = 1: admin
- * $role = 2: staff
- *
- * Returns true on success.
+ * @param string $username
+ * @param string $password
+ * @param int $role 1=admin, 2=staff
+ * @return boolean true in case it was successful
  */
 function addUser($username, $password, $role) {
 
@@ -236,7 +260,9 @@ function addUser($username, $password, $role) {
 }
 
 /**
+ * Finds and returns all user roles.
  *
+ * @return array of user roles
  */
 function getRoles() {
 	
@@ -260,7 +286,9 @@ function getRoles() {
 /*****************************************************************************/
 
 /**
+ * Finds and returns all registrants.
  *
+ * @return array of registrant arrays
  */
 function getRegistrants($course_id) {
 	
@@ -287,7 +315,12 @@ function getRegistrants($course_id) {
 }
 
 /**
+ * Moves a registrant from one course to another.
  *
+ * @param int $registrant_id
+ * @param int $old_course_id
+ * @param int $new_course_id
+ * @return boolean true in case it was successful
  */
 function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 
@@ -310,7 +343,9 @@ function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 /*****************************************************************************/
 
 /**
+ * Creates a database connection and returns the database handle.
  *
+ * @return object database handle
  */
 function createConnection() {
 
@@ -333,7 +368,11 @@ function createConnection() {
 /*****************************************************************************/
 
 /**
+ * Checks the given user details for authentication purposes. 
  *
+ * @param string $username
+ * @param string $password
+ * @return boolean if the credentials are valid it returns true
  */
 function login($username, $password) {
 
@@ -355,7 +394,11 @@ function login($username, $password) {
 }
 
 /**
+ *	Deletes any item with the given item id in the given table.
  *
+ * @param int $item_id
+ * @param string $table_name
+ * @return boolean true in case it was successful
  */
 function deleteItem($item_id, $table_name) {
 	
@@ -368,14 +411,21 @@ function deleteItem($item_id, $table_name) {
 }
 
 /**
+ * Sort function for course arrays.
  *
+ * @param array $a
+ * @param array $b
+ * @return boolean true if $a is later than $b
  */
 function courseSort($a, $b) {
 	return $a->date > $b->date;
 }
 
 /**
+ * Returns the German month name for a given date.
  *
+ * @param date $date
+ * @return string
  */
 function getMonth($date) {
 
@@ -384,16 +434,23 @@ function getMonth($date) {
 }
 
 /**
+ * Calculates the end time for a given start time and duration.
  *
+ * @param date $date
+ * @param date $duration
+ * @return string
  */
 function getEndTime($date, $duration) {
+
 	$date->add(new DateInterval('PT'. $duration .'M'));
-	
 	return $date->format('h:i');
 }
 
 /**
+ * Renders the menu with optional entries.
  *
+ * @param array $entries
+ * @return string
  */
 function renderNavigation($entries) {
 
@@ -416,5 +473,4 @@ function renderNavigation($entries) {
 
 	return $menu_string;
 }
-
 ?>

@@ -157,7 +157,7 @@ else {
 						</span>
 						<span class='list-item'>
 							<span>Bereits registrierte Teilnehmer</span>
-							<span>" . count($registrants) ." ( <a href='./{$course_id}/registrants'>anzeigen</a> )</span>
+							<span>" . count($registrants) ." (<a href='./{$course_id}/registrants'>anzeigen</a>)</span>
 						</span>";
 		
 				$counter = 1;
@@ -233,7 +233,7 @@ else {
 				<span class='list-item $item_class'>
 					<span>{$course_types[$course['course_type_id']]}</span>
 					<span>{$course['date']->format('d.m.Y')}</span>
-					<span class='no-mobile'>max. {$course['max_participants']} ( <a href='./course/{$course['id']}/registrants'>Liste</a> )</span>
+					<span class='no-mobile'>max. {$course['max_participants']} (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
 					<span><a href='./course/{$course['id']}'>Details</a></span>
 				</span>";
 		}
