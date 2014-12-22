@@ -1,0 +1,39 @@
+%registrants {
+  @extend %layout;
+  @extend %table;
+
+  p {
+    font-style: italic;
+  }
+
+  label {
+    margin-right: 0.5em;
+  }
+
+  select {
+    margin-right: 0.5em;
+  }
+
+  .button, form {
+    display: inline-block;
+  }
+
+  #move-registrant {
+    display: none;
+  }
+
+  #move-registrant.show {
+    text-align: left;
+    display: block;
+    margin-bottom: 1.5em;
+    margin-left: 0.5em;
+  }
+
+  @include respond-above("medium") {
+
+  }
+}
+
+.registrants {
+  @extend %registrants;
+}

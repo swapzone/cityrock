@@ -112,8 +112,17 @@ module cityrock {
     // move registrant links
     $('.move').on('click', function(event) {
 
-      // TODO implementation
-      alert('Noch nicht implementiert.');
+      var registrantId:string = $(event.target).attr('id');
+      var moveControl = $("#move-registrant");
+
+      moveControl.find("input[name='registrant_id']").attr('value', registrantId);
+      moveControl.addClass('show');
+
+      // remove button
+      $('.remove-move-item').on('click', function(event) {
+        //$(event.target).parent().hide();
+        $(event.target).parent().removeClass('show');
+      });
     });
 
     // responsive menu
@@ -124,7 +133,7 @@ module cityrock {
       $(this).find('i').toggleClass('fa-bars fa-close');
     });
 
-    $(navigation).find('a:not(.navigation-menu-toggle)').on('click', function (event) {
+    $(navigation).find('a:not(.navigation-menu-toggle)').on('click', function () {
       //event.preventDefault();
 
       $(navigation).removeClass('is-expanded');

@@ -21,11 +21,11 @@ if(isset($_POST['confirmation'])) {
 	}
 	else if($_POST['action'] == "move") {
 
-		$registrant_id = $_POST['id'];
+		$registrant_id = $_POST['registrant_id'];
 		$old_course_id = $_POST['old_course_id'];
 		$new_course_id = $_POST['new_course_id'];
 	
-		if(moveRegistrant($item_id)) {
+		if(moveRegistrant($registrant_id, $old_course_id, $new_course_id)) {
 			$title = "Bestätigung";
 			$content = "Der Teilnehmer wurde in den Kurs mit der ID {$new_course_id} verschoben.";
 		}

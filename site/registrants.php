@@ -2,13 +2,14 @@
 
 include_once('_init.php');
 
+$course = getCourse($_GET['id']);
 $registrants = getRegistrants($_GET['id']);
 
 if(isset($_GET['action'])) {
 	require('./lib/fpdf/fpdf.php');
 
 	$title = utf8_decode("Teilnehmerliste für den");
-	$title .= " " . getCourseDate($_GET['id'])[0]->format('j.n.Y');
+	$title .= " " . $course['dates'][0]['date']->format('j.n.Y');
 
 	$pdf = new FPDF();
 	$pdf->SetMargins(25, 20);
@@ -44,13 +45,14 @@ else {
 			</span>";
 
 	foreach($registrants as $registrant) {
+		$birthday = date('j.n.Y',strtotime($registrant['birthday']));
 
 		$content .= "
 			<span class='list-item'>
 				<span>{$registrant['first_name']} {$registrant['last_name']}</span>
-				<span>{$registrant['birthday']}</span>
+				<span>$birthday</span>
 				<span class='no-mobile'>{$registrant['city']}</span>
-				<span class='no-mobile registrant-move'><a href='' class='move'>verschieben</a></span>
+				<span class='no-mobile registrant-move'><a href='#' class='move' id='{$registrant['id']}'>verschieben</a></span>
 				<span>
 					<form action='{$root_directory}/confirmation' method='post'>
 						<input type='hidden' name='confirmation' value='true'>
@@ -66,9 +68,41 @@ else {
 
 	$content .= "
 		</div>
+		<span id='move-registrant'>
+    	<form action='{$root_directory}/confirmation' method='post'>
+				<label for='new_course_id'>Verschieben nach:</label>
+				<select name='new_course_id'>";
+
+	$alternatives = getCourses($course['course_type_id']);
+
+	$counter = 0;
+	foreach($alternatives as $alternative) {
+		
+		if($alternative['id'] != $_GET['id']) {
+			$date = $alternative['date']->format('j.n.Y');
+
+			$content .= "<option value='{$alternative['id']}'>$date</option>";
+
+			if(++$counter>10) break;
+		}
+	}
+	  
+	$content .= "    	
+	      </select>
+				<input type='hidden' name='confirmation' value='true'>
+				<input type='hidden' name='action' value='move'>
+				<input type='hidden' name='description' value='Teilnehmer'>
+				<input type='hidden' name='table' value='registrant'>
+				<input type='hidden' name='old_course_id' value='{$_GET['id']}'>
+				<input type='hidden' name='registrant_id' value='-1'>
+	      <input type='submit' class='button button-move-item' value='Verschieben'>
+	    </form>
+	    <a href='#' class='button error remove-move-item'>Abbrechen</a>
+		</span>
 		<a href='{$root_directory}/course' class='button'>Zurück</a>
 		<a href='{$root_directory}/course/{$_GET['id']}/registrants/print' class='button' target='_blank'>Drucken</a>";
 
+	$content_class = "registrants";
 	include('_main.php');
 }
 ?>

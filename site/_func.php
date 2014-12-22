@@ -14,7 +14,7 @@ function getCourses($course_type_id) {
 	$sql = "SELECT id, course_type_id, max_participants 
 					FROM course";
 	if(isset($course_type_id)) 
-		$sql .= "WHERE course_type_id=$course_type_id;";
+		$sql .= " WHERE course_type_id=$course_type_id;";
 	else 
 		$sql .= ";";
 
@@ -44,30 +44,6 @@ function getCourses($course_type_id) {
 
 	usort($course_array, "courseSort");
 	return $course_array;
-}
-
-/**
- *
- */
-function getCourseDate($course_id) {
-
-	$db = createConnection();
-
-	$dates = $db->query("SELECT start 
-											 FROM date 
-											 WHERE course_id={$course_id} 
-											 ORDER BY start;");
-
-	$dates_array = array();
-	if ($dates->num_rows > 0) {
-		while($row = $dates->fetch_assoc()) {
-	   	$dates_array[] = new DateTime($row['start']);
-		}
-	} 
-
-	$db->close();
-
-	return $dates_array;
 }
 
 /**
@@ -314,11 +290,20 @@ function getRegistrants($course_id) {
 /**
  *
  */
-function moveRegistrant($item_id) {
+function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 
-	// TODO
+	$db = createConnection();
+	
+	$db->query("UPDATE course_has_registrant
+							SET course_id=$new_course_id
+							WHERE (registrant_id=$registrant_id AND 
+										 course_id=$old_course_id);");
 
-	return true;
+	$result = ($db->affected_rows > 0) ? true : false;
+
+	$db->close();
+
+	return $result;
 }
 
 /*****************************************************************************/
