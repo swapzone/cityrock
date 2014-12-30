@@ -213,7 +213,8 @@ else {
 				<span class='list-heading'>
 					<span>Kurstyp</span>
 					<span>Datum</span>
-					<span class='no-mobile'>Teilnehmer</span>
+					<span class='no-mobile'>Plätze</span>
+					<span class='no-mobile'>Anmeldungen</span>
 					<span></span>
 				</span>";
 
@@ -221,7 +222,9 @@ else {
 		
 		$month = null;
 		foreach($courses as $course) {
-			
+			$registrants = getRegistrants($course['id']);
+			$num_registrants = count($registrants);
+
 			if(getMonth($course['date']) != $month) {
 				$month = getMonth($course['date']);
 				$content .= "<span class='course-list-month'>{$month}</span>";
@@ -233,7 +236,8 @@ else {
 				<span class='list-item $item_class'>
 					<span>{$course_types[$course['course_type_id']]}</span>
 					<span>{$course['date']->format('d.m.Y')}</span>
-					<span class='no-mobile'>max. {$course['max_participants']} (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
+					<span class='no-mobile'>{$course['max_participants']}</span>
+					<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
 					<span><a href='./course/{$course['id']}'>Details</a></span>
 				</span>";
 		}
