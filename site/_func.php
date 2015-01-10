@@ -245,11 +245,12 @@ function addUser($username, $password, $role) {
 
 	$result = $db->query("INSERT INTO user (username, password) 
 												VALUES ('$username', '$password');");
+
+	$user_id = $db->insert_id;
+
 	if($result)
 		$result = $db->query("INSERT INTO user_has_role (user_id, role_id) 
-													VALUES ((SELECT id 
-																	 FROM user 
-																	 WHERE username='$username'), $role);");
+													VALUES ($user_id, $role);");
 
 	$db->close();
 
@@ -281,6 +282,40 @@ function getRoles() {
 /*****************************************************************************/
 /* Registrants functionality																								 */
 /*****************************************************************************/
+
+/**
+ * Adds a registrant to the database.
+ *
+ * @param int $course_id
+ * @param string $firstname
+ * @param string $lastname
+ * @param string $city
+ * @param date $birthday
+ * @param string $email
+ * @return boolean true in case it was successful
+ */
+function addRegistrant($course_id, $firstname, $lastname, $city, $birthday, $email) {
+
+	$db = createConnection();
+
+	$firstname = $db->real_escape_string($firstname);
+	$lastname = $db->real_escape_string($lastname);
+	$city = $db->real_escape_string($city);
+	$email = $db->real_escape_string($email);
+
+	$date = $birthday->format('Y-m-d');
+
+	$result = $db->query("INSERT INTO registrant (first_name, last_name, city, birthday, email) 
+												VALUES ('$firstname', '$lastname', '$city', '$date', '$email');");
+	$registrant_id = $db->insert_id;
+
+	if($result) 
+		$result = $db->query("INSERT INTO course_has_registrant (course_id, registrant_id, confirmed) 
+													VALUES ($course_id, $registrant_id, 1);");
+	$db->close();
+
+	return $result;
+}
 
 /**
  * Finds and returns all registrants.
