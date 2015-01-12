@@ -39,12 +39,23 @@ module cityrock {
           alert('Bitte nur ganzzahlige Werte für die Kursdauer angeben!');
         }
         else {
-          // check if all fields are filled with content
-          empty = $(form).find("input").filter(function() {
-            return this.value === "";
+          // check zip code format
+          empty = $(form).find(".zip").filter(function() {
+            var zipCode = this.value;
+            return (Number(zipCode)===zipCode && zipCode%1===0);
           });
+
           if(empty.length) {
-            alert('Bitte alle Felder ausfüllen!');
+            alert('Bitte nur gültige Postleitzahlen eingeben!');
+          }
+          else {
+            // check if all fields are filled with content
+            empty = $(form).find("input").filter(function () {
+              return this.value === "";
+            });
+            if (empty.length) {
+              alert('Bitte alle Felder ausfüllen!');
+            }
           }
         }
       }

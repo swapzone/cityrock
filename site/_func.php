@@ -289,24 +289,28 @@ function getRoles() {
  * @param int $course_id
  * @param string $firstname
  * @param string $lastname
+ * @param string $street
+ * @param string $zip
  * @param string $city
  * @param date $birthday
  * @param string $email
  * @return boolean true in case it was successful
  */
-function addRegistrant($course_id, $firstname, $lastname, $city, $birthday, $email) {
+function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, $birthday, $email) {
 
 	$db = createConnection();
 
 	$firstname = $db->real_escape_string($firstname);
 	$lastname = $db->real_escape_string($lastname);
+	$street = $db->real_escape_string($street);
+	$zip = $db->real_escape_string($zip);
 	$city = $db->real_escape_string($city);
 	$email = $db->real_escape_string($email);
 
 	$date = $birthday->format('Y-m-d');
 
-	$result = $db->query("INSERT INTO registrant (first_name, last_name, city, birthday, email) 
-												VALUES ('$firstname', '$lastname', '$city', '$date', '$email');");
+	$result = $db->query("INSERT INTO registrant (first_name, last_name, street, zip, city, birthday, email) 
+												VALUES ('$firstname', '$lastname', '$street', '$zip', '$city', '$date', '$email');");
 	$registrant_id = $db->insert_id;
 
 	if($result) 
@@ -391,6 +395,8 @@ function createConnection() {
 	if ($db->connect_error) {
 		die("Connection failed: " . $db->connect_error);
 	} 
+
+	$db->set_charset("utf8");
 
 	return $db;
 }

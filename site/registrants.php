@@ -12,7 +12,8 @@ if(isset($_POST['new'])) {
 		$birthday = DateTime::createFromFormat('d.m.Y', $_POST['birthday']);
 
 		$success = addRegistrant($_GET['id'], $_POST['firstname'], $_POST['lastname'], 
-														 $_POST['city'], $birthday, $_POST['email']);
+														 $_POST['street'], $_POST['zip'], $_POST['city'], 
+														 $birthday, $_POST['email']);
 	}
 
 	$title = "Neuer Teilnehmer";
@@ -46,13 +47,20 @@ else {
 
 			foreach($registrants as $registrant) {
 				$birthday = date('j.n.Y',strtotime($registrant['birthday']));
-				$text = "{$registrant['first_name']} {$registrant['last_name']}";
+
+				$firstname = utf8_decode($registrant['first_name']);
+				$lastname = utf8_decode($registrant['last_name']);
+
+				$text = "{$firstname} {$lastname}";
 				$text .= " ($birthday)";
 				$pdf->SetFont('Arial','B',12);
 				$pdf->Cell(0,5,$text,0,0,'L');
 				$pdf->ln();
+				
+				$street = utf8_decode($registrant['street']);
+				$city = utf8_decode($registrant['city']);
 
-				$text = "{$registrant['street']}, {$registrant['zip']} {$registrant['city']}";
+				$text = "{$street}, {$registrant['zip']} {$city}";
 				$pdf->SetFont('Arial','',12);
 				$pdf->Cell(0,5,$text,0,0,'L');
 				$pdf->ln();
@@ -77,6 +85,10 @@ else {
 					<input type='text' placeholder='Max' name='firstname'>
 					<label for='lastname'>Nachname</label>
 					<input type='text' placeholder='Mustermann' name='lastname'>
+					<label for='street'>Straße und Hausnummer</label>
+					<input type='text' placeholder='Musterstraße 2' name='street'>
+					<label for='zip'>Postleitzahl</label>
+					<input type='text' placeholder='123456' name='zip' class='zip'>
 					<label for='city'>Ort</label>
 					<input type='text' placeholder='Musterstadt' name='city'>
 					<label for='birthday'>Geburtsdatum</label>
