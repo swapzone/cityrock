@@ -450,7 +450,7 @@ function deleteItem($item_id, $table_name) {
  * @return boolean true if $a is later than $b
  */
 function courseSort($a, $b) {
-	return $a->date > $b->date;
+	return $a['date'] > $b['date'];
 }
 
 /**

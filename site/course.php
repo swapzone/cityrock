@@ -203,8 +203,8 @@ else {
 			<div class='course-filter' id='filter'>
 				<span class='all active'>Alle</span>";
 
-		foreach($course_types as $key=>$title) {
-			$content .= "<span>{$title}</span>";
+		foreach($course_types as $key=>$type) {
+			$content .= "<span>{$type}</span>";
 		}
 
 		$content .= "
