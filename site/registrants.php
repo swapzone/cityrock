@@ -34,25 +34,33 @@ else {
 			/***********************************************************************/
 			/* Print registrant list																						   */
 			/***********************************************************************/
-
 			$title = utf8_decode("Teilnehmerliste für den");
 			$title .= " " . $course['dates'][0]['date']->format('j.n.Y');
 
 			$pdf = new FPDF();
-			$pdf->SetMargins(25, 20);
+			$pdf->SetMargins(15, 20);
 
 			$pdf->AddPage();
 			$pdf->SetFont('Arial','B',16);
 			$pdf->Cell(0,18,$title,0,1,'L');
-			$pdf->SetFont('Arial','',14);
 
 			foreach($registrants as $registrant) {
 				$birthday = date('j.n.Y',strtotime($registrant['birthday']));
 				$text = "{$registrant['first_name']} {$registrant['last_name']}";
 				$text .= " ($birthday)";
-				$text .= " aus {$registrant['city']}";
+				$pdf->SetFont('Arial','B',12);
+				$pdf->Cell(0,5,$text,0,0,'L');
+				$pdf->ln();
 
-				$pdf->Cell(0,10,$text,0,0,'L');
+				$text = "{$registrant['street']}, {$registrant['zip']} {$registrant['city']}";
+				$pdf->SetFont('Arial','',12);
+				$pdf->Cell(0,5,$text,0,0,'L');
+				$pdf->ln();
+
+				$text = "{$registrant['email']}, {$registrant['phone']}";
+				$pdf->Cell(0,5,$text,0,0,'L');
+				$pdf->ln();
+
 				$pdf->ln();
 			}
 
@@ -75,8 +83,8 @@ else {
 					<input type='text' placeholder='01.01.1900' name='birthday' class='date'>
 					<label for='email'>Email Adresse</label>
 					<input type='text' placeholder='max@mustermann.de' name='email' class='email'>
-					<input type='hidden' value='true' name='new'>			
-					<a href='./' class='button error'>Abbrechen</a>	
+					<input type='hidden' value='true' name='new'>
+					<a href='./' class='button error'>Abbrechen</a>
 					<input type='submit' value='Erstellen' class='button'>
 				</form>";
 

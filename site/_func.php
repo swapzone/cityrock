@@ -326,7 +326,7 @@ function getRegistrants($course_id) {
 	
 	$db = createConnection();
 
-	$result = $db->query("SELECT id, first_name, last_name, birthday, city 
+	$result = $db->query("SELECT id, first_name, last_name, street, zip, city, birthday, email, phone 
 												FROM registrant AS a
 												WHERE EXISTS (
 													SELECT 1
