@@ -481,7 +481,7 @@ function getMonth($date) {
 function getEndTime($date, $duration) {
 
 	$date->add(new DateInterval('PT'. $duration .'M'));
-	return $date->format('h:i');
+	return $date->format('H:i');
 }
 
 /**

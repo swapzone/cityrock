@@ -2,8 +2,13 @@
 // add session for user authentication
 session_start();
 
-if(isset($_GET['logout']))
-	unset($_SESSION['authenticated']);
+if(isset($_GET['logout'])) {
+	// remove all session variables
+	session_unset(); 
+
+	// destroy the session 
+	session_destroy(); 
+}
 
 // check if user is authenticated
 if(!$_SESSION['authenticated']) {
@@ -11,6 +16,7 @@ if(!$_SESSION['authenticated']) {
 	// check if user sent the login form
 	if(isset($_POST['username']) && isset($_POST['password'])) {
 		if(login($_POST['username'], $_POST['password'])) {
+			session_regenerate_id(); // avoid session fixation exploit
 			$_SESSION['authenticated'] = true;
 			$profile = "<a href='./index.php?logout'>Logout</a>";
 		}
