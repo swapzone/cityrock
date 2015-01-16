@@ -292,7 +292,7 @@ function getRoles() {
  * @param string $street
  * @param string $zip
  * @param string $city
- * @param date $birthday
+ * @param string $birthday
  * @param string $email
  * @return boolean true in case it was successful
  */
@@ -307,10 +307,8 @@ function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, 
 	$city = $db->real_escape_string($city);
 	$email = $db->real_escape_string($email);
 
-	$date = $birthday->format('Y-m-d');
-
 	$result = $db->query("INSERT INTO registrant (first_name, last_name, street, zip, city, birthday, email) 
-												VALUES ('$firstname', '$lastname', '$street', '$zip', '$city', '$date', '$email');");
+												VALUES ('$firstname', '$lastname', '$street', '$zip', '$city', '$birthday', '$email');");
 	$registrant_id = $db->insert_id;
 
 	if($result) 

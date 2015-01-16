@@ -8,13 +8,10 @@ if(isset($_POST['new'])) {
 	/***********************************************************************/
 	$success = false;
 
-	if(preg_match("/\d{2}.\d{2}.\d{4}/", $_POST['birthday'])) {
-		$birthday = DateTime::createFromFormat('d.m.Y', $_POST['birthday']);
-
+	if(preg_match("/\d{2}.\d{2}.\d{4}/", $_POST['birthday'])) 
 		$success = addRegistrant($_GET['id'], $_POST['firstname'], $_POST['lastname'], 
 														 $_POST['street'], $_POST['zip'], $_POST['city'], 
-														 $birthday, $_POST['email']);
-	}
+														 $_POST['birthday'], $_POST['email']);
 
 	$title = "Neuer Teilnehmer";
 	
@@ -46,13 +43,11 @@ else {
 			$pdf->Cell(0,18,$title,0,1,'L');
 
 			foreach($registrants as $registrant) {
-				$birthday = date('j.n.Y',strtotime($registrant['birthday']));
-
 				$firstname = utf8_decode($registrant['first_name']);
 				$lastname = utf8_decode($registrant['last_name']);
 
 				$text = "{$firstname} {$lastname}";
-				$text .= " ($birthday)";
+				$text .= " ({$registrant['birthday']})";
 				$pdf->SetFont('Arial','B',12);
 				$pdf->Cell(0,5,$text,0,0,'L');
 				$pdf->ln();
@@ -121,12 +116,11 @@ else {
 				</span>";
 
 		foreach($registrants as $registrant) {
-			$birthday = date('j.n.Y',strtotime($registrant['birthday']));
 
 			$content .= "
 				<span class='list-item'>
 					<span>{$registrant['first_name']} {$registrant['last_name']}</span>
-					<span>$birthday</span>
+					<span>{$registrant['birthday']}</span>
 					<span class='no-mobile'>{$registrant['city']}</span>
 					<span class='no-mobile registrant-move'><a href='#' class='move' id='{$registrant['id']}'>verschieben</a></span>
 					<span>
