@@ -14,6 +14,11 @@ ErrorDocument 404 http://localhost/cityrock/error.php
   RewriteEngine On
   AddDefaultCharset UTF-8
 
+	# Cross domain access # NOT WORKING
+	#Header add Access-Control-Allow-Origin "*"
+	#Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+	#Header add Access-Control-Allow-Methods "PUT, GET, POST, OPTIONS"
+
   # -----------------------------------------------------------------------------------------------
   # Access Restrictions: Keep web users out of dirs that begin with a period
   # -----------------------------------------------------------------------------------------------
@@ -31,8 +36,8 @@ ErrorDocument 404 http://localhost/cityrock/error.php
   # Remove trailing slashes from URL.
   # -----------------------------------------------------------------------------------------------
 
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.*)\/(\?.*)?$ /cityrock/$1 [L,R=301]
+	#RewriteCond %{REQUEST_FILENAME} !-d
+	#RewriteRule ^(.*)\/(\?.*)?$ /cityrock/$1 [L,R=301]
 
   # -----------------------------------------------------------------------------------------------
   # The Apache rewrite engine is mainly used to turn dynamic url’s such as 
@@ -46,6 +51,13 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 	RewriteRule ^course/([^/.]+)/([^/.]+)/?$ course.php?id=$1&action=$2 [L]
 
 	RewriteRule ^user/([^/.]+)/?$ user.php?id=$1 [L]
+
+  # -----------------------------------------------------------------------------------------------
+  # Rewrite rules for api requests
+  # -----------------------------------------------------------------------------------------------
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^api/(.*)/?$ index.php [QSA,L] 
 
   # -----------------------------------------------------------------------------------------------
   # Add .php extension from a PHP file for example yoursite.com/wallpaper.php to 

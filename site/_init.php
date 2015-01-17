@@ -14,5 +14,4 @@ $navigation = renderNavigation();
 
 $content_class = null;
 $hide_navigation = false;
-
 ?>
