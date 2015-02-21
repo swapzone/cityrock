@@ -8,8 +8,6 @@ if(isset($_GET['done'])) {
 	// the contact form was sent
 	$show_form ="display: none;";
 	$show_feedback ="";
-	
-	// check success message
 }
 else {
 	//the contact form was not sent
@@ -94,16 +92,6 @@ include ("menu.php");
 </div>
 <div id="content">
  <span class="ueber">Anmeldung zu den Kletterkursen</span><br />
- 	
-  <!--
-  <br />
-  Aus administrativen Gründen müssen die Kletterkurse als Freizeiten beim Freizeitenreferat angemeldet werden.<br />
-  <br />
-  <br />
-  <b>Online-Anmeldung </b><br />
-  Hier gelangen Sie zur <a href="https://freizeiten.ejus-online.de/index.php?id=13">Online-Anmeldung</a> für die Kletterkurse.<br />
-  <br />
-  -->
   <br />
   <b>Online-Anmeldung</b><br />
 	<div id="form" style="<?php echo $show_form; ?>">
@@ -148,13 +136,13 @@ include ("menu.php");
 		<br />
 	  Schriftliche Anmeldung</b><br />
 	  	<p>
-		Laden Sie sich alternativ zur Online-Anmeldung das Anmeldeformular als <a href="anhang/anmeldeformular.pdf">PDF-Datei (70 KB)</a> oder als <a href="anhang/anmeldeformular.doc">Word-Dokument (280 KB)</a> herunter. Aus rechtlichen Gr&uuml;nden sind dem Anmeldeformular die Reisebedingungen und allgemeine Hinweise beigef&uuml;gt.<br />
-		Bitte drucken und füllen Sie die Formulare aus. Beachten Sie dabei die jeweiligen Veranstaltungsnummern:<br />
+		Lade dir alternativ zur Online-Anmeldung das Anmeldeformular als <a href="anhang/anmeldeformular.pdf">PDF-Datei (70 KB)</a> oder als <a href="anhang/anmeldeformular.doc">Word-Dokument (280 KB)</a> herunter. Aus rechtlichen Gr&uuml;nden sind dem Anmeldeformular die Reisebedingungen und allgemeine Hinweise beigef&uuml;gt.<br />
+		Bitte drucke und fülle die Formulare aus. Beachte dabei die jeweiligen Veranstaltungsnummern:<br />
 		<br />
 		Kletterschein Toprope: <b>13070</b><br />
 		Aufbaukurs Vorstieg: <b>13080</b>  <br />
 		<br />
-		Schicken Sie die ausgefüllten Formulare per Post oder Fax an:<br />
+		Schicke die ausgefüllten Formulare per Post oder Fax an:<br />
 		<br />
 		Evangelische Jugend Stuttgart - Haus 44<br />
 		Kletteranlage [cityrock]®<br />
@@ -172,7 +160,7 @@ include ("menu.php");
     </div>
     
 <div id="feedback" style="<?php echo $show_feedback; ?>">
-		Vielen Dank für Ihre Anmeldung. In Kürze werden Sie eine Email erhalten, in der Sie die Teilnahme nochmals bescheinigen müssen.	
+		Vielen Dank für Deine Anmeldung. In Kürze wirst du eine Email erhalten, in der Du die Teilnahme nochmals bestätigen musst.	
 	</div>
 </div>
 <table border="0" cellspacing="0" cellpadding="0">

@@ -48,7 +48,7 @@ else {
 			<input type='text' value='{$config['system']['deadline']}' name='deadline'>
 			<label for='administration'>Wieviel Tage vor Kursbeginn soll die Teilnehmerliste an die Verwaltung geschickt werden?</label> 
 			<input type='text' value='{$config['system']['administration']}' name='administration'>
-			<label for='administration-list'>An welche Email-Adressen soll die Liste geschickt werden? <br />Bitte eine Adresse pro Zeile angeben.</label>
+			<label for='administration-list'>An welche Email-Adressen soll die Liste geschickt werden? <br />Bitte die Adressen mit // voneinander trennen.</label>
 			<textarea name='administration-list' rows='6'>{$config['system']['administration-list']}</textarea>
 			<input type='hidden' name='save' value='1'>
 			<p>Keine weiteren Einstellungen vorhanden.</p>

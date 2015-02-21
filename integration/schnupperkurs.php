@@ -74,7 +74,7 @@ $deadlineLimit = $config['system']['deadline'];
 					$modString = '-'.$deadlineLimit.' days';
 					$deadline->modify($modString);
 
-					$day = $date->format('d.');;
+					$day = $date->format('d.');
 					$month = getMonth($date);
 
 					$color = "#1975FF";

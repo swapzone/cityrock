@@ -91,103 +91,6 @@ function getCourse($course_id) {
 	return $result;
 }
 
-/**
- * Finds all course types.
- *
- * @return array of course types with $key='id' and $value='title'
- */
-function getCourseTypes() {
-
-	$db = createConnection();
-	
-	$result = $db->query("SELECT id, title FROM course_type;");
-
-	$course_type_array = array();
-	if ($result->num_rows > 0) {
-		while($row = $result->fetch_assoc()) {
-	   	$course_type_array[$row['id']] = $row['title'];
-		}
-	} 
-
-	$db->close();
-
-	return $course_type_array;
-}
-
-/** 
- * Inserts a course with the given parameters into the database.
- *
- * @param int $course_type
- * @param int $num_registrants
- * @param int $num_staff
- * @param array $dates array of dates
- * @return boolean true in case it was successful
- */
-function addCourse($course_type, $num_registrants, $num_staff, $dates) {
-
-	$db = createConnection();
-	
-	$result = $db->query("INSERT INTO course (course_type_id, max_participants, min_staff) 
-												VALUES ($course_type, $num_registrants, $num_staff);");
-	$course_id = $db->insert_id;
-
-	if($result) {
-		foreach($dates as $date) {
-
-			$datetime_string = $date['date'] . " " . $date['time'];
-			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
-			$mysql_time = $datetime->format('Y-m-d H:i:s');
-
-			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-														VALUES ('$mysql_time', {$date['duration']}, $course_id);");
-		}
-	}
-	
-	$db->close();
-
-	return $result;
-}
-
-/** 
- * Updates a course with the given id and parameters.
- *
- * @param int $id
- * @param int $course_type
- * @param int $num_registrants
- * @param int $num_staff
- * @param array $dates array of dates
- * @return boolean true in case it was successful
- */
-function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
-
-	$db = createConnection();
-	
-	$db->query("UPDATE course 
-							SET course_type_id=$course_type, 
-									max_participants=$num_registrants,
-									min_staff=$num_staff 
-							WHERE id=$id;");
-
-	$result = $db->query("DELETE FROM date 
-												WHERE course_id=$id;");
-
-	if($result) {
-		foreach($dates as $date) {
-
-			$datetime_string = $date['date'] . " " . $date['time'];
-			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
-			$mysql_time = $datetime->format('Y-m-d H:i:s');
-
-			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-														VALUES ('$mysql_time', {$date['duration']}, $id);");
-		}
-	}
-	
-	$db->close();
-
-	return $result;
-}
-
 /*****************************************************************************/
 /* Registrants functionality																								 */
 /*****************************************************************************/
@@ -337,23 +240,6 @@ function createConnection() {
 /*****************************************************************************/
 
 /**
- *	Deletes any item with the given item id in the given table.
- *
- * @param int $item_id
- * @param string $table_name
- * @return boolean true in case it was successful
- */
-function deleteItem($item_id, $table_name) {
-	
-	$db = createConnection();
-
-	$result = $db->query("DELETE FROM {$table_name} WHERE id={$item_id};");
-	$db->close();
-
-	return $result;
-}
-
-/**
  * Sort function for course arrays.
  *
  * @param array $a
@@ -383,9 +269,9 @@ function getMonth($date) {
  * @param date $duration
  * @return string
  */
-function getEndTime($date, $duration) {
+function getEndTime($date, $duration, $minutes = false) {
 
 	$date->add(new DateInterval('PT'. $duration .'M'));
-	return $date->format('H');
+	return ($minutes) ? $date->format('H:i') : $date->format('H');
 }
 ?>
