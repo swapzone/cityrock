@@ -1,6 +1,4 @@
 # CityRock Kursverwaltung
-=========================
-
 Die Kletterkursverwaltung für den CityRock Stuttgart.
 
 ## Inhaltsverzeichnis
