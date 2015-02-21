@@ -176,8 +176,9 @@ function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, 
 }
 
 /**
- * Confirm registrant.
+ * Confirm registrant with the given confirmation code.
  *
+ * @param string $confirmation_code the confirmation code that is created on registration
  */
 function confirmRegistrant($confirmation_code) {
 
