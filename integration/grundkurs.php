@@ -23,14 +23,38 @@ $deadlineLimit = $config['system']['deadline'];
 <link href="alles.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
-#kursaus {
-	position:absolute;
-	width:124px;
-	height:31px;
-	z-index:6;
-	left: 24px;
-	top: 924px;
-}
+
+	.course-table {
+		display: table;
+	}
+	
+	.table-row {
+		display: table-row;
+	}
+
+	.table-column {
+		display: table-cell;
+		padding-right: 10px;
+	}
+
+	.table-column.date {
+		font-weight: bold;
+	}
+
+	.booking-link {
+		display: block;
+		margin-bottom: 18px;
+		margin-top: 2px;
+	}
+
+	#kursaus {
+		position:absolute;
+		width:124px;
+		height:31px;
+		z-index:6;
+		left: 24px;
+		top: 924px;
+	}
 -->
 </style>
 </head>
@@ -87,7 +111,7 @@ $deadlineLimit = $config['system']['deadline'];
 
 			<td width="49%" valign="top"><strong>Termine <?php echo $year; ?></strong>:<br />
 				<br />	
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<div>
 				<?php
 					foreach($courses as $course) {
 
@@ -102,22 +126,23 @@ $deadlineLimit = $config['system']['deadline'];
 							$deadline->modify($modString);
 
 							$datesString = "";
-							$tempMonth = "";
-	
 							foreach($course['dates'] as $date) {
+								$duration = $date['duration'];
 								$date = $date['date'];
-									
-								if($tempMonth != "" && $tempMonth != getMonth($date)) {
-									$datesString .= intval($date->format('d')) . '. ' . getMonth($date) . '/';
-								}
-								else {
-									$datesString .= intval($date->format('d')) . './';
-								}
-								$tempMonth = getMonth($date);
-							}	
+						
+								$day = $date->format('d.');
+								$month = getMonth($date);
 
-							$datesString = rtrim($datesString, "/");
-							$datesString .= " {$tempMonth}";
+								$datesString .= "
+									<span class='table-row'>
+										<span class='table-column date'>
+											$day $month
+										</span>
+										<span class='table-column time'>
+											{$date->format('H')}-" . getEndTime($date, $duration) . " Uhr
+										</span>
+									</span>";
+							}
 						
 							$color = "#1975FF";
 							$text = "&gt; Online-Anmeldung";
@@ -140,14 +165,14 @@ $deadlineLimit = $config['system']['deadline'];
 							}							
 							
 							echo "
-								<tr>
-									<td>{$datesString}</td>
-									<td>$link</td>
-								</tr>";
+								<span class='course-table'>
+									{$datesString}
+								</span>
+								<span class='booking-link'>{$link}</span>";
 						}
 					}
 				?>
-				</table>
+				</div>
 			</td>			
 		</tr>
 			

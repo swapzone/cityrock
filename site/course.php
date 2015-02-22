@@ -222,24 +222,29 @@ else {
 		
 		$month = null;
 		foreach($courses as $course) {
-			$registrants = getRegistrants($course['id']);
-			$num_registrants = count($registrants);
 
-			if(getMonth($course['date']) != $month) {
-				$month = getMonth($course['date']);
-				$content .= "<span class='course-list-month'>{$month}</span>";
+			// check if course was in the past
+			if($course['date'] > new DateTime()) {
+
+				$registrants = getRegistrants($course['id']);
+				$num_registrants = count($registrants);
+
+				if(getMonth($course['date']) != $month) {
+					$month = getMonth($course['date']);
+					$content .= "<span class='course-list-month'>{$month}</span>";
+				}
+
+				$item_class = strtolower($course_types[$course['course_type_id']]);			
+
+				$content .= "
+					<span class='list-item $item_class'>
+						<span>{$course_types[$course['course_type_id']]}</span>
+						<span>{$course['date']->format('d.m.Y')}</span>
+						<span class='no-mobile'>{$course['max_participants']}</span>
+						<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
+						<span><a href='./course/{$course['id']}'>Details</a></span>
+					</span>";
 			}
-
-			$item_class = strtolower($course_types[$course['course_type_id']]);			
-
-			$content .= "
-				<span class='list-item $item_class'>
-					<span>{$course_types[$course['course_type_id']]}</span>
-					<span>{$course['date']->format('d.m.Y')}</span>
-					<span class='no-mobile'>{$course['max_participants']}</span>
-					<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
-					<span><a href='./course/{$course['id']}'>Details</a></span>
-				</span>";
 		}
 
 		$content .= "

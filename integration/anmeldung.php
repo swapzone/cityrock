@@ -31,7 +31,7 @@ else {
 }
 
 #buttons {
-	margin-left: 118px;
+	/*margin-left: 118px;*/
 	margin-top: 10px;
 }
 
@@ -57,7 +57,11 @@ else {
 </style>
 <script type="text/javascript">
 	function validateForm() {
-		
+		if(document.forms["anmeldung"]["conditions"].checked == false ) {
+			alert(unescape("Sie m%FCssen die Teilnahmebedingungen akzeptieren, um sich anmelden zu können."));
+	  		return false;
+		}
+
 		if(document.forms["anmeldung"]["name"].value == "" || document.forms["anmeldung"]["firstname"].value == "" || 
 			document.forms["anmeldung"]["street"].value == "" || document.forms["anmeldung"]["postal"].value == "" || 
 			document.forms["anmeldung"]["city"].value == "" || document.forms["anmeldung"]["birthday"].value == "" || 
@@ -92,6 +96,16 @@ include ("menu.php");
 </div>
 <div id="content">
  <span class="ueber">Anmeldung zu den Kletterkursen</span><br />
+ 	
+  <!--
+  <br />
+  Aus administrativen Gründen müssen die Kletterkurse als Freizeiten beim Freizeitenreferat angemeldet werden.<br />
+  <br />
+  <br />
+  <b>Online-Anmeldung </b><br />
+  Hier gelangen Sie zur <a href="https://freizeiten.ejus-online.de/index.php?id=13">Online-Anmeldung</a> für die Kletterkurse.<br />
+  <br />
+  -->
   <br />
   <b>Online-Anmeldung</b><br />
 	<div id="form" style="<?php echo $show_form; ?>">
@@ -116,6 +130,9 @@ include ("menu.php");
 			<input type="text" id="email" name="email" size="45" class="right" />
 			<label for="phone" class="left">Telefon:</label>
 			<input type="text" id="phone" name="phone" size="45" class="right" />
+			<br />
+			<input type="checkbox" name="conditions" value="conditions">
+				<span>Ich habe die <a href="reisebedingungen.php">Teilnahmebedingungen</a> gelesen und akzeptiere diese.</span>
 			<input type="hidden" name="course" value="<?php echo $_GET['id']; ?>" />
 			
 			<div id="buttons">

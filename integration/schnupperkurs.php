@@ -23,7 +23,16 @@ $deadlineLimit = $config['system']['deadline'];
 <link href="alles.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
-.Stil1 {font-weight: bold}
+
+	.course-row td:first-child {
+		padding-right: 10px;		
+	}
+
+	.course-row-date {
+		font-weight: bold;
+	}
+
+	.Stil1 {font-weight: bold}
 -->
 </style>
 </head>
@@ -74,7 +83,7 @@ $deadlineLimit = $config['system']['deadline'];
 					$modString = '-'.$deadlineLimit.' days';
 					$deadline->modify($modString);
 
-					$day = $date->format('d.');
+					$day = $date->format('d.');;
 					$month = getMonth($date);
 
 					$color = "#1975FF";
@@ -98,8 +107,8 @@ $deadlineLimit = $config['system']['deadline'];
 					}							
 
 					echo "
-						<tr>
-							<td>{$day} {$month}, {$date->format('H')}-" . getEndTime($date, $duration) . " Uhr</td>
+						<tr class='course-row'>
+							<td><span class='course-row-date'>{$day} {$month}</span>, {$date->format('H')}-" . getEndTime($date, $duration) . " Uhr</td>
 							<td>{$link}</td>
 						</tr>";
 				}
