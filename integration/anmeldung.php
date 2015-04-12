@@ -57,15 +57,19 @@ else {
 </style>
 <script type="text/javascript">
 	function validateForm() {
+
+		/*
 		if(document.forms["anmeldung"]["conditions"].checked == false ) {
 			alert(unescape("Sie m%FCssen die Teilnahmebedingungen akzeptieren, um sich anmelden zu können."));
 	  		return false;
-		}
+		}*/
 
 		if(document.forms["anmeldung"]["name"].value == "" || document.forms["anmeldung"]["firstname"].value == "" || 
 			document.forms["anmeldung"]["street"].value == "" || document.forms["anmeldung"]["postal"].value == "" || 
 			document.forms["anmeldung"]["city"].value == "" || document.forms["anmeldung"]["birthday"].value == "" || 
-			document.forms["anmeldung"]["email"].value == "" || document.forms["anmeldung"]["id"].value == "" ) {
+			document.forms["anmeldung"]["email"].value == "" || document.forms["anmeldung"]["phone"].value == "" ||
+			document.forms["anmeldung"]["id"].value == "" ) {
+
 				alert(unescape("Bitte alle Felder ausf%FCllen%21"));
 		  		return false;
 			}
@@ -95,19 +99,9 @@ include ("menu.php");
  ?>
 </div>
 <div id="content">
- <span class="ueber">Anmeldung zu den Kletterkursen</span><br />
- 	
-  <!--
-  <br />
-  Aus administrativen Gründen müssen die Kletterkurse als Freizeiten beim Freizeitenreferat angemeldet werden.<br />
-  <br />
-  <br />
-  <b>Online-Anmeldung </b><br />
-  Hier gelangen Sie zur <a href="https://freizeiten.ejus-online.de/index.php?id=13">Online-Anmeldung</a> für die Kletterkurse.<br />
-  <br />
-  -->
-  <br />
-  <b>Online-Anmeldung</b><br />
+	<span class="ueber">Anmeldung zu den Kletterkursen</span><br />
+	<br />
+  	<b>Online-Anmeldung</b><br />
 	<div id="form" style="<?php echo $show_form; ?>">
 	<form action="./feedback.php" name="anmeldung" target="_self" method="post" onsubmit="return validateForm();" accept-charset="UTF-8">
 		<fieldset>
@@ -131,8 +125,9 @@ include ("menu.php");
 			<label for="phone" class="left">Telefon:</label>
 			<input type="text" id="phone" name="phone" size="45" class="right" />
 			<br />
+			<!--
 			<input type="checkbox" name="conditions" value="conditions">
-				<span>Ich habe die <a href="reisebedingungen.php">Teilnahmebedingungen</a> gelesen und akzeptiere diese.</span>
+				<span>Ich habe die <a href="reisebedingungen.php">Teilnahmebedingungen</a> gelesen und akzeptiere diese.</span>-->
 			<input type="hidden" name="course" value="<?php echo $_GET['id']; ?>" />
 			
 			<div id="buttons">
@@ -151,29 +146,8 @@ include ("menu.php");
 	<div id="alternative" style="<?php echo $show_form; ?>">
 		<b><br />
 		<br />
-	  Schriftliche Anmeldung</b><br />
-	  	<p>
-		Lade dir alternativ zur Online-Anmeldung das Anmeldeformular als <a href="anhang/anmeldeformular.pdf">PDF-Datei (70 KB)</a> oder als <a href="anhang/anmeldeformular.doc">Word-Dokument (280 KB)</a> herunter. Aus rechtlichen Gr&uuml;nden sind dem Anmeldeformular die Reisebedingungen und allgemeine Hinweise beigef&uuml;gt.<br />
-		Bitte drucke und fülle die Formulare aus. Beachte dabei die jeweiligen Veranstaltungsnummern:<br />
-		<br />
-		Kletterschein Toprope: <b>13070</b><br />
-		Aufbaukurs Vorstieg: <b>13080</b>  <br />
-		<br />
-		Schicke die ausgefüllten Formulare per Post oder Fax an:<br />
-		<br />
-		Evangelische Jugend Stuttgart - Haus 44<br />
-		Kletteranlage [cityrock]®<br />
-		Fritz - Elsas - Strasse 44<br />
-		70174 Stuttgart<br />
-	    <br />
-	    <br />
-	    <b>Noch Fragen?</b> Wir helfen gerne weiter!<br />
-				    <br />
-	    info@cityrock.de <br />
-	    Tel: 0711 / 18771 - 31<br />
-			Fax: 0711 / 18771 - 99<br />
-	    <br />
-	  </p>
+	  </b><br />
+      <br />
     </div>
     
 <div id="feedback" style="<?php echo $show_feedback; ?>">

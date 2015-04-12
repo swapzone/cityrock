@@ -135,9 +135,10 @@ function getRegistrants($course_id) {
  * @param string $city
  * @param string $birthday
  * @param string $email
+ * @param string $phone
  * @return boolean true in case it was successful
  */
-function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, $birthday, $email) {
+function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, $birthday, $email, $phone) {
 
 	$db = createConnection();
 
@@ -147,9 +148,10 @@ function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, 
 	$zip = $db->real_escape_string($zip);
 	$city = $db->real_escape_string($city);
 	$email = $db->real_escape_string($email);
+	$phone = $db->real_escape_string($phone);
 
-	$result = $db->query("INSERT INTO registrant (first_name, last_name, street, zip, city, birthday, email) 
-												VALUES ('$firstname', '$lastname', '$street', '$zip', '$city', '$birthday', '$email');");
+	$result = $db->query("INSERT INTO registrant (first_name, last_name, street, zip, city, birthday, email, phone) 
+												VALUES ('$firstname', '$lastname', '$street', '$zip', '$city', '$birthday', '$email', '$phone');");
 	$registrant_id = $db->insert_id;
 
 	// enter new registrant into course-registrant table

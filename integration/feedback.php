@@ -18,12 +18,12 @@
 	$birthday = $_POST['birthday'];
 	$phone = $_POST['phone'];
 
-	if($courseId == "" || $email == "" || $lastname == "" || $firstname == "" || $street == "" || $postal == "" || $city == "" || $birthday == "") {
+	if($courseId == "" || $email == "" || $lastname == "" || $firstname == "" || $street == "" || $postal == "" || $city == "" || $birthday == "" || $phone == "") {
 		echo "<script language=javascript>window.location = 'http://www.cityrock.de/anmeldung.php';</script>";
 	}
 	else {
 		// add registrant to list and retrieve confirmation code
-		$confirmationCode = addRegistrant($courseId, $firstname, $lastname, $street, $postal, $city, $birthday, $email);
+		$confirmationCode = addRegistrant($courseId, $firstname, $lastname, $street, $postal, $city, $birthday, $email, $phone);
 
 		if(!$confirmationCode)
 			echo "Leider ist etwas schief gegangen. Bitte probiere es später nochmal.";
