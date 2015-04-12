@@ -15,7 +15,7 @@
 	
 	$result = $db->query("SELECT start, course_id
 												FROM date 
-												ORDER BY start;");
+												ORDER BY course_id, start;"); 
 	
 	$reminderArray = array();
 	$administrationArray = array();
@@ -56,11 +56,11 @@
 
 	if(count($reminderArray)) {
 
-		// send email reminder to participants
-		$subject = $config['email']['subject-reminder'];
-		$body = $config['email']['body-reminder'];
-
 		foreach($reminderArray as $courseId) {
+
+			// send email reminder to participants
+			$subject = $config['email']['subject-reminder'];
+			$body = $config['email']['body-reminder'];
 
 			// retrieve dates of course and place into email body
 			$courseData = getCourse($courseId);
