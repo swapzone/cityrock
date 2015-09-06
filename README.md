@@ -11,6 +11,7 @@ Die Kletterkursverwaltung für den CityRock Stuttgart.
 * [FPDF Printer](http://www.fpdf.org/) class for PHP
 * [Config_Lite](https://github.com/pear/Config_Lite/blob/master/docs/examples)
 * [Susy](http://susy.readthedocs.org/en/latest/)
+* [FullCalendar](http://fullcalendar.io/)
 
 ## Dokumentation
 
@@ -21,6 +22,9 @@ Die Applikation besteht im Kern aus einem PHP Backend, das durch Javascript im F
 Die Styling Dateien befinden sich in `$ROOT/styles` und werden durch Gulp in ein finales CSS kompiliert. Die TypeScript Dateien befinden sich in `$ROOT/scripts` und werden ebenfalls von Gulp in Javascript kompiliert. Das Ergebnis dieses Kompiliervorgangs landet in `$ROOT/site/styles` bzw. `$ROOT/site/scripts`. 
 
 ### Deployment
+
+#### Webserver
+Falls die Applikation unter einem Apache Webserver deployed wird, muss darauf geachtet werden, dass FollowSymLinks für das Directory aktiviert und MultiViews deaktiviert ist. 
 
 #### Datenbank
 Die Datenbank befindet sich als Schema unter `$ROOT/database/schema.mwb`. Mit Hilfe des Programms "MySQL Workbench" lässt sich aus dieser Schemadatei ein Datenbank Script erstellen, das man in die Datenbank auf dem Webserver importieren kann. Eine Anleitung hierzu gibt es unter [MySQL Schema nach SQL](http://dev.mysql.com/doc/workbench/en/wb-reverse-engineer-create-script.html).

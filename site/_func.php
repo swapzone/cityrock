@@ -10,7 +10,7 @@
  * @param int $course_type_id
  * @return array of course arrays
  */
-function getCourses($course_type_id) {
+function getCourses($course_type_id = null) {
 
 	$db = createConnection();
 	
@@ -384,8 +384,8 @@ function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 function createConnection() {
 
 	$servername = "localhost";
-	$username = "cityrock";
-	$password = "e5e|^4aSqxbm&t";
+	$username = "root";
+	$password = "";
 	$database = "cityrock";
 
 	$db = new mysqli($servername, $username, $password, $database);
@@ -488,7 +488,7 @@ function getEndTime($date, $duration) {
  * @param array $entries
  * @return string
  */
-function renderNavigation($entries) {
+function renderNavigation($entries = null) {
 
 	$root_directory = "/cityrock";
 
@@ -499,9 +499,12 @@ function renderNavigation($entries) {
 			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
 			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>";
 
-	foreach($entries as $entry) {
-		$menu_string .= "		
-			<li class='mobile'><a href='{$root_directory}/{$entry}'>{$entry}</a></li>";
+
+	if(isset($entries)) {
+		foreach($entries as $entry) {
+			$menu_string .= "		
+				<li class='mobile'><a href='{$root_directory}/{$entry}'>{$entry}</a></li>";
+		}
 	}
 
 	$menu_string .= "
