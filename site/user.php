@@ -1,6 +1,7 @@
 <?php
 
 include_once('_init.php');
+include_once('inc/user.php');
 
 if(isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
 	$success = addUser($_POST['username'], md5($_POST['password']), $_POST['role']);
@@ -34,9 +35,16 @@ else {
 			$content .= "
 					</select>
 					<input type='hidden' name='new' value='true'>
-					<a href='./' class='button error'>Abbrechen</a>	
+					<a href='../' class='button error'>Abbrechen</a>	
 					<input type='submit' class='button' value='Hinzufügen'>
 				</form>";
+		}
+		else {
+			// show user profile
+			$userObj = new User($_GET["id"]);
+
+			// TODO visualize user data	
+			$content .= "User id: " . $userObj->serialize()['id'];
 		}
 	}
 	else {
@@ -54,7 +62,7 @@ else {
 		foreach($users as $user) {
 			$content .= "
 					<span class='list-item'>
-						<span>{$user['username']}</span>
+						<span><a href='?id={$user['id']}'>{$user['username']}</a></span>
 						<span>{$user['roles']}</span>
 						<span>";
 			

@@ -1,6 +1,5 @@
 <?php
-// add session for user authentication
-session_start();
+require_once('inc/user.php');
 
 if(isset($_GET['logout'])) {
 	// remove all session variables
@@ -15,9 +14,15 @@ if(!$_SESSION['authenticated']) {
 
 	// check if user sent the login form
 	if(isset($_POST['username']) && isset($_POST['password'])) {
-		if(login($_POST['username'], $_POST['password'])) {
+		$user_id = login($_POST['username'], $_POST['password']);
+
+		if($user_id != -1) {
 			session_regenerate_id(); // avoid session fixation exploit
 			$_SESSION['authenticated'] = true;
+
+			$user =  new User($user_id);
+			$_SESSION['user'] = $user->serialize();
+
 			$profile = "<a href='./index.php?logout'>Logout</a>";
 		}
 		else {
@@ -38,9 +43,11 @@ if(!$_SESSION['authenticated']) {
 		include_once('login.php');
 	}
 }
-else
+else {
+	//echo $_SESSION['user']['roles'][0]['title'];
 	$profile = "<a href='./index.php?logout'>Logout</a>";
-	
+}
+
 if(!$content_class)
 	$content_class = "basic";
 ?>

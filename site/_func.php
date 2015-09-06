@@ -1,4 +1,6 @@
 <?php
+require_once('inc/database.php');
+
 /*****************************************************************************/
 /* Course functionality																											 */
 /*****************************************************************************/
@@ -12,7 +14,7 @@
  */
 function getCourses($course_type_id = null) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 	
 	$sql = "SELECT id, course_type_id, max_participants 
 					FROM course";
@@ -57,20 +59,20 @@ function getCourses($course_type_id = null) {
  */
 function getCourse($course_id) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("SELECT max_participants, course_type_id 
-												FROM course 
-												WHERE id=$course_id;");
+						  FROM course 
+						  WHERE id=$course_id;");
 	
 	if ($result->num_rows > 0) {
 		$result = $result->fetch_assoc();
 	} 
 
 	$dates = $db->query("SELECT start, duration 
-											 FROM date 
-											 WHERE course_id={$course_id} 
-											 ORDER BY start;");
+						 FROM date 
+						 WHERE course_id={$course_id} 
+						 ORDER BY start;");
 
 	$dates_array = array();
 	if ($dates->num_rows > 0) {
@@ -94,7 +96,7 @@ function getCourse($course_id) {
  */
 function getCourseTypes() {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 	
 	$result = $db->query("SELECT id, title FROM course_type;");
 
@@ -121,7 +123,7 @@ function getCourseTypes() {
  */
 function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 	
 	$result = $db->query("INSERT INTO course (course_type_id, max_participants, min_staff) 
 												VALUES ($course_type, $num_registrants, $num_staff);");
@@ -156,7 +158,7 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
  */
 function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 	
 	$db->query("UPDATE course 
 							SET course_type_id=$course_type, 
@@ -195,10 +197,10 @@ function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
  */
 function getUsers() {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("SELECT id, username, first_name, last_name, deletable 
-												FROM user;");
+					      FROM user;");
 
 	$user_array = array();
 	if ($result->num_rows > 0) {
@@ -211,12 +213,12 @@ function getUsers() {
 		$id = $user['id'];
 
 		$roles = $db->query("SELECT title 
-												 FROM role 
-												 WHERE id=(
-													SELECT role_id 
-													FROM user_has_role 
-													WHERE user_id=$id);"); 
-		
+							 FROM role 
+							 WHERE id=(
+								SELECT role_id 
+								FROM user_has_role 
+								WHERE user_id=$id);"); 
+
 		$role_string = "";
 		if ($roles->num_rows > 0) {
 			while($role = $roles->fetch_assoc()) {
@@ -236,21 +238,30 @@ function getUsers() {
  *
  * @param string $username
  * @param string $password
- * @param int $role 1=admin, 2=staff
+ * @param array §roles array of role ids
  * @return boolean true in case it was successful
  */
-function addUser($username, $password, $role) {
+function addUser($username, $password, $roles) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("INSERT INTO user (username, password) 
-												VALUES ('$username', '$password');");
+						  VALUES ('$username', '$password');");
 
 	$user_id = $db->insert_id;
 
-	if($result)
-		$result = $db->query("INSERT INTO user_has_role (user_id, role_id) 
-													VALUES ($user_id, $role);");
+	if($result) {
+
+		$sql = "INSERT INTO user_has_role (user_id, role_id) VALUES ";
+
+		for ($i = 0; $i < count($roles); ++$i)
+		{
+		    if ($i > 0) $sql .= ", ";
+		    $sql .= "($user_id, {$roles[i]})";
+		}
+		
+		$result = $db->query($sql);
+	}
 
 	$db->close();
 
@@ -264,19 +275,20 @@ function addUser($username, $password, $role) {
  */
 function getRoles() {
 	
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("SELECT id, title FROM role;");
 
-	$role_array = array();
+	$roles_array = array();
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-	   	$role_array[] = $row;
+	   		$roles_array[] = $row;
 		}
 	} 
+
 	$db->close();
 
-	return $role_array;
+	return $roles_array;
 }
 
 /*****************************************************************************/
@@ -298,7 +310,7 @@ function getRoles() {
  */
 function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, $birthday, $email) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$firstname = $db->real_escape_string($firstname);
 	$lastname = $db->real_escape_string($lastname);
@@ -326,7 +338,7 @@ function addRegistrant($course_id, $firstname, $lastname, $street, $zip, $city, 
  */
 function getRegistrants($course_id) {
 	
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("SELECT id, first_name, last_name, street, zip, city, birthday, email, phone 
 												FROM registrant AS a
@@ -358,45 +370,18 @@ function getRegistrants($course_id) {
  */
 function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 	
 	$db->query("UPDATE course_has_registrant
-							SET course_id=$new_course_id
-							WHERE (registrant_id=$registrant_id AND 
-										 course_id=$old_course_id);");
+				SET course_id=$new_course_id
+				WHERE (registrant_id=$registrant_id AND 
+					 course_id=$old_course_id);");
 
 	$result = ($db->affected_rows > 0) ? true : false;
 
 	$db->close();
 
 	return $result;
-}
-
-/*****************************************************************************/
-/* Database functionality																										 */
-/*****************************************************************************/
-
-/**
- * Creates a database connection and returns the database handle.
- *
- * @return object database handle
- */
-function createConnection() {
-
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$database = "cityrock";
-
-	$db = new mysqli($servername, $username, $password, $database);
-
-	if ($db->connect_error) {
-		die("Connection failed: " . $db->connect_error);
-	} 
-
-	$db->set_charset("utf8");
-
-	return $db;
 }
 
 /*****************************************************************************/
@@ -408,25 +393,27 @@ function createConnection() {
  *
  * @param string $username
  * @param string $password
- * @return boolean if the credentials are valid it returns true
+ * @return int user id or -1 if not valid
  */
 function login($username, $password) {
 
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	// make sure that the user isn't trying to do some SQL injection
 	$username = $db->real_escape_string($username);
 
-	$result = $db->query("SELECT password 
-												FROM user 
-												WHERE username='{$username}';");
+	$result = $db->query("SELECT id, password 
+						  FROM user 
+						  WHERE username='{$username}';");
 	$db->close();
 
 	if ($result->num_rows > 0) {
 		$row = $result->fetch_assoc();
-		return $row['password'] === md5($password);			
+		if ($row['password'] === md5($password))
+			return $row['id'];		
 	} 	
-	return false;
+
+	return -1;
 }
 
 /**
@@ -438,7 +425,7 @@ function login($username, $password) {
  */
 function deleteItem($item_id, $table_name) {
 	
-	$db = createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("DELETE FROM {$table_name} WHERE id={$item_id};");
 	$db->close();
@@ -485,30 +472,26 @@ function getEndTime($date, $duration) {
 /**
  * Renders the menu with optional entries.
  *
- * @param array $entries
+ * @param User $user object
  * @return string
  */
-function renderNavigation($entries = null) {
+function renderNavigation($user) {
 
 	$root_directory = "/cityrock";
 
-	$menu_string = "
-		<ul>
-			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>		
-			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>	
-			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
-			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>";
+	$menu_string = "";
 
+	//if($user->hasRole('administrator')) {
 
-	if(isset($entries)) {
-		foreach($entries as $entry) {
-			$menu_string .= "		
-				<li class='mobile'><a href='{$root_directory}/{$entry}'>{$entry}</a></li>";
-		}
-	}
-
-	$menu_string .= "
-		</ul>";
+		$menu_string = "
+			<ul>
+				<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>		
+				<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>	
+				<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
+				<li><a href='{$root_directory}/profile'>Mein Profil</a></li>
+				<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>
+			</ul>";
+	//}
 
 	return $menu_string;
 }
