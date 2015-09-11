@@ -23,8 +23,14 @@ $inputs-check: 'input[type="checkbox"], input[type="radio"]';
   position: relative;
 
   transition: border-color 0.2s ease;
+
   &:focus {
     border-color: $c-primary;
+    outline: 0;
+  }
+
+  &.error{
+    border-color: $c-error;
     outline: 0;
   }
 }

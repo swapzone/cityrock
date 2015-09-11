@@ -137,7 +137,7 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 			$mysql_time = $datetime->format('Y-m-d H:i:s');
 
 			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-														VALUES ('$mysql_time', {$date['duration']}, $course_id);");
+								  VALUES ('$mysql_time', {$date['duration']}, $course_id);");
 		}
 	}
 	
@@ -161,10 +161,10 @@ function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 	$db = Database::createConnection();
 	
 	$db->query("UPDATE course 
-							SET course_type_id=$course_type, 
-									max_participants=$num_registrants,
-									min_staff=$num_staff 
-							WHERE id=$id;");
+				SET course_type_id=$course_type, 
+					max_participants=$num_registrants,
+					min_staff=$num_staff 
+				WHERE id=$id;");
 
 	$result = $db->query("DELETE FROM date 
 												WHERE course_id=$id;");
@@ -177,7 +177,7 @@ function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 			$mysql_time = $datetime->format('Y-m-d H:i:s');
 
 			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-														VALUES ('$mysql_time', {$date['duration']}, $id);");
+								  VALUES ('$mysql_time', {$date['duration']}, $id);");
 		}
 	}
 	

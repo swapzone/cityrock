@@ -5,7 +5,7 @@ include_once('_init.php');
 $course_types = getCourseTypes();
 
 /***********************************************************************/
-/* Process form data																								   */
+/* Process form data												   */
 /***********************************************************************/
 if(isset($_POST['type'])) {
 	// add all given dates
@@ -51,7 +51,7 @@ if(isset($_POST['type'])) {
 else {
 	if(isset($_GET["id"])) {
 		/***********************************************************************/
-		/* Course new 																											   */
+		/* Course new 										                   */
 		/***********************************************************************/
 		if($_GET["id"] == "new") {
 			$title = "Neuer Kurs";

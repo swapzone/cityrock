@@ -9271,8 +9271,75 @@ var cityrock;
     /**
      *
      *
+     * @param form
+     * @returns {boolean}
+     */
+    function validateProfile(form) {
+        if (!$('#erste-hilfe-kurs').is(':checked'))
+            return true;
+        var dateInput = $('#erste-hilfe-kurs-date-input');
+        // check time format
+        var dateValue = dateInput.val();
+        if (!dateValue.match(/\d{2}.\d{2}.\d{4}/)) {
+            dateInput.addClass('error');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    cityrock.validateProfile = validateProfile;
+    /**
+     *
+     *
      */
     function initialize() {
+    }
+    cityrock.initialize = initialize;
+    /**
+      *
+      *
+      */
+    function initializeProfileView() {
+        //
+        var changePhoneLink = $("#link-modify-phone");
+        $("#phone-input").hide();
+        changePhoneLink.click(function () {
+            $("#phone-text").hide();
+            $(this).hide();
+            $("#phone-input").show();
+        });
+        //
+        var changePasswordLink = $("#link-modify-password");
+        $("#password-input").hide();
+        changePasswordLink.click(function () {
+            $("#password-text").hide();
+            $(this).hide();
+            $("#password-input").show();
+        });
+        var firstHelp = $('#erste-hilfe-kurs');
+        var firstHelpDate = $('#erste-hilfe-kurs-date');
+        if (firstHelp.is(':checked'))
+            firstHelpDate.css('display', 'inline-block');
+        firstHelp.change(function () {
+            if (this.checked) {
+                firstHelpDate.css('display', 'block');
+            }
+            else {
+                firstHelpDate.css('display', 'none');
+            }
+        });
+        function checkDateFormat() {
+            if (!$(firstHelpDate).find("input").val().match(/\d{2}.\d{2}.\d{4}/)) {
+            }
+        }
+    }
+    cityrock.initializeProfileView = initializeProfileView;
+    /**
+     *
+     *
+     */
+    function initializeCourseView() {
         var html = $('html');
         var navigation = $('#navigation');
         // add day link
@@ -9372,9 +9439,11 @@ var cityrock;
             }
         });
     }
-    cityrock.initialize = initialize;
+    cityrock.initializeCourseView = initializeCourseView;
 })(cityrock || (cityrock = {}));
 $(function () {
     'use strict';
     cityrock.initialize();
+    cityrock.initializeCourseView();
+    cityrock.initializeProfileView();
 });
