@@ -384,14 +384,14 @@ function login($username, $password) {
 	// make sure that the user isn't trying to do some SQL injection
 	$username = $db->real_escape_string($username);
 
-	$result = $db->query("SELECT id, password 
+	$result = $db->query("SELECT id, password, active
 						  FROM user 
 						  WHERE username='{$username}';");
 	$db->close();
 
 	if ($result->num_rows > 0) {
 		$row = $result->fetch_assoc();
-		if ($row['password'] === md5($password))
+		if ($row['password'] === md5($password) && $row['active'])
 			return $row['id'];		
 	} 	
 

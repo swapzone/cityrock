@@ -9,6 +9,7 @@ class User {
 	private $first_name;
 	private $last_name;
 	private $phone;
+	private $active;
 	private $deletable;
 	private $roles;
 	private $qualifications;
@@ -39,6 +40,7 @@ class User {
 			$this->first_name = $user_data['first_name'];
 			$this->last_name = $user_data['last_name'];
 			$this->phone = $user_data['phone'];
+			$this->active = $user_data['active'];
 			$this->deletable = $user_data['deletable'];
 		}
 
@@ -88,7 +90,7 @@ class User {
 
 		$db = Database::createConnection();
 
-		$result = $db->query("SELECT username, first_name, last_name, phone, deletable
+		$result = $db->query("SELECT username, first_name, last_name, phone, active, deletable
 							  FROM user
 							  WHERE id={$user_id};");
 
@@ -186,6 +188,7 @@ class User {
 			'first_name' => $this->first_name,
 			'last_name' => $this->last_name,
 			'phone' => $this->phone,
+			'active' => $this->active,
 			'deletable' => $this->deletable,
 			'roles' => $this->roles,
 			'qualifications' => $this->qualifications
@@ -212,9 +215,8 @@ class User {
 		}
 
 		$update_list = substr($update_list, 1);
-			
-	
-		$result = $db->query("UPDATE user  
+
+		$result = $db->query("UPDATE user
 							  SET $update_list
 							  WHERE id=$user_id;");
 		

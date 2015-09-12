@@ -2344,9 +2344,15 @@ input[type="checkbox"] + label::before {
 input[type="checkbox"]:checked + label::before {
   content: "";
 }
+input[type="checkbox"]:disabled + label::before {
+  color: #8c8c8c;
+}
 input[type="checkbox"] + label {
   cursor: pointer;
   display: block;
+}
+input[type="checkbox"]:disabled + label {
+  cursor: default;
 }
 
 /*
@@ -2502,6 +2508,9 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 }
 .basic .list-item, .course .list-item, .user .list-item, .profile .list-item, .registrants .list-item {
   display: table-row;
+}
+.basic .list-item span.disabled, .course .list-item span.disabled, .user .list-item span.disabled, .profile .list-item span.disabled, .registrants .list-item span.disabled {
+  color: #8c8c8c;
 }
 .basic .list-item.no-mobile, .course .list-item.no-mobile, .user .list-item.no-mobile, .profile .list-item.no-mobile, .registrants .list-item.no-mobile {
   display: none;
@@ -2728,6 +2737,24 @@ p {
 .user .user-filter span.active {
   background-color: #319aca;
   color: white;
+}
+.user .qualification-list {
+  margin: 0.5em 2em;
+}
+.user .qualification-list > li {
+  line-height: 1.4em;
+}
+.user .qualification-list > li.missing:after {
+  font-weight: bold;
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  color: #c70707;
+  margin-left: 0.5em;
 }
 .user .delete {
   display: block;

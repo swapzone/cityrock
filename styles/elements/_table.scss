@@ -35,6 +35,10 @@
 
     span {
       @extend %table-cell;
+
+      &.disabled {
+        color: $c-text-light;
+      }
     }
   }
 

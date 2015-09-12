@@ -6,7 +6,32 @@ $required_roles = array('Administrator');
 
 if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) {
 
-	if(isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
+	/***********************************************************************/
+	/* Process form data												   */
+	/***********************************************************************/
+	if(isset($_POST['modify'])) {
+		$user_data_array = array();
+
+		// avoid deactivating one's own account
+		if($_POST['user_id'] != $_SESSION['user']['id']) {
+			$user_data_array['active'] = $_POST['active'] ? 1 : 0;
+		}
+
+		$success = User::updateUserData($user_data_array, $_POST['user_id']);
+
+		// modify POST user object
+		if($success) {
+			foreach ($user_data_array as $key => $value) {
+				$_SESSION['user'][$key] = $value;
+			}
+		}
+
+		if($success)
+			$content = "Die Nutzerdaten wurden erfolgreich gespeichert.";
+		else
+			$content = "Fehler: Die Nutzerdaten konnten nicht gespeichert werden.";
+	}
+	else if(isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
 		$success = addUser($_POST['username'], md5($_POST['password']), $_POST['role']);
 
 		if($success) {
@@ -44,10 +69,69 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			}
 			else {
 				// show user profile
-				$userObj = User::withUserId($_GET["id"]);
+				$user = User::withUserId($_GET["id"])->serialize();
 
-				// TODO visualize user data
-				$content .= "User id: " . $userObj->serialize()['id'];
+				$qualification_list = "<ul class='qualification-list'>";
+				foreach ($user['qualifications'] as $qualification) {
+
+					$description = $qualification['description'];
+					$hasQualification = $qualification['user_id'] != null;
+
+					if($hasQualification) {
+						$qualification_list .= "<li>{$description}";
+
+						if($qualification['date'])
+							$qualification_list .= " vom {$qualification['date']}</li>";
+						else
+							$qualification_list .= "</li>";
+					}
+				}
+				$qualification_list .= "</ul>";
+				$checked = $user['active'] ? 'checked' : '';
+				$deactivateCheckbox = $user['id'] === $_SESSION['user']['id'] ? 'disabled' : '';
+
+				$content .= "
+					<form method='post' onsubmit='return cityrock.validateProfile(this);'>
+						<span class='list'>
+							<span class='list-item'>
+								<span>Nutzer ID</span>
+								<span>{$user['id']}</span>
+							</span>
+							<span class='list-item'>
+								<span>Nutzername</span>
+								<span>{$user['username']}</span>
+							</span>
+							<span class='list-item'>
+								<span>Vorname</span>
+								<span>{$user['first_name']}</span>
+							</span>
+							<span class='list-item'>
+								<span>Nachname</span>
+								<span>{$user['last_name']}</span>
+							</span>
+							<span class='list-item'>
+								<span>Telefonnummer</span>
+								<span id='phone-text'>{$user['phone']}</span>
+							</span>
+						</span>
+						<span class='list'>
+							<span class='list-item'>
+								Der Nutzer hat folgende Qualifikationen: {$qualification_list}
+							</span>
+						</span>
+						<span class='list'>
+							<span class='list-item'>
+								<span class='{$deactivateCheckbox}'>
+									<input type='checkbox' name='active' id='active' {$deactivateCheckbox} {$checked} />
+									<label for='active'>Nutzerkonto aktiviert</label>
+								</span>
+							</span>
+							<input type='hidden' name='modify' />
+							<input type='hidden' name='user_id' value='{$user['id']}' />
+							<a href='{$root_directory}/user' class='button'>Zurück</a>
+							<input type='submit' value='Speichern' class='button'>
+						</span>
+					</form>";
 			}
 		}
 		else {

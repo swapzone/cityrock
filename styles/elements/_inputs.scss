@@ -55,9 +55,15 @@ input[type="checkbox"] {
   &:checked + label::before {
     content: $fa-var-check-square-o;
   }
+  &:disabled + label::before {
+    color: $c-text-light;
+  }
   & + label {
     cursor: pointer;
     display: block;
+  }
+  &:disabled + label {
+    cursor: default;
   }
 }
 

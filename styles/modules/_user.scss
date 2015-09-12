@@ -23,6 +23,21 @@
     }
   }
 
+  .qualification-list {
+    margin: 0.5em 2em;
+
+    & > li {
+      line-height: 1.4em;
+
+      &.missing:after {
+        font-weight: bold;
+        @include fa-icon();
+        content: $fa-var-exclamation;
+        color: $c-error;
+        margin-left: 0.5em;
+      }
+    }
+  }
 
   .delete {
     display: block;
