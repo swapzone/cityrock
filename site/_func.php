@@ -479,20 +479,20 @@ function renderNavigation($user) {
 
 	$root_directory = "/cityrock";
 
-	$menu_string = "";
+	$admin_menu_items = "";
 
-	//if($user->hasRole('administrator')) {
+	if($user->hasPermission(array('Administrator'))) {
+		$admin_menu_items = "
+			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>
+			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
+			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>";
+	}
 
-		$menu_string = "
-			<ul>
-				<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>		
-				<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>	
-				<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
-				<li><a href='{$root_directory}/profile'>Mein Profil</a></li>
-				<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>
-			</ul>";
-	//}
-
-	return $menu_string;
+	return "
+		<ul>
+			{$admin_menu_items}
+			<li><a href='{$root_directory}/profile'>Mein Profil</a></li>
+			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>
+		</ul>";
 }
 ?>

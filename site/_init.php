@@ -1,6 +1,7 @@
 <?php
 
 require_once('_func.php');
+include_once('inc/user.php');
 
 // add session for user authentication
 session_start();
@@ -13,7 +14,12 @@ $profile = null;
 $title = null;
 $content = null;
 
-$navigation = renderNavigation();
+$navigation = null;
+
+if(isset($_SESSION['user'])) {
+    $user = User::withUserObjectData($_SESSION['user']);
+    $navigation = renderNavigation($user);
+}
 
 $content_class = null;
 $hide_navigation = false;

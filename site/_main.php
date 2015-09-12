@@ -23,6 +23,8 @@ if(!$_SESSION['authenticated']) {
 			$user =  new User($user_id);
 			$_SESSION['user'] = $user->serialize();
 
+			$navigation = renderNavigation($user);
+
 			$profile = "<a href='./index.php?logout'>Logout</a>";
 		}
 		else {
@@ -44,7 +46,6 @@ if(!$_SESSION['authenticated']) {
 	}
 }
 else {
-	//echo $_SESSION['user']['roles'][0]['title'];
 	$profile = "<a href='./index.php?logout'>Logout</a>";
 }
 

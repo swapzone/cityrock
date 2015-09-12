@@ -12,39 +12,70 @@ class User {
 	private $roles;
 	private $qualifications;
 
-	public function __construct($user_id) {
+	/**
+	 * Create a new user object.
+	 *
+	 * @param $user_id
+	 * @param $user_roles
+	 * @param $user_data
+	 * @param $user_qualifications
+	 */
+	public function __construct($user_id, $user_roles, $user_data, $user_qualifications) {
 
 		$this->id = $user_id;
-		$this->roles = $this->getRolesForUser($user_id);
 
-		$user_object = $this->getUserData($user_id);
+		if(!$user_roles)
+			$user_roles = $this->getRolesForUser($user_id);
 
-		if($user_object != null) {
-			$this->username = $user_object['username'];
-			$this->first_name = $user_object['first_name'];
-			$this->last_name = $user_object['last_name'];
-			$this->phone = $user_object['phone'];
+		if($user_roles != null)
+			$this->roles = $user_roles;
+
+		if(!$user_data)
+			$user_data = $this->getUserData($user_id);
+
+		if($user_data != null) {
+			$this->username = $user_data['username'];
+			$this->first_name = $user_data['first_name'];
+			$this->last_name = $user_data['last_name'];
+			$this->phone = $user_data['phone'];
 		}
 
-		$this->qualifications = User::getQualifications($user_id);
+		if(!$user_qualifications)
+			$user_qualifications = User::getQualifications($user_id);
+
+		if($user_qualifications != null)
+			$this->qualifications = $user_qualifications;
 	}
 
 	/**
 	 *
 	 *
+	 * @param $user_id
+	 * @return User
 	 */
-	public function hasRole($role_name) {
-
-		foreach ($this->roles as $role) {
-			if($role['role_title'] == $role_name) return true;
-		}
-
-		return false;
+	public static function withUserId($user_id) {
+		return new self($user_id, null, null, null);
 	}
-
 
 	/**
 	 *
+	 *
+	 * @param $user_array
+	 * @return User
+	 */
+	public static function withUserObjectData($user_array) {
+		$user_data = array(
+			'username' => $user_array['username'],
+			'first_name' => $user_array['first_name'],
+			'last_name' => $user_array['last_name'],
+			'phone' => $user_array['phone']
+		);
+
+		return new self($user_array['id'], $user_array['roles'], $user_data, $user_array['qualifications']);
+	}
+
+	/**
+	 * Retrieve user data from database.
 	 *
 	 * @param $user_id
 	 * @return null
@@ -68,8 +99,7 @@ class User {
 	}
 
 	/**
-	 *
-	 *
+	 * Retrieve user qualifications from database.
 	 */
 	static public function getQualifications($user_id) {
 
@@ -99,8 +129,7 @@ class User {
 	}
 
 	/**
-	 *
-	 *
+	 * Retrieve user roles from database.
 	 */
 	private function getRolesForUser($user_id) {
 
@@ -125,7 +154,24 @@ class User {
 	}
 
 	/**
+	 * Checks the given roles_array against the roles the user has.
 	 *
+	 * @param $roles_array
+	 * @return bool
+	 */
+	public function hasPermission($roles_array) {
+
+		foreach($this->roles as $role) {
+
+			if (in_array($role['title'], $roles_array)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Serialize the user object to store it to the session variable.
 	 *
 	 */
 	public function serialize() {
@@ -141,6 +187,13 @@ class User {
 		);
 	}
 
+	/**
+	 *
+	 *
+	 * @param $user_data_array
+	 * @param $user_id
+	 * @return bool
+	 */
 	static public function updateUserData($user_data_array, $user_id) {
 
 		if(empty($user_data_array)) return true;
@@ -165,6 +218,13 @@ class User {
 		return $result;
 	}
 
+	/**
+	 *
+	 *
+	 * @param $qualifications_array
+	 * @param $user_id
+	 * @return bool
+	 */
 	static public function updateUserQualifications($qualifications_array, $user_id) {
 
 		if(empty($qualifications_array)) return true;
