@@ -2658,6 +2658,7 @@ p {
 .course .course-filter {
   display: inline-block;
   margin-right: 1em;
+  margin-bottom: 1em;
 }
 .course .course-filter span {
   display: inline-block;
@@ -2711,6 +2712,23 @@ p {
   }
 }
 
+.user .user-filter {
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+.user .user-filter span {
+  display: inline-block;
+  background-color: #d3eaf4;
+  padding: 0.6em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.user .user-filter span.active {
+  background-color: #319aca;
+  color: white;
+}
 .user .delete {
   display: block;
   background-color: #c70707;

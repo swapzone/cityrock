@@ -3,6 +3,27 @@
   @extend %table;
   @extend %form;
 
+  .user-filter {
+    display: inline-block;
+    margin-right: 1em;
+    margin-bottom: 1em;
+
+    span {
+      display: inline-block;
+      background-color: lighten($c-primary, 40%);
+      padding: 0.6em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.active {
+        background-color: $c-primary;
+        color: white;
+      }
+    }
+  }
+
+
   .delete {
     display: block;
     background-color: $c-error;

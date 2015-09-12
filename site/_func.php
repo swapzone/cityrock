@@ -1,5 +1,6 @@
 <?php
 require_once('inc/database.php');
+require_once('inc/user.php');
 
 /*****************************************************************************/
 /* Course functionality																											 */
@@ -199,36 +200,17 @@ function getUsers() {
 
 	$db = Database::createConnection();
 
-	$result = $db->query("SELECT id, username, first_name, last_name, deletable 
+	$result = $db->query("SELECT id
 					      FROM user;");
+
+	$db->close();
 
 	$user_array = array();
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-	   	$user_array[] = $row;
+			$user_array[] = User::withUserId($row['id']);
 		}
-	} 
-
-	foreach($user_array as $key => $user) {
-		$id = $user['id'];
-
-		$roles = $db->query("SELECT title 
-							 FROM role 
-							 WHERE id=(
-								SELECT role_id 
-								FROM user_has_role 
-								WHERE user_id=$id);"); 
-
-		$role_string = "";
-		if ($roles->num_rows > 0) {
-			while($role = $roles->fetch_assoc()) {
-		   	$role_array[] = $role["title"];
-			}
-
-			$user_array[$key]['roles'] = $role_array[0];
-		} 
 	}
-	$db->close();
 
 	return $user_array;
 }

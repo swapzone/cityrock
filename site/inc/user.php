@@ -9,6 +9,7 @@ class User {
 	private $first_name;
 	private $last_name;
 	private $phone;
+	private $deletable;
 	private $roles;
 	private $qualifications;
 
@@ -38,6 +39,7 @@ class User {
 			$this->first_name = $user_data['first_name'];
 			$this->last_name = $user_data['last_name'];
 			$this->phone = $user_data['phone'];
+			$this->deletable = $user_data['deletable'];
 		}
 
 		if(!$user_qualifications)
@@ -64,11 +66,13 @@ class User {
 	 * @return User
 	 */
 	public static function withUserObjectData($user_array) {
+
 		$user_data = array(
 			'username' => $user_array['username'],
 			'first_name' => $user_array['first_name'],
 			'last_name' => $user_array['last_name'],
-			'phone' => $user_array['phone']
+			'phone' => $user_array['phone'],
+			'deletable' => $user_array['deletable']
 		);
 
 		return new self($user_array['id'], $user_array['roles'], $user_data, $user_array['qualifications']);
@@ -84,7 +88,7 @@ class User {
 
 		$db = Database::createConnection();
 
-		$result = $db->query("SELECT username, first_name, last_name, phone
+		$result = $db->query("SELECT username, first_name, last_name, phone, deletable
 							  FROM user
 							  WHERE id={$user_id};");
 
@@ -182,6 +186,7 @@ class User {
 			'first_name' => $this->first_name,
 			'last_name' => $this->last_name,
 			'phone' => $this->phone,
+			'deletable' => $this->deletable,
 			'roles' => $this->roles,
 			'qualifications' => $this->qualifications
 		);

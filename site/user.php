@@ -44,7 +44,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			}
 			else {
 				// show user profile
-				$userObj = new User($_GET["id"]);
+				$userObj = User::withUserId($_GET["id"]);
 
 				// TODO visualize user data
 				$content .= "User id: " . $userObj->serialize()['id'];
@@ -52,7 +52,16 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		}
 		else {
 			$title = "Nutzerübersicht";
+
 			$content = "
+			<!-- COURSE FILTER -->
+			<div class='user-filter' id='filter'>
+				<span class='all active'>Alle</span>
+				<span>Kletterbetreuer</span>
+				<span>Führerschein</span>
+			</div>";
+
+			$content .= "
 				<div class='list'>
 					<span class='list-heading'>
 						<span>Nutzername</span>
@@ -63,10 +72,24 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			$users = getUsers();
 
 			foreach($users as $user) {
+				$user = $user->serialize();
+
+				$roles_list = "";
+				foreach($user['roles'] as $role) {
+					$roles_list .= ", " . $role['title'];
+				}
+				$roles_list = substr($roles_list, 2);
+
+				$qualifications_list = "";
+				foreach($user['qualifications'] as $qualification) {
+					if($qualification['user_id'] != null)
+						$qualifications_list .= " " . strtolower($qualification['description']);
+				}
+
 				$content .= "
-						<span class='list-item'>
+						<span class='list-item {$qualifications_list}'>
 							<span><a href='?id={$user['id']}'>{$user['username']}</a></span>
-							<span>{$user['roles']}</span>
+							<span>{$roles_list}</span>
 							<span>";
 
 				if($user['deletable']) {
