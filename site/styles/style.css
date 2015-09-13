@@ -2484,7 +2484,8 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 
 .basic .list-heading span, .course .list-heading span, .user .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .profile .list-item span, .registrants .list-item span {
   display: table-cell;
-  padding: 0.2em 0.5em 0.5em 0.2em;
+  padding: 0.1em 0.5em 0.5em 0.1em;
+  vertical-align: middle;
 }
 .basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
   display: none;
@@ -2511,6 +2512,9 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 }
 .basic .list-item span.disabled, .course .list-item span.disabled, .user .list-item span.disabled, .profile .list-item span.disabled, .registrants .list-item span.disabled {
   color: #8c8c8c;
+}
+.basic .list-item span > input, .course .list-item span > input, .user .list-item span > input, .profile .list-item span > input, .registrants .list-item span > input {
+  margin-bottom: 0;
 }
 .basic .list-item.no-mobile, .course .list-item.no-mobile, .user .list-item.no-mobile, .profile .list-item.no-mobile, .registrants .list-item.no-mobile {
   display: none;
@@ -2738,13 +2742,13 @@ p {
   background-color: #319aca;
   color: white;
 }
-.user .qualification-list {
+.user .qualification-list, .user .roles-list {
   margin: 0.5em 2em;
 }
-.user .qualification-list > li {
+.user .qualification-list > li, .user .roles-list > li {
   line-height: 1.4em;
 }
-.user .qualification-list > li.missing:after {
+.user .qualification-list > li.missing:after, .user .roles-list > li.missing:after {
   font-weight: bold;
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -2770,6 +2774,9 @@ p {
 
 .profile input {
   margin-bottom: 0;
+}
+.profile .button {
+  margin-right: .4em;
 }
 .profile #erste-hilfe-kurs-date {
   display: none;

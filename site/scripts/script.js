@@ -9294,6 +9294,49 @@ var cityrock;
      *
      */
     function initialize() {
+        var html = $('html');
+        var navigation = $('#navigation');
+        // responsive menu
+        $('.navigation-menu-toggle').on('click', function (event) {
+            event.preventDefault();
+            $(navigation).toggleClass('is-expanded');
+            $(this).find('i').toggleClass('fa-bars fa-close');
+        });
+        $(navigation).find('a:not(.navigation-menu-toggle)').on('click', function () {
+            $(navigation).removeClass('is-expanded');
+            $('.navigation-menu-toggle i').addClass('fa-bars').removeClass('fa-close');
+        });
+        // filter element
+        var filterLinks = $('#filter').find('span');
+        $(filterLinks).on('click', function (event) {
+            $(filterLinks).each(function (index, element) {
+                $(element).removeClass('active');
+            });
+            $(event.target).addClass('active');
+            if ($(event.target).hasClass('all')) {
+                $('.list-item').each(function (index, element) {
+                    $(element).show(0);
+                });
+            }
+            else {
+                $('.list-item').each(function (index, element) {
+                    if ($(element).attr('class').indexOf($(event.target).text().toLocaleLowerCase()) === -1) {
+                        $(element).hide(0);
+                    }
+                    else {
+                        $(element).show(0);
+                    }
+                });
+            }
+        });
+        // special treatment for our friends from Cupertino
+        if (navigator.userAgent.match(/(iPod|iPhone|iPad)/) || navigator.userAgent.match(/Android; (Mobile|Tablet).*Firefox/)) {
+            // add class 'apple' to html element
+            $(html).addClass('apple');
+        }
+        else {
+            $(html).addClass('no-apple');
+        }
     }
     cityrock.initialize = initialize;
     /**
@@ -9340,8 +9383,6 @@ var cityrock;
      *
      */
     function initializeCourseView() {
-        var html = $('html');
-        var navigation = $('#navigation');
         // add day link
         $('#add-day').on('click', function (event) {
             var numberOfDays = $(event.target).parent().parent().find('input[name=days]').val();
@@ -9393,57 +9434,162 @@ var cityrock;
                 $(event.target).parent().removeClass('show');
             });
         });
-        // responsive menu
-        $('.navigation-menu-toggle').on('click', function (event) {
-            event.preventDefault();
-            $(navigation).toggleClass('is-expanded');
-            $(this).find('i').toggleClass('fa-bars fa-close');
-        });
-        $(navigation).find('a:not(.navigation-menu-toggle)').on('click', function () {
-            //event.preventDefault();
-            $(navigation).removeClass('is-expanded');
-            $('.navigation-menu-toggle i').addClass('fa-bars').removeClass('fa-close');
-        });
-        /**
-         * Special treatment for our friends from Cupertino
-         *
-         */
-        if (navigator.userAgent.match(/(iPod|iPhone|iPad)/) || navigator.userAgent.match(/Android; (Mobile|Tablet).*Firefox/)) {
-            // add class 'apple' to html element
-            $(html).addClass('apple');
-        }
-        else {
-            $(html).addClass('no-apple');
-        }
-        // Course Overview Filter
-        var filterLinks = $('#filter').find('span');
-        $(filterLinks).on('click', function (event) {
-            $(filterLinks).each(function (index, element) {
-                $(element).removeClass('active');
-            });
-            $(event.target).addClass('active');
-            if ($(event.target).hasClass('all')) {
-                $('.list-item').each(function (index, element) {
-                    $(element).show(0);
-                });
-            }
-            else {
-                $('.list-item').each(function (index, element) {
-                    if ($(element).attr('class').indexOf($(event.target).text().toLocaleLowerCase()) === -1) {
-                        $(element).hide(0);
-                    }
-                    else {
-                        $(element).show(0);
-                    }
-                });
-            }
-        });
     }
     cityrock.initializeCourseView = initializeCourseView;
+    /**
+     *
+     *
+     */
+    function initializeUserView() {
+        var usernameText = $("#username-text");
+        var firstNameText = $("#first-name-text");
+        var lastNameText = $("#last-name-text");
+        var phoneText = $("#phone-text");
+        var emailText = $("#email-text");
+        var passwordText = $("#password-text");
+        $("#edit-user").click(function () {
+            $(this).hide();
+            $(this).after("<input type='submit' value='Speichern' class='button'>");
+            if (usernameText)
+                usernameText.html(function (index, oldHtml) {
+                    return createInputField(oldHtml, 'username');
+                });
+            if (firstNameText)
+                firstNameText.html(function (index, oldHtml) {
+                    return createInputField(oldHtml, 'first_name');
+                });
+            if (lastNameText)
+                lastNameText.html(function (index, oldHtml) {
+                    return createInputField(oldHtml, 'last_name');
+                });
+            if (phoneText)
+                phoneText.html(function (index, oldHtml) {
+                    return createInputField(oldHtml, 'phone');
+                });
+            if (emailText)
+                emailText.html(function (index, oldHtml) {
+                    return createInputField(oldHtml, 'email');
+                });
+            if (passwordText)
+                passwordText.html(function (index, oldHtml) {
+                    return createInputField('', 'password', 'password');
+                });
+        });
+        // add roles to user object
+        var userRoleSelection = $('#user-add-role-selection');
+        var addRoleLink = $("#user-add-role");
+        var userId = parseInt($('#user-id-text').text());
+        addRoleLink.click(function () {
+            $(this).hide();
+            userRoleSelection.show();
+            userRoleSelection.change(function () {
+                var selectedRoleId = $(this).val();
+                var formData = [
+                    {
+                        name: 'user_id',
+                        value: userId
+                    },
+                    {
+                        name: 'role',
+                        value: selectedRoleId
+                    }
+                ];
+                sendFormData(formData, function (success) {
+                    if (success) {
+                        location.reload();
+                    }
+                    else {
+                        addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Hinzufügen der Rolle.</div>");
+                        setTimeout(function () {
+                            $('.status-message').remove();
+                        }, 2000);
+                    }
+                });
+            });
+        });
+        // delete roles from user object
+        $(".remove-role").click(function () {
+            var roleId = $(this).attr('role');
+            // serialize the data in the form
+            var formData = [
+                {
+                    name: 'user_id',
+                    value: userId
+                },
+                {
+                    name: 'role',
+                    value: roleId
+                },
+                {
+                    name: 'delete_role',
+                    value: 1
+                }
+            ];
+            sendFormData(formData, function (success) {
+                if (success) {
+                    location.reload();
+                }
+                else {
+                    addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Entfernen der Rolle.</div>");
+                    setTimeout(function () {
+                        $('.status-message').remove();
+                    }, 2000);
+                }
+            });
+        });
+        /**
+         *
+         */
+        function sendFormData(formData, callback) {
+            // variable to hold request
+            var request;
+            // abort any pending request
+            if (request)
+                request.abort();
+            // Fire off the request to /form.php
+            request = $.ajax({
+                url: window.location.href,
+                type: "post",
+                data: formData
+            });
+            // Callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR) {
+                console.log("The response: " + response);
+                if (response == "SUCCESS") {
+                    callback(true);
+                }
+                else {
+                    callback(false);
+                }
+            });
+            // Callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                // Log the error to the console
+                console.error("The following error occurred: " + textStatus, errorThrown);
+                callback(false);
+            });
+        }
+        /**
+         *
+         *
+         * @param value
+         * @param name
+         * @param type
+         * @returns {string}
+         */
+        function createInputField(value, name, type) {
+            if (type === void 0) { type = null; }
+            if (!type)
+                type = 'text';
+            return "<input type='" + type + "' name='" + name + "' value='" + value + "' />";
+        }
+    }
+    cityrock.initializeUserView = initializeUserView;
 })(cityrock || (cityrock = {}));
 $(function () {
     'use strict';
     cityrock.initialize();
     cityrock.initializeCourseView();
+    cityrock.initializeUserView();
     cityrock.initializeProfileView();
 });

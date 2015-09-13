@@ -12,12 +12,16 @@ $user = $_SESSION['user'];
 /***********************************************************************/
 if(isset($_POST['modify'])) {
 	$phone = $_POST['phone'];
+	$email = $_POST['email'];
 	$password = $_POST['password'];
 
 	$user_data_array = array();
 
-	if($phone && $phone != $user['phone']) $user_data_array['phone'] = $phone;
+	// do not accept empty passwords
 	if($password) $user_data_array['password'] = md5($password);
+
+	$user_data_array['phone'] = $phone;
+	$user_data_array['email'] = $email;
 
 	$success = User::updateUserData($user_data_array, $user['id']);
 
@@ -69,14 +73,14 @@ else {
 			<span class='list-item'>
 				<span>Telefonnummer</span>
 				<span id='phone-text'>{$user['phone']}</span>
-				<input type='text' value='{$user['phone']}' name='phone' id='phone-input' />
-				<span><a href='#' id='link-modify-phone'>ändern</a></span>
+			</span>
+			<span class='list-item'>
+				<span>Email</span>
+				<span id='email-text'>{$user['email']}</span>
 			</span>
 			<span class='list-item'>
 				<span>Passwort</span>
 				<span id='password-text'>*******</span>
-				<input type='password' placeholder='neues Passwort' name='password' id='password-input' />
-				<span><a href='#' id='link-modify-password'>ändern</a></span>
 			</span>
 		</span>
 		<span class='list'>";
@@ -107,7 +111,8 @@ else {
 
 	$content .= "
 				<input type='hidden' name='modify' />
-				<input type='submit' value='Speichern' class='button'>
+				<a href='{$root_directory}/' class='button'>Zurück</a>
+				<a href='#' id='edit-user' class='button'>Bearbeiten</a>
 			</span>
 		</form>";
 

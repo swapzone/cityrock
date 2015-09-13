@@ -251,6 +251,44 @@ function addUser($username, $password, $roles) {
 }
 
 /**
+ * Add new role to user object.
+ *
+ * @param $user_id
+ * @param $role_id
+ * @return boolean true in case it was successful
+ */
+function addRole($user_id, $role_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("INSERT INTO user_has_role (user_id, role_id)
+					      VALUES ($user_id, $role_id);");
+
+	$db->close();
+
+	return $result;
+}
+
+/**
+ * Remove role from user object.
+ *
+ * @param $user_id
+ * @param $role_id
+ * @return boolean true in case it was successful
+ */
+function removeRole($user_id, $role_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("DELETE FROM user_has_role
+ 						  WHERE user_id={$user_id} AND role_id={$role_id};");
+
+	$db->close();
+
+	return $result;
+}
+
+/**
  * Finds and returns all user roles.
  *
  * @return array of user roles

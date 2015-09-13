@@ -1,6 +1,7 @@
 %table-cell {
   display: table-cell;
-  padding: 0.2em 0.5em 0.5em 0.2em;
+  padding: 0.1em 0.5em 0.5em 0.1em;
+  vertical-align: middle;
 
   &.no-mobile {
     display: none;
@@ -38,6 +39,10 @@
 
       &.disabled {
         color: $c-text-light;
+      }
+
+      & > input {
+        margin-bottom: 0;
       }
     }
   }

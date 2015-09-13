@@ -185,7 +185,7 @@ else {
 							<input type='hidden' name='description' value='Kurs'>
 							<input type='hidden' name='table' value='course'>
 							<input type='hidden' name='id' value='{$course_id}'>
-							<a href='#' class='button error confirm'>löschen</a>
+							<a href='#' class='button error confirm'>Löschen</a>
 						</form>		
 					</span>
 					<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Editieren</a>

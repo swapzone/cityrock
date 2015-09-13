@@ -9,6 +9,7 @@ class User {
 	private $first_name;
 	private $last_name;
 	private $phone;
+	private $email;
 	private $active;
 	private $deletable;
 	private $roles;
@@ -40,6 +41,7 @@ class User {
 			$this->first_name = $user_data['first_name'];
 			$this->last_name = $user_data['last_name'];
 			$this->phone = $user_data['phone'];
+			$this->email = $user_data['email'];
 			$this->active = $user_data['active'];
 			$this->deletable = $user_data['deletable'];
 		}
@@ -74,6 +76,8 @@ class User {
 			'first_name' => $user_array['first_name'],
 			'last_name' => $user_array['last_name'],
 			'phone' => $user_array['phone'],
+			'email' => $user_array['email'],
+			'active' => $user_array['active'],
 			'deletable' => $user_array['deletable']
 		);
 
@@ -90,7 +94,7 @@ class User {
 
 		$db = Database::createConnection();
 
-		$result = $db->query("SELECT username, first_name, last_name, phone, active, deletable
+		$result = $db->query("SELECT username, first_name, last_name, phone, email, active, deletable
 							  FROM user
 							  WHERE id={$user_id};");
 
@@ -188,6 +192,7 @@ class User {
 			'first_name' => $this->first_name,
 			'last_name' => $this->last_name,
 			'phone' => $this->phone,
+			'email' => $this->email,
 			'active' => $this->active,
 			'deletable' => $this->deletable,
 			'roles' => $this->roles,
