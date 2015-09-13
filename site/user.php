@@ -26,7 +26,6 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		}
 	}
 	else {
-
 		if (isset($_POST['modify'])) {
 			$user_data_array = array();
 
@@ -177,10 +176,20 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 								</span>
 								<input type='hidden' name='modify' />
 								<input type='hidden' name='user_id' value='{$user['id']}' />
-								<a href='{$root_directory}/user' class='button'>Zurück</a>
-								<a href='#' id='edit-user' class='button'>Editieren</a>
 							</span>
-						</form>";
+						</form>
+						<span style='display: inline-block;' id='delete-user'>
+							<form class='inline' action='{$root_directory}/confirmation' method='post'>
+								<input type='hidden' name='confirmation' value='true'>
+								<input type='hidden' name='action' value='delete'>
+								<input type='hidden' name='description' value='Nutzer'>
+								<input type='hidden' name='table' value='user'>
+								<input type='hidden' name='id' value='{$user['id']}'>
+								<a href='#' class='button error confirm'>Löschen</a>
+							</form>
+						</span>
+						<a href='{$root_directory}/user' class='button'>Zurück</a>
+						<a href='#' id='edit-user' class='button'>Editieren</a>";
 				}
 			} else {
 				$title = "Nutzerübersicht";

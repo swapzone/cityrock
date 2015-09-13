@@ -52,6 +52,8 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 
 	RewriteRule ^user/([^/.]+)/?$ user.php?id=$1 [L]
 
+	RewriteRule ^archive/([^/.]+)/?$ archive.php?id=$1 [L]
+
   # -----------------------------------------------------------------------------------------------
   # Rewrite rules for api requests
   # -----------------------------------------------------------------------------------------------

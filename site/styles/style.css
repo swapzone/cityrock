@@ -2228,7 +2228,7 @@ Grid and Layout settings
   clear: both;
 }
 
-.basic, .course, .user, .profile, .registrants, .settings {
+.basic, .course, .user, .archive, .profile, .registrants, .settings {
   width: 95.83333%;
   float: left;
   margin-left: 2.08333%;
@@ -2236,18 +2236,18 @@ Grid and Layout settings
   padding: 0.8em;
   margin-bottom: 2em;
 }
-.basic .no-mobile, .course .no-mobile, .user .no-mobile, .profile .no-mobile, .registrants .no-mobile, .settings .no-mobile {
+.basic .no-mobile, .course .no-mobile, .user .no-mobile, .archive .no-mobile, .profile .no-mobile, .registrants .no-mobile, .settings .no-mobile {
   display: none;
 }
 @media screen and (min-width: 720px) {
-  .basic, .course, .user, .profile, .registrants, .settings {
+  .basic, .course, .user, .archive, .profile, .registrants, .settings {
     width: 70.83333%;
     float: left;
     margin-left: 2.08333%;
     margin-right: 2.08333%;
     padding: 3em 0;
   }
-  .basic .mobile, .course .mobile, .user .mobile, .profile .mobile, .registrants .mobile, .settings .mobile {
+  .basic .mobile, .course .mobile, .user .mobile, .archive .mobile, .profile .mobile, .registrants .mobile, .settings .mobile {
     display: none;
   }
 }
@@ -2467,56 +2467,56 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   background-color: #444;
 }
 
-.course input, .user input, .profile input, .registrants input, .settings input, .course textarea, .user textarea, .profile textarea, .registrants textarea, .settings textarea, .course select, .user select, .profile select, .registrants select, .settings select {
+.course input, .user input, .archive input, .profile input, .registrants input, .settings input, .course textarea, .user textarea, .archive textarea, .profile textarea, .registrants textarea, .settings textarea, .course select, .user select, .archive select, .profile select, .registrants select, .settings select {
   margin-bottom: 0.8em;
 }
-.course select, .user select, .profile select, .registrants select, .settings select {
+.course select, .user select, .archive select, .profile select, .registrants select, .settings select {
   display: block;
 }
-.course label, .user label, .profile label, .registrants label, .settings label {
+.course label, .user label, .archive label, .profile label, .registrants label, .settings label {
   display: block;
   margin-bottom: 0.3em;
   line-height: 1em;
 }
-.course .button, .user .button, .profile .button, .registrants .button, .settings .button {
+.course .button, .user .button, .archive .button, .profile .button, .registrants .button, .settings .button {
   margin-top: 0.8em;
 }
 
-.basic .list-heading span, .course .list-heading span, .user .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .profile .list-item span, .registrants .list-item span {
+.basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .archive .list-item span, .profile .list-item span, .registrants .list-item span {
   display: table-cell;
   padding: 0.1em 0.5em 0.5em 0.1em;
   vertical-align: middle;
 }
-.basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
+.basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .archive .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
   display: none;
 }
 @media screen and (min-width: 720px) {
-  .basic .list-heading span, .course .list-heading span, .user .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .profile .list-item span, .registrants .list-item span {
+  .basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .archive .list-item span, .profile .list-item span, .registrants .list-item span {
     padding: 0 1.5em 0.5em 0;
   }
-  .basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
+  .basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .archive .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
     display: table-cell;
   }
 }
 
-.basic .list, .course .list, .user .list, .profile .list, .registrants .list {
+.basic .list, .course .list, .user .list, .archive .list, .profile .list, .registrants .list {
   display: table;
   padding: 0.5em 0;
 }
-.basic .list-heading, .course .list-heading, .user .list-heading, .profile .list-heading, .registrants .list-heading {
+.basic .list-heading, .course .list-heading, .user .list-heading, .archive .list-heading, .profile .list-heading, .registrants .list-heading {
   display: table-header-group;
   font-weight: 600;
 }
-.basic .list-item, .course .list-item, .user .list-item, .profile .list-item, .registrants .list-item {
+.basic .list-item, .course .list-item, .user .list-item, .archive .list-item, .profile .list-item, .registrants .list-item {
   display: table-row;
 }
-.basic .list-item span.disabled, .course .list-item span.disabled, .user .list-item span.disabled, .profile .list-item span.disabled, .registrants .list-item span.disabled {
+.basic .list-item span.disabled, .course .list-item span.disabled, .user .list-item span.disabled, .archive .list-item span.disabled, .profile .list-item span.disabled, .registrants .list-item span.disabled {
   color: #8c8c8c;
 }
-.basic .list-item span > input, .course .list-item span > input, .user .list-item span > input, .profile .list-item span > input, .registrants .list-item span > input {
+.basic .list-item span > input, .course .list-item span > input, .user .list-item span > input, .archive .list-item span > input, .profile .list-item span > input, .registrants .list-item span > input {
   margin-bottom: 0;
 }
-.basic .list-item.no-mobile, .course .list-item.no-mobile, .user .list-item.no-mobile, .profile .list-item.no-mobile, .registrants .list-item.no-mobile {
+.basic .list-item.no-mobile, .course .list-item.no-mobile, .user .list-item.no-mobile, .archive .list-item.no-mobile, .profile .list-item.no-mobile, .registrants .list-item.no-mobile {
   display: none;
 }
 
@@ -2770,6 +2770,33 @@ p {
 }
 .user .button {
   margin-right: 0.4em;
+}
+
+.archive .button {
+  margin-right: 0.4em;
+}
+.archive .no-mobile {
+  display: none;
+}
+.archive .list-item {
+  display: none;
+}
+@media screen and (min-width: 720px) {
+  .archive .mobile {
+    display: none;
+  }
+  .archive .course-list-heading span.no-mobile {
+    display: table-cell;
+  }
+  .archive .course-list-heading span.mobile {
+    display: none;
+  }
+  .archive .course-list-item span.no-mobile {
+    display: table-cell;
+  }
+  .archive .course-list-item span.mobile {
+    display: none;
+  }
 }
 
 .profile input {

@@ -169,7 +169,7 @@ else {
 			  </form>
 			  <a href='#' class='button error remove-move-item'>Abbrechen</a>
 			</span>
-			<a href='{$root_directory}/course' class='button'>Zurück</a>
+			<a href='#' onclick='history.go(-1);' class='button'>Zurück</a>
 			<a href='{$root_directory}/course/{$_GET['id']}/registrants/new' class='button'>Teilnehmer hinzufügen</a>
 			<a href='{$root_directory}/course/{$_GET['id']}/registrants/print' class='button' target='_blank'>Drucken</a>";
 

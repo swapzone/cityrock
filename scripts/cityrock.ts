@@ -139,6 +139,13 @@ module cityrock {
       }
     });
 
+    // confirmation links
+    $('.confirm').on('click', function(event) {
+
+      if(confirm("Bist du dir sicher?"))
+        $(event.target).parent().submit();
+    });
+
     // special treatment for our friends from Cupertino
     if (navigator.userAgent.match(/(iPod|iPhone|iPad)/) ||
       navigator.userAgent.match(/Android; (Mobile|Tablet).*Firefox/)) {
@@ -252,13 +259,6 @@ module cityrock {
       $(event.target).parent().parent().remove();
     });
 
-    // confirmation links
-    $('.confirm').on('click', function(event) {
-
-      if(confirm("Bist du dir sicher?"))
-        $(event.target).parent().submit();
-    });
-
     // move registrant links
     $('.move').on('click', function(event) {
 
@@ -290,6 +290,7 @@ module cityrock {
 
     $("#edit-user").click(function() {
       $(this).hide();
+      $('#delete-user').hide();
       $(this).after("<input type='submit' value='Speichern' class='button'>");
 
       if(usernameText)
@@ -458,6 +459,35 @@ module cityrock {
       return "<input type='" + type + "' name='" + name + "' value='" + value + "' />";
     }
   }
+
+  /**
+   *
+   */
+  export function initializeArchiveView() {
+    var yearFilter = $('#archive-filter-year');
+    var monthFilter = $('#archive-filter-month');
+
+    filterCourses();
+
+    yearFilter.change(function() {
+      filterCourses();
+    });
+
+    monthFilter.change(function() {
+      filterCourses();
+    });
+
+    function filterCourses() {
+      $('.list-item').each(function (index, element) {
+        if ($(element).attr('year') == yearFilter.val() && $(element).attr('month') == monthFilter.val()) {
+          $(element).css('display', 'table-row');
+        }
+        else {
+          $(element).css('display', 'none');
+        }
+      });
+    }
+  }
 }
 
 $(():void => {
@@ -467,4 +497,5 @@ $(():void => {
   cityrock.initializeCourseView();
   cityrock.initializeUserView();
   cityrock.initializeProfileView();
+  cityrock.initializeArchiveView();
 });

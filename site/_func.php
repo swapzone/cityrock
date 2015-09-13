@@ -11,18 +11,20 @@ require_once('inc/user.php');
  * given.
  *
  * @param int $course_type_id
+ * @param int $archive
  * @return array of course arrays
  */
-function getCourses($course_type_id = null) {
+function getCourses($archive = false, $course_type_id = null) {
 
 	$db = Database::createConnection();
 	
 	$sql = "SELECT id, course_type_id, max_participants 
-					FROM course";
-	if(isset($course_type_id)) 
-		$sql .= " WHERE course_type_id=$course_type_id;";
-	else 
-		$sql .= ";";
+			FROM course";
+
+	if($course_type_id != null)
+		$sql .= " WHERE course_type_id=$course_type_id";
+
+	$sql .= ";";
 
 	$result = $db->query($sql);
 
@@ -36,9 +38,9 @@ function getCourses($course_type_id = null) {
 	foreach($course_array as $key=>$course) {
 		
 		$result = $db->query("SELECT start 
-													FROM date 
-													WHERE course_id={$course['id']} 
-													ORDER BY start;");
+						      FROM date
+							  WHERE course_id={$course['id']}
+							  ORDER BY start;");
 
 		if ($result->num_rows > 0) {
 			$row = $result->fetch_assoc();
@@ -46,10 +48,25 @@ function getCourses($course_type_id = null) {
 		} 
 	}
 
+	$filteredCourseArray = array();
+
+	$now = new DateTime();
+
+	foreach($course_array as $course) {
+		if($archive) {
+			if($course['date'] < $now)
+				$filteredCourseArray[] = $course;
+		}
+		else {
+			if($course['date'] > $now)
+				$filteredCourseArray[] = $course;
+		}
+	}
+
 	$db->close();
 
-	usort($course_array, "courseSort");
-	return $course_array;
+	usort($filteredCourseArray, "courseSort");
+	return $filteredCourseArray;
 }
 
 /**
@@ -505,7 +522,8 @@ function renderNavigation($user) {
 		$admin_menu_items = "
 			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>
 			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
-			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>";
+			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
+			<li><a href='{$root_directory}/archive'>Archiv</a></li>";
 	}
 
 	return "
