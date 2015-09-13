@@ -64,32 +64,24 @@ $deadlineLimit = $config['system']['deadline'];
 		<div id="content"> 
       <table width="450" border="0" align="right" cellpadding="0" cellspacing="0">
 				<tr>
-			   	<td width="700" height="600" align="right" valign="top"><img src="img/fotos/kurse1.jpg" width="400" height="489" alt="Vorstiegskurs im Cityrock" /><br /></td>
+			   	<td width="670" height="600" align="right" valign="top"><img src="img/fotos/kurse1.jpg" width="400" height="489" alt="Vorstiegskurs im Cityrock" /><br /></td>
 		    </tr>
 			</table>	 
 			<span class="ueber">Aufbaukurs Vorstiegsklettern</span><br /><br />
 			<p>
 				Der Aufbaukurs &quot;Vorstiegsklettern&quot; ist ideal für Kletterer, 
-				die das Klettern und Sichern in Toprope-Routen bereits beherrschen und den nächsten Schritt wagen wollen. <br />
-				Unter Anleitung unserer erfahrenen Trainerinnen und Trainer lernen die TeilnehmerInnen alles, 
-				was beim Klettern und Sichern in Vorstiegsrouten zu beachten ist. 
-			</p>
-			<p>
-				Der Kurs bietet außerdem die Möglichkeit, das Gelernte ausführlich zu üben, um  eine solide Basis zu schaffen, 
-				mit der die TeilnehmerInnen selbstständig an künstlichen Kletterwänden sicher Vorstiegsklettern und -sichern können.
-				Nach erfolgreicher Teilnahme erhält jede/r der TeilnehmerInnen den Kletterschein &quot;Vorstieg&quot; des DAV.<br />
+				die das Topropeklettern bereits beherrschen und nun den nächsten Schritt - das Vorstiegsklettern - erlernen möchten.<br />
+				<br />
+Insbesondere beim Vorstiegsklettern und -sichern wird ein Kurs unter professioneller Anleitung   dringend empfohlen. Um Sicherungsfehler zu vermeiden, ist nicht nur viel Aufmerksamkeit, sondern auch einige Erfahrung notwendig. In diesem Kurs erlernt ihr Schritt für Schritt das richtige Sicherungsverhalten von Profis. Um eine solide Basis zu schaffen, bleibt zudem viel Zeit, das Gelernte ausführlich zu üben.<br />
+				<br />
+		      <strong>Nach erfolgreicher Teilnahme erhält jede/r TeilnehmerIn den Kletterschein &quot;Vorstieg&quot; des DAV</strong> und ist in der Lage, selbstständig und sicher an künstlichen Kletterwänden  im Vorstieg zu klettern und zu sichern.<br />
 				<br />
 				Der Kurs dauert zweimal vier Stunden und findet an zwei aufeinanderfolgenden Tagen statt. 
 				[cityrock]® stellt für die Dauer des Kurses das benötigte Material zur Verfügung. Eigenes Material darf auch verwendet werden.
+			<br />
 			</p>
-			<p> 
-				<br />
-			</p>
-			<p><strong>Voraussetzungen</strong></p>
-			<p>
-				Teilnehmen kann jeder, der den Schwerigkeitsgrad 5+ (UIAA) im Toprope sowie die Toprope-Sicherungstechnik 
-				mit mindestens einem Sicherungsgerät sicher beherrscht. Die Teilnahme an einem Toprope-Kletterkurs ist keine zwingende Voraussetzung.
-			</p>
+<p><strong>Voraussetzungen: </strong>Teilnehmen kann jeder, der den Schwerigkeitsgrad <strong>5+ (UIAA)</strong> im Toprope sowie die Toprope-Sicherungstechnik 
+      mit mindestens einem Sicherungsgerät sicher beherrscht. Die Teilnahme an einem Toprope-Kletterkurs ist keine zwingende Voraussetzung. </p>
 			<p>
 				<br />
 				<br />
@@ -97,27 +89,41 @@ $deadlineLimit = $config['system']['deadline'];
 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
+				  <td valign="top"><span class="ueber">Eckdaten</span><br />
+			      <br /></td>
+				  <td valign="top">&nbsp;</td>
+				  <td colspan="2" valign="top"><strong class="ueber">Termine</strong></td>
+			  </tr>
+				<tr>
 					<td width="15%" valign="top">
 						Dauer:<br /><br /><br /><br />
 						Alter:<br /><br />
 						Kosten:<br /><br />
-						TN-Zahl:
-					</td>
+						Teilnehmer:<br />
+			      <br />
+			      <b>Legende:</b></td>
 					<td width="34%" valign="top">Zweitägig (jws. 4 Stunden)<br />
-				    12.00 bis 16.00 Uhr<br /><br /><br />
+				    Uhrzeit siehe Termine<br /><br /><br />
 				    Ab 14 Jahre<br /><br />
 				    € 95,-<br /><br />
-				    Maximal 12 Personen<br /><br />      
-					</td>
-					<td width="51%" colspan="2" valign="top"><strong>Termine <?php echo $year; ?></strong><br />
+				    Maximal 12 Personen<br /><br />
+				    <font color="#1975FF">Ausreichend freie Plätze</font><br />
+                    <font color="#CC3300">Wenige freie Plätze</font><br />
+                    <font color="#990000">Kurs ausgebucht</font></td>
+					<td width="51%" colspan="2" valign="top"><strong><?php echo $year; ?></strong><br />
 						<br />
 						<div>
 						<?php
 							foreach($courses as $course) {
 
-								if($course['dates'][0]['date'] > new DateTime()
-										&& $course['dates'][0]['date']->format(Y) == $year) {		
+								if($course['dates'][0]['date'] > new DateTime()) {		
 			
+									if($course['dates'][0]['date']->format(Y) != $year) {
+										$year = $course['dates'][0]['date']->format(Y);
+
+										echo "<div style='margin: 1em 0 0.3em 0;'><strong>{$year}</strong></div>";
+									}
+									
 									$registrants = getRegistrants($course['id']);
 									$placesAvailable = $course['max_participants'] - count($registrants);
 
@@ -181,16 +187,10 @@ $deadlineLimit = $config['system']['deadline'];
 				<tr>
 					<td valign="top">&nbsp;</td>
 					<td valign="top">&nbsp;</td>
-					<td>
-						<br />
-						<b>Legende:<br /></b>
-						<font color="#1975FF">Ausreichend freie Plätze</font><br />
-						<font color="#CC3300">Wenige freie Plätze</font><br />
-						<font color="#990000">Kurs ausgebucht</font>
-					</td>
+					<td>&nbsp;</td>
 				</tr>
 			</table>
-			<br />
+		  <br />
 			<br />
 			<br />
 		</div>

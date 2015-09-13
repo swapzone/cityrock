@@ -88,7 +88,7 @@ $deadlineLimit = $config['system']['deadline'];
 				eigenes Material kann natürlich auch verwendet werden. Mitzubringen sind Hallenschuhe und bequeme Sportkleidung, 
 				für Verpflegung muss selbst gesorgt werden.<br />	          
 			</td>
-      <td width="477" align="right" valign="top"><img src="img/fotos/toprope1.jpg" alt="Kletterschein Toprope" width="388" height="582" /></td>
+      <td width="477" align="right" valign="top"><img src="img/fotos/toprope1.jpg" alt="Kletterschein Toprope" /></td>
     </tr>
   </table>
 	<br />
@@ -97,27 +97,44 @@ $deadlineLimit = $config['system']['deadline'];
 
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
+		  <td valign="top"><span class="ueber">Eckdaten</span><br />
+	      <br /></td>
+		  <td valign="top">&nbsp;</td>
+		  <td valign="top"><strong class="ueber">Termine</strong></td>
+	  </tr>
+		<tr>
      	<td valign="top" width="12%">Dauer:<br /><br /><br />
-     		Alter:<br /><br />
+     		<br />
+	    Alter:<br /><br />
      		Kosten:<br /><br />
-       	TN-Zahl:
-			</td>
-    	<td valign="top" width="39%">Zweit&auml;gig (jws. 4 Stunden)<br />
-      	12.00 - 16.00 Uhr<br /><br />
-      	Ab 14 Jahre<br /><br />
-				&euro; 95,-<br /><br />
+       	Teilnehmer:</td>
+    	<td width="37%" valign="top">8 Stunden<br />
+    	  Zweit&auml;gig (jws. 4 Stunden)<br />
+      	Uhrzeit siehe Termin<br />
+      	<br />
+      	Ab 14 Jahre<br /><br />				&euro; 95,-<br /><br />
       	Maximal 12 Personen<br />
-			</td>
+      	<br />
+      	<b>Legende:<br />
+      	</b> <font color="#1975FF">Ausreichend freie Plätze</font><br />
+        <font color="#CC3300">Wenige freie Plätze</font><br />
+        <font color="#990000">Kurs ausgebucht</font><span class="ueber"><br />
+	    </span></td>
 
-			<td width="49%" valign="top"><strong>Termine <?php echo $year; ?></strong>:<br />
+			<td width="51%" valign="top"><strong><?php echo $year; ?></strong><br />
 				<br />	
 				<div>
 				<?php
 					foreach($courses as $course) {
 
-						if($course['dates'][0]['date'] > new DateTime()
-								&& $course['dates'][0]['date']->format(Y) == $year) {		
+						if($course['dates'][0]['date'] > new DateTime()) {		
 		
+							if($course['dates'][0]['date']->format(Y) != $year) {
+								$year = $course['dates'][0]['date']->format(Y);
+
+								echo "<div style='margin: 1em 0 0.3em 0;'><strong>{$year}</strong></div>";
+							}
+
 							$registrants = getRegistrants($course['id']);
 							$placesAvailable = $course['max_participants'] - count($registrants);
 							
@@ -173,27 +190,21 @@ $deadlineLimit = $config['system']['deadline'];
 					}
 				?>
 				</div>
-			</td>			
+				<br />
+				Für Gruppen ab 4 Personen bieten wir Kletterkurse zu extra Terminen an. Für eine Terminvereinbarung bitte Kontakt zu uns aufnehmen. 
+		  </td>			
 		</tr>
 			
 		<tr>
 			<td valign="top">&nbsp;</td>
       <td valign="top">&nbsp;</td>
-      <td valign="top">
-				F&uuml;r Gruppen ab 4 Personen bieten wir Kletterkurse zu extra Terminen an. 
-				F&uuml;r eine Terminvereinbarung bitte <a href="kontakt.php">Kontakt</a> zu uns aufnehmen.
-			</td>
+      <td valign="top">&nbsp;</td>
     </tr>
 	 	<tr>
 			<td valign="top">&nbsp;</td>
 			<td valign="top">&nbsp;</td>
 			<td>
-				<br />
-				<b>Legende:<br /></b>
-				<font color="#1975FF">Ausreichend freie Plätze</font><br />
-				<font color="#CC3300">Wenige freie Plätze</font><br />
-				<font color="#990000">Kurs ausgebucht</font>
-			</td>
+				<br /></td>
 		</tr>
 	</table>	
 

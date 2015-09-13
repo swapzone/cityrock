@@ -43,35 +43,42 @@ $deadlineLimit = $config['system']['deadline'];
 <div id="seitenrahmen">
   <? include ("menu.php"); ?>
 </div>
-<div id="content">  <table
-  " border="0" align="right" cellpadding="0" cellspacing="0">
+<div id="content">  <table border="0" align="right" cellpadding="0" cellspacing="0">
     <tr>
       <td width="380" height="330" align="right" valign="top"><img src="img/fotos/halle1.jpg" alt="" height="240" width="320" border="0" /><br /></td>
     </tr>
   </table>	
-  <span class="ueber">Kletter-Schnupperkurs<br />
+  <span class="ueber">Kletter-Schnupperkurs<br /></span>
+  <p>Der Schnupperkurs ist die perfekte Gelegenheit, das Klettern einmal auszuprobieren. In zwei Stunden lernen die Teilnehmerinnen und Teilnehmer einige grundlegende Klettertechniken und können, gesichert von unseren erfahrenen Betreuern, ihr Klettertalent an zahlreichen Wänden testen. Die nötige  Ausrüstung gibt's natürlich dazu - und wer das Klettern als seinen Sport entdeckt hat, erhält den weiterführenden <a href="grundkurs.php">Toprope-Kurs</a> um 10,- Euro günstiger.</p>
+  <p><strong><br />
+    Kursprogramm und Leistungen:</strong><br />
+    <br />
+    - Grundlegende Klettertechniken<br />
+    - Sicherung durch unsere Betreuer<br />
+    - Ausrüstung (Klettergurt, HMS-Karabiner, Kletterschuhe)<br />
+    - Gutschein über 10,- für weiterführenden Kurs<br />
+  - Versicherung<br />
   <br />
-  </span>
-  <p>
-		Der Schnupperkurs bietet die perfekte Gelegenheit, das Klettern  einmal auszuprobieren. 
-		In 4 Stunden lernen die Teilnehmer die grundlegende Kletter- und Sicherungstechnik und können unter Anleitung 
-		unserer erfahrenen MitarbeiterInnen selbstständig erste Erfahrungen  als Kletternde sowie auch als Sichernde sammeln.<br />
-    <br />
-    Alter: Ab 14 Jahre<br />
-    Kosten pro Person: € 50,-<br />
-    <br />
-    [cityrock]® stellt an diesem Tag alles benötigte Klettermaterial (Klettergurt, Karabiner, Kletterschuhe und Seile) zur Verfügung. 
-		Eigenes Material kann jedoch ebenfalls verwendet werden. Für Verpflegung muss selbst gesorgt werden.<br />
+  <strong><br />
+  Preis pro Person:</strong> 25,- Euro </p>
+<p>Mitzubringen ist bequeme Sportkleidung. <br />
+  Für Verpflegung muss selbst gesorgt werden.</p>
+<br />
     <br />
 
-    <b>Termine <?php echo $year; ?></b><br />
+    <div style='margin-bottom: 0.3em;'><b>Termine <?php echo $year; ?></b></div>
 		<table>
 		<?php
 
 			foreach($courses as $course) {
 
-				if($course['dates'][0]['date'] > new DateTime()
-						&& $course['dates'][0]['date']->format(Y) == $year) {	
+				if($course['dates'][0]['date'] > new DateTime()) {	
+
+					if($course['dates'][0]['date']->format(Y) != $year) {
+						$year = $course['dates'][0]['date']->format(Y);
+
+						echo "<div style='margin: 1em 0 0.3em 0;'><strong>Termine {$year}</strong></div>";
+					}
 
 					$registrants = getRegistrants($course['id']);
 					$placesAvailable = $course['max_participants'] - count($registrants);
@@ -108,7 +115,7 @@ $deadlineLimit = $config['system']['deadline'];
 
 					echo "
 						<tr class='course-row'>
-							<td><span class='course-row-date'>{$day} {$month}</span>, {$date->format('H')}-" . getEndTime($date, $duration) . " Uhr</td>
+							<td><span class='course-row-date'>{$day} {$month}</span>, {$date->format('H:i')}-" . getEndTime($date, $duration, true) . " Uhr</td>
 							<td>{$link}</td>
 						</tr>";
 				}
@@ -116,10 +123,9 @@ $deadlineLimit = $config['system']['deadline'];
 		?>
 		</table>
     <br />
-    Für Gruppen ab 4 Personen bieten wir extra Termine auf Anfrage an.<br />
-    <br />
-    Weitere Infos und Anmeldung  bei Sportreferent <a href="kontakt.php">Rainer Öhrle</a>.</p>
-		<br />	
+  Für Gruppen ab 4 Personen bieten wir extra Termine auf Anfrage an.<br />
+  <br />
+<br />	
 		<b>Legende:<br /></b>
 		<font color="#1975FF">Ausreichend freie Plätze</font><br />
 		<font color="#CC3300">Wenige freie Plätze</font><br />
