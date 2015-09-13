@@ -9213,6 +9213,8 @@ return jQuery;
 var cityrock;
 (function (cityrock) {
     'use strict';
+    // state variables
+    var showSaveButton = false;
     /**
      *
      *
@@ -9377,6 +9379,13 @@ var cityrock;
                 firstHelpDate.css('display', 'none');
             }
         });
+        // show save button if checkboxes change
+        $(":checkbox").click(function () {
+            if (!showSaveButton) {
+                $("#edit-user").after("<input type='submit' value='Speichern' class='button'>");
+                showSaveButton = true;
+            }
+        });
         function checkDateFormat() {
             if (!$(firstHelpDate).find("input").val().match(/\d{2}.\d{2}.\d{4}/)) {
             }
@@ -9450,7 +9459,9 @@ var cityrock;
         $("#edit-user").click(function () {
             $(this).hide();
             $('#delete-user').hide();
-            $(this).after("<input type='submit' value='Speichern' class='button'>");
+            if (!showSaveButton) {
+                $(this).after("<input type='submit' value='Speichern' class='button'>");
+            }
             if (usernameText)
                 usernameText.html(function (index, oldHtml) {
                     return createInputField(oldHtml, 'username');

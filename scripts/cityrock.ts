@@ -3,6 +3,9 @@
 module cityrock {
   'use strict';
 
+  // state variables
+  var showSaveButton = false;
+
   /**
    *
    *
@@ -204,6 +207,15 @@ module cityrock {
       }
    });
 
+   // show save button if checkboxes change
+   $(":checkbox").click(function() {
+
+     if(!showSaveButton) {
+       $("#edit-user").after("<input type='submit' value='Speichern' class='button'>");
+       showSaveButton = true;
+     }
+   });
+
    function checkDateFormat() {
      if(!$(firstHelpDate).find("input")
          .val().match(/\d{2}.\d{2}.\d{4}/)) {
@@ -291,7 +303,10 @@ module cityrock {
     $("#edit-user").click(function() {
       $(this).hide();
       $('#delete-user').hide();
-      $(this).after("<input type='submit' value='Speichern' class='button'>");
+
+      if(!showSaveButton) {
+        $(this).after("<input type='submit' value='Speichern' class='button'>");
+      }
 
       if(usernameText)
         usernameText.html(function(index, oldHtml) {

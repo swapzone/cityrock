@@ -72,15 +72,24 @@ else {
 			</span>
 			<span class='list-item'>
 				<span>Telefonnummer</span>
-				<span id='phone-text'>{$user['phone']}</span>
+				<span id='phone-text'>
+					{$user['phone']}
+					<input type='hidden' name='phone' value='{$user['phone']}' />
+				</span>
 			</span>
 			<span class='list-item'>
 				<span>Email</span>
-				<span id='email-text'>{$user['email']}</span>
+				<span id='email-text'>
+					{$user['email']}
+					<input type='hidden' name='email' value='{$user['email']}' />
+				</span>
 			</span>
 			<span class='list-item'>
 				<span>Passwort</span>
-				<span id='password-text'>*******</span>
+				<span id='password-text'>
+					*******
+					<input type='hidden' name='password' value='' />
+				</span>
 			</span>
 		</span>
 		<span class='list'>";

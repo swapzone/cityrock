@@ -54,7 +54,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			else
 				$content = "Fehler: Die Nutzerdaten konnten nicht gespeichert werden.";
 		} else if (isset($_POST['new']) && isset($_POST['username']) && isset($_POST['password'])) {
-			$success = addUser($_POST['username'], md5($_POST['password']), $_POST['role']);
+			$success = addUser($_POST['username'], md5($_POST['password']), $_POST['user_role']);
 
 			if ($success) {
 				$title = "Neuer Nutzer";
@@ -73,8 +73,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<input type='text' placeholder='Nutzername' name='username'>
 							<label for='password'>Passwort (gut merken!)</label>
 							<input type='password' placeholder='Passwort' name='password'>
-							<label for='role'>Zugewiesene Rolle</label>
-							<select name='role'>";
+							<label for='user-role'>Zugewiesene Rolle</label>
+							<select name='user_role' id='user-role'>";
 
 					foreach (getRoles() as $role) {
 						$content .= "<option value='{$role['id']}'>{$role['title']}</option>";
