@@ -72,7 +72,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
 		if(isset($_POST['id'])) {
 			// update course
-			//$success = updateCourse($_POST['id'], $course_data, $dates);
+			$success = updateCourse($_POST['id'], $course_data, $dates);
 
 			$title = "Kurs editieren";
 
@@ -202,8 +202,36 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<span class='add-day'>
 								<a href='#' id='add-day'>Tag hinzufügen</a>
 							</span>
+							<label for='interval'>Wiederholen</label>
+							<select name='interval'>";
+
+					$intervalArray = getIntervals();
+
+					foreach($intervalArray as $interval) {
+						$selected = $interval['id'] == $course['interval_designator'] ? "selected" : "";
+
+						$content .= "<option value='{$interval['id']}' {$selected}>{$interval['description']}</option>";
+					}
+
+					$content .= "
+							</select>
+							<label for='staff'>Anzahl Übungsleiter</label>
+							<input type='text' name='staff' value='{$course['min_staff']}'>
+							<label for='staff_deadline'>Bis wieviele Tage vorher dürfen sich ÜL noch austragen?</label>
+							<input type='text' name='staff_deadline' value='{$course['staff_deadline']}'>
 							<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
 							<input type='text' name='registrants' value='{$course['max_participants']}'>
+							<label for='registrants_age'>Alter der Teilnehmer</label>
+							<input type='text' name='registrants_age' value='{$course['participants_age']}'>
+							<br />
+							<h3>Adresse der Veranstaltung</h3>
+							<label for='street'>Straße</label>
+							<input type='text' name='street' value='{$course['street']}'>
+							<label for='zip_city'>PLZ/Ort</label>
+							<input type='text' name='zip_city' value='{$course['zip']} {$course['city']}'>
+							<label for='phone'>Telefon</label>
+							<input type='text' name='phone' value='{$course['phone']}'>
+
 							<input type='hidden' value='{$number_of_days}' name='days'>
 							<input type='hidden' value='{$course_id}' name='id'>
 							<a href='./' class='button error'>Abbrechen</a>

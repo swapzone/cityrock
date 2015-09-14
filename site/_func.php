@@ -18,8 +18,8 @@ function getCourses($archive = false, $course_type_id = null) {
 
 	$db = Database::createConnection();
 	
-	$sql = "SELECT id, course_type_id, max_participants 
-			FROM course";
+	$sql = "SELECT id, course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone
+		  	FROM course";
 
 	if($course_type_id != null)
 		$sql .= " WHERE course_type_id=$course_type_id";
@@ -79,7 +79,7 @@ function getCourse($course_id) {
 
 	$db = Database::createConnection();
 
-	$result = $db->query("SELECT max_participants, course_type_id 
+	$result = $db->query("SELECT course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone
 						  FROM course 
 						  WHERE id=$course_id;");
 	
@@ -182,24 +182,33 @@ function addCourse($course_data, $dates) {
  * Updates a course with the given id and parameters.
  *
  * @param int $id
- * @param int $course_type
- * @param int $num_registrants
- * @param int $num_staff
+ * @param array $course_data
  * @param array $dates array of dates
  * @return boolean true in case it was successful
  */
-function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
+function updateCourse($id, $course_data, $dates) {
 
 	$db = Database::createConnection();
-	
+
+	$update_list = "";
+	foreach($course_data as $key=>$value) {
+		$update_list .= ", " . $key . "=";
+
+		if(is_numeric($value))
+			$update_list .= $value;
+		else
+			$update_list .= "'" . $value . "'";
+	}
+	$update_list = substr($update_list, 2);
+
+	//echo "Update List: " . $update_list. "<br />";
+
 	$db->query("UPDATE course 
-				SET course_type_id=$course_type, 
-					max_participants=$num_registrants,
-					min_staff=$num_staff 
+				SET {$update_list}
 				WHERE id=$id;");
 
 	$result = $db->query("DELETE FROM date 
-												WHERE course_id=$id;");
+			  			  WHERE course_id=$id;");
 
 	if($result) {
 		foreach($dates as $date) {
@@ -212,7 +221,7 @@ function updateCourse($id, $course_type, $num_registrants, $num_staff, $dates) {
 								  VALUES ('$mysql_time', {$date['duration']}, $id);");
 		}
 	}
-	
+
 	$db->close();
 
 	return $result;
