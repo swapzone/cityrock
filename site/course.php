@@ -180,7 +180,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					}
 
 					$content .= "
-							</select>";
+							</select>
+							<label for='title'>Kunde/Titel</label>
+							<input type='text' name='title' value='{$course['title']}'>";
 
 					$counter = 1;
 					foreach($course['dates'] as $date) {
@@ -208,7 +210,10 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					$intervalArray = getIntervals();
 
 					foreach($intervalArray as $interval) {
-						$selected = $interval['id'] == $course['interval_designator'] ? "selected" : "";
+						if($course['interval_designator'] != null)
+							$selected = $interval['id'] == $course['interval_designator'] ? "selected" : "";
+						else
+							$selected = $interval['description'] == "nie" ? "selected" : "";
 
 						$content .= "<option value='{$interval['id']}' {$selected}>{$interval['description']}</option>";
 					}
@@ -245,22 +250,69 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					$course_id = $_GET["id"];
 					$course = getCourse($course_id);
 					$registrants = getRegistrants($course_id);
+					$staff = getStaff($course_id);
+					$staff_num = count($staff);
+					$all_users = getUsers();
+
+					$staff_list = "<span class='staff-list''>";
+					$index = 1;
+					foreach($staff as $user) {
+						$userObj = $user->serialize();
+						$staff_list .= "<span>ÜL {$index}: {$userObj['first_name']} {$userObj['last_name']} (<a href='#' user-id='{$userObj['id']}' class='remove-staff''>entfernen</a>)</span>";
+						$index++;
+					}
+					$staff_list .= "</span>";
+
+					$user_list = "<option value='-1' style='display:none;'></option>";
+					foreach($all_users as $user) {
+						$userObj = $user->serialize();
+
+						$user_name = $userObj['first_name'] . " " . $userObj['last_name'];
+						if(trim($user_name) == "") $user_name = $userObj['username'];
+
+						$user_list .= "<option value='{$userObj['id']}'> {$user_name}</option>";
+					}
+
+					$showAddStaffLink = $course['min_staff'] > count($staff) ? "" : "display: none;";
 
 					$title = "Kursdetails";
 					$content = "
 						<span class='list'>
-							<span class='list-item'>
-								<span>Kurs ID</span><span>{$course_id}</span>
+							<span class='list-item' style='display: none;'>
+								<span style='display: none;'>Kurs ID</span>
+								<span style='display: none;' id='course-id'>{$course_id}</span>
 							</span>
 							<span class='list-item'>
-								<span>Kurstyp</span><span>{$course_types[$course['course_type_id']]}</span>
+								<span>Kunde/Titel</span><span>{$course['title']}</span>
 							</span>
 							<span class='list-item'>
-								<span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
+								<span>Kurstyp</span>
+								<span>{$course_types[$course['course_type_id']]}</span>
+							</span>
+							<span class='list-item'>
+								<span>Maximale Teilnehmerzahl</span>
+								<span>{$course['max_participants']}</span>
 							</span>
 							<span class='list-item'>
 								<span>Bereits registrierte Teilnehmer</span>
 								<span>" . count($registrants) ." (<a href='./{$course_id}/registrants'>anzeigen</a>)</span>
+							</span>
+							<span class='list-item'>
+								<span>Alter der Teilnehmer</span>
+								<span>{$course['participants_age']}</span>
+							</span>
+							<span class='list-item'>
+								<span>Übungsleiter</span>
+								<span>
+									{$staff_num} / {$course['min_staff']}
+									{$staff_list}
+									<span style='{$showAddStaffLink}'>
+										<a href='#' id='add-staff'>Übungsleiter hinzufügen</a>
+										<select id='staff-list' style='display: none'>
+											{$user_list}
+										</select>
+									</span>
+								</span>
 							</span>";
 
 					$counter = 1;
@@ -280,6 +332,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					}
 
 					$content .= "
+							<span class='list-item'>
+								<span>Addresse</span><span>{$course['street']}, {$course['plz']} {$course['city']}</span>
+							</span>
 						</span>
 						<span>
 							<form class='inline' action='{$root_directory}/confirmation' method='post'>

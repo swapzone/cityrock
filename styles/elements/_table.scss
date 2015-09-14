@@ -34,7 +34,7 @@
   .list-item {
     display: table-row;
 
-    span {
+    & > span {
       @extend %table-cell;
 
       &.disabled {

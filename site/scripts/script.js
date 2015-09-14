@@ -9213,6 +9213,8 @@ return jQuery;
 var cityrock;
 (function (cityrock) {
     'use strict';
+    // configuration
+    var rootDirectory = "/cityrock";
     // state variables
     var showSaveButton = false;
     /**
@@ -9443,6 +9445,71 @@ var cityrock;
                 $(event.target).parent().removeClass('show');
             });
         });
+        // add staff member
+        $('#add-staff').click(function () {
+            $(this).hide();
+            var staffList = $('#staff-list');
+            staffList.show();
+            staffList.change(function () {
+                var selectedUserId = $(this).val();
+                var formData = [
+                    {
+                        name: 'action',
+                        value: 'COURSE_ADD_STAFF'
+                    },
+                    {
+                        name: 'user_id',
+                        value: selectedUserId
+                    },
+                    {
+                        name: 'course_id',
+                        value: $('#course-id').text()
+                    }
+                ];
+                sendFormDataToApi(formData, function (err, message) {
+                    if (err) {
+                        staffList.before("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>Nutzer konnte nicht hinzugefügt werden.</span>");
+                        setTimeout(function () {
+                            $('.status-message').remove();
+                        }, 2000);
+                    }
+                    else {
+                        location.reload();
+                    }
+                });
+            });
+        });
+        // remove staff member
+        $('.remove-staff').click(function () {
+            var staffItem = $(this).parent();
+            var userId = $(this).attr('user-id');
+            var courseId = $('#course-id').text();
+            var formData = [
+                {
+                    name: 'action',
+                    value: 'COURSE_REMOVE_STAFF'
+                },
+                {
+                    name: 'user_id',
+                    value: userId
+                },
+                {
+                    name: 'course_id',
+                    value: courseId
+                }
+            ];
+            sendFormDataToApi(formData, function (err, message) {
+                if (err) {
+                    staffItem.after("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>Nutzer konnte nicht entfernt werden.</span>");
+                    setTimeout(function () {
+                        $('.status-message').remove();
+                    }, 2000);
+                }
+                else {
+                    location.reload();
+                }
+            });
+        });
     }
     cityrock.initializeCourseView = initializeCourseView;
     /**
@@ -9597,6 +9664,35 @@ var cityrock;
         }
     }
     cityrock.initializeUserView = initializeUserView;
+    /**
+     *
+     *
+     * @param formData
+     * @param callback
+     */
+    function sendFormDataToApi(formData, callback) {
+        // variable to hold request
+        var request;
+        // abort any pending request
+        if (request)
+            request.abort();
+        var url = window.location.protocol + "//" + window.location.hostname + rootDirectory + "/api";
+        console.log(url);
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: url,
+            type: "post",
+            data: formData
+        });
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR) {
+            callback(null, response);
+        });
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown) {
+            callback(errorThrown, null);
+        });
+    }
     /**
      *
      */

@@ -2483,19 +2483,19 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   margin-top: 0.8em;
 }
 
-.basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .archive .list-item span, .profile .list-item span, .registrants .list-item span {
+.basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item > span, .course .list-item > span, .user .list-item > span, .archive .list-item > span, .profile .list-item > span, .registrants .list-item > span {
   display: table-cell;
   padding: 0.1em 0.5em 0.5em 0.1em;
   vertical-align: middle;
 }
-.basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .archive .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
+.basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item > span.no-mobile, .course .list-item > span.no-mobile, .user .list-item > span.no-mobile, .archive .list-item > span.no-mobile, .profile .list-item > span.no-mobile, .registrants .list-item > span.no-mobile {
   display: none;
 }
 @media screen and (min-width: 720px) {
-  .basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item span, .course .list-item span, .user .list-item span, .archive .list-item span, .profile .list-item span, .registrants .list-item span {
+  .basic .list-heading span, .course .list-heading span, .user .list-heading span, .archive .list-heading span, .profile .list-heading span, .registrants .list-heading span, .basic .list-item > span, .course .list-item > span, .user .list-item > span, .archive .list-item > span, .profile .list-item > span, .registrants .list-item > span {
     padding: 0 1.5em 0.5em 0;
   }
-  .basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item span.no-mobile, .course .list-item span.no-mobile, .user .list-item span.no-mobile, .archive .list-item span.no-mobile, .profile .list-item span.no-mobile, .registrants .list-item span.no-mobile {
+  .basic .list-heading span.no-mobile, .course .list-heading span.no-mobile, .user .list-heading span.no-mobile, .archive .list-heading span.no-mobile, .profile .list-heading span.no-mobile, .registrants .list-heading span.no-mobile, .basic .list-item > span.no-mobile, .course .list-item > span.no-mobile, .user .list-item > span.no-mobile, .archive .list-item > span.no-mobile, .profile .list-item > span.no-mobile, .registrants .list-item > span.no-mobile {
     display: table-cell;
   }
 }
@@ -2511,10 +2511,10 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 .basic .list-item, .course .list-item, .user .list-item, .archive .list-item, .profile .list-item, .registrants .list-item {
   display: table-row;
 }
-.basic .list-item span.disabled, .course .list-item span.disabled, .user .list-item span.disabled, .archive .list-item span.disabled, .profile .list-item span.disabled, .registrants .list-item span.disabled {
+.basic .list-item > span.disabled, .course .list-item > span.disabled, .user .list-item > span.disabled, .archive .list-item > span.disabled, .profile .list-item > span.disabled, .registrants .list-item > span.disabled {
   color: #8c8c8c;
 }
-.basic .list-item span > input, .course .list-item span > input, .user .list-item span > input, .archive .list-item span > input, .profile .list-item span > input, .registrants .list-item span > input {
+.basic .list-item > span > input, .course .list-item > span > input, .user .list-item > span > input, .archive .list-item > span > input, .profile .list-item > span > input, .registrants .list-item > span > input {
   margin-bottom: 0;
 }
 .basic .list-item.no-mobile, .course .list-item.no-mobile, .user .list-item.no-mobile, .archive .list-item.no-mobile, .profile .list-item.no-mobile, .registrants .list-item.no-mobile {
@@ -2704,6 +2704,13 @@ p {
   color: #999;
   margin-bottom: 0.4em;
   border-bottom: 1px solid #ccc;
+}
+.course .staff-list {
+  display: block;
+  margin-bottom: 0.5em;
+}
+.course .staff-list > span {
+  display: block;
 }
 .course .no-mobile {
   display: none;

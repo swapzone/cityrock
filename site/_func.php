@@ -227,6 +227,32 @@ function updateCourse($id, $course_data, $dates) {
 	return $result;
 }
 
+/**
+ *
+ *
+ * @param $course_id
+ * @return array
+ */
+function getStaff($course_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("SELECT user_id
+					      FROM course_has_staff
+					      WHERE course_id={$course_id}");
+
+	$db->close();
+
+	$user_array = array();
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+			$user_array[] = User::withUserId($row['user_id']);
+		}
+	}
+
+	return $user_array;
+}
+
 /*****************************************************************************/
 /* User functionality																												 */
 /*****************************************************************************/
@@ -438,6 +464,43 @@ function moveRegistrant($registrant_id, $old_course_id, $new_course_id) {
 					 course_id=$old_course_id);");
 
 	$result = ($db->affected_rows > 0) ? true : false;
+
+	$db->close();
+
+	return $result;
+}
+
+/**
+ *
+ * @param $course_id
+ * @param $user_id
+ * @return mixed
+ */
+function addStaff($course_id, $user_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("INSERT INTO course_has_staff (course_id, user_id)
+						  VALUES ({$course_id}, {$user_id});");
+
+	$db->close();
+
+	return $result;
+}
+
+/**
+ *
+ *
+ * @param $course_id
+ * @param $user_id
+ * @return mixed
+ */
+function removeStaff($course_id, $user_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("DELETE FROM course_has_staff
+						  WHERE course_id={$course_id} AND user_id={$user_id};");
 
 	$db->close();
 

@@ -50,6 +50,15 @@
     border-bottom: 1px solid #ccc;
   }
 
+  .staff-list {
+    display: block;
+    margin-bottom: 0.5em;
+
+    & > span {
+      display: block;
+    }
+  }
+
   .no-mobile {
     display: none;
   }
