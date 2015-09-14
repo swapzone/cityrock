@@ -2,79 +2,82 @@
 
 include_once('_init.php');
 
-if(isset($_POST['new'])) {
-	/***********************************************************************/
-	/* Add registrant to database																				   */
-	/***********************************************************************/
-	$success = false;
+$required_roles = array('Administrator');
 
-	if(preg_match("/\d{2}.\d{2}.\d{4}/", $_POST['birthday'])) 
-		$success = addRegistrant($_GET['id'], $_POST['firstname'], $_POST['lastname'], 
-														 $_POST['street'], $_POST['zip'], $_POST['city'], 
-														 $_POST['birthday'], $_POST['email']);
+if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) {
 
-	$title = "Neuer Teilnehmer";
-	
-	if($success)		
-		$content = "Teilnehmer wurde erfolgreich hinzugefügt.";	
-	else 
-		$content = "Fehler: Teilnehmer konnte nicht hinzugefügt werden.";	
-	
-	include('_main.php');
-}
-else {
-	$course = getCourse($_GET['id']);
-	$registrants = getRegistrants($_GET['id']);
+	if (isset($_POST['new'])) {
+		/***********************************************************************/
+		/* Add registrant to database																				   */
+		/***********************************************************************/
+		$success = false;
 
-	if(isset($_GET['action'])) {
-		if($_GET['action'] == 'print') {
-			require('./lib/fpdf/fpdf.php');
-			/***********************************************************************/
-			/* Print registrant list																						   */
-			/***********************************************************************/
-			$title = utf8_decode("Teilnehmerliste für den");
-			$title .= " " . $course['dates'][0]['date']->format('j.n.Y');
+		if (preg_match("/\d{2}.\d{2}.\d{4}/", $_POST['birthday']))
+			$success = addRegistrant($_GET['id'], $_POST['firstname'], $_POST['lastname'],
+				$_POST['street'], $_POST['zip'], $_POST['city'],
+				$_POST['birthday'], $_POST['email']);
 
-			$pdf = new FPDF();
-			$pdf->SetMargins(15, 20);
+		$title = "Neuer Teilnehmer";
 
-			$pdf->AddPage();
-			$pdf->SetFont('Arial','B',16);
-			$pdf->Cell(0,18,$title,0,1,'L');
+		if ($success)
+			$content = "Teilnehmer wurde erfolgreich hinzugefügt.";
+		else
+			$content = "Fehler: Teilnehmer konnte nicht hinzugefügt werden.";
 
-			foreach($registrants as $registrant) {
-				$firstname = utf8_decode($registrant['first_name']);
-				$lastname = utf8_decode($registrant['last_name']);
+		$content_class = "registrants";
+		include('_main.php');
+	} else {
+		$course = getCourse($_GET['id']);
+		$registrants = getRegistrants($_GET['id']);
 
-				$text = "{$firstname} {$lastname}";
-				$text .= " ({$registrant['birthday']})";
-				$pdf->SetFont('Arial','B',12);
-				$pdf->Cell(0,5,$text,0,0,'L');
-				$pdf->ln();
-				
-				$street = utf8_decode($registrant['street']);
-				$city = utf8_decode($registrant['city']);
+		if (isset($_GET['action'])) {
+			if ($_GET['action'] == 'print') {
+				require('./lib/fpdf/fpdf.php');
+				/***********************************************************************/
+				/* Print registrant list																						   */
+				/***********************************************************************/
+				$title = utf8_decode("Teilnehmerliste für den");
+				$title .= " " . $course['dates'][0]['date']->format('j.n.Y');
 
-				$text = "{$street}, {$registrant['zip']} {$city}";
-				$pdf->SetFont('Arial','',12);
-				$pdf->Cell(0,5,$text,0,0,'L');
-				$pdf->ln();
+				$pdf = new FPDF();
+				$pdf->SetMargins(15, 20);
 
-				$text = "{$registrant['email']}, {$registrant['phone']}";
-				$pdf->Cell(0,5,$text,0,0,'L');
-				$pdf->ln();
+				$pdf->AddPage();
+				$pdf->SetFont('Arial', 'B', 16);
+				$pdf->Cell(0, 18, $title, 0, 1, 'L');
 
-				$pdf->ln();
-			}
+				foreach ($registrants as $registrant) {
+					$firstname = utf8_decode($registrant['first_name']);
+					$lastname = utf8_decode($registrant['last_name']);
 
-			$pdf->Output();
-		}
-		else if($_GET['action'] == 'new') {
-			/***********************************************************************/
-			/* Add registrant																										   */
-			/***********************************************************************/
-			$title = "Teilnehmer hinzufügen";
-			$content = "
+					$text = "{$firstname} {$lastname}";
+					$text .= " ({$registrant['birthday']})";
+					$pdf->SetFont('Arial', 'B', 12);
+					$pdf->Cell(0, 5, $text, 0, 0, 'L');
+					$pdf->ln();
+
+					$street = utf8_decode($registrant['street']);
+					$city = utf8_decode($registrant['city']);
+
+					$text = "{$street}, {$registrant['zip']} {$city}";
+					$pdf->SetFont('Arial', '', 12);
+					$pdf->Cell(0, 5, $text, 0, 0, 'L');
+					$pdf->ln();
+
+					$text = "{$registrant['email']}, {$registrant['phone']}";
+					$pdf->Cell(0, 5, $text, 0, 0, 'L');
+					$pdf->ln();
+
+					$pdf->ln();
+				}
+
+				$pdf->Output();
+			} else if ($_GET['action'] == 'new') {
+				/***********************************************************************/
+				/* Add registrant																										   */
+				/***********************************************************************/
+				$title = "Teilnehmer hinzufügen";
+				$content = "
 				<form method='post' onsubmit='return cityrock.validateForm(this);'>
 					<label for='firstname'>Vorname</label>
 					<input type='text' placeholder='Max' name='firstname'>
@@ -95,16 +98,15 @@ else {
 					<input type='submit' value='Erstellen' class='button'>
 				</form>";
 
-			$content_class = "registrants";
-			include('_main.php');
-		}
-	}
-	else {
-		/***********************************************************************/
-		/* Show all registrants																							   */
-		/***********************************************************************/
-		$title = "Teilnehmer";
-		$content = "
+				$content_class = "registrants";
+				include('_main.php');
+			}
+		} else {
+			/***********************************************************************/
+			/* Show all registrants																							   */
+			/***********************************************************************/
+			$title = "Teilnehmer";
+			$content = "
 			<p>Liste der Teilnehmer, die sich für Kurs {$_GET['id']} registriert haben.</p>
 			<div class='list'>
 				<span class='list-heading'>
@@ -115,9 +117,9 @@ else {
 					<span></span>
 				</span>";
 
-		foreach($registrants as $registrant) {
+			foreach ($registrants as $registrant) {
 
-			$content .= "
+				$content .= "
 				<span class='list-item'>
 					<span>{$registrant['first_name']} {$registrant['last_name']}</span>
 					<span>{$registrant['birthday']}</span>
@@ -134,30 +136,30 @@ else {
 						</form>		
 					</span>
 				</span>";
-		}
+			}
 
-		$content .= "
+			$content .= "
 			</div>
 			<span id='move-registrant'>
 		  	<form action='{$root_directory}/confirmation' method='post' class='inline'>
 					<label for='new_course_id' class='inline'>Verschieben nach:</label>
 					<select name='new_course_id' class='inline'>";
 
-		$alternatives = getCourses($course['course_type_id']);
+			$alternatives = getCourses($course['course_type_id']);
 
-		$counter = 0;
-		foreach($alternatives as $alternative) {
-		
-			if($alternative['id'] != $_GET['id']) {
-				$date = $alternative['date']->format('j.n.Y');
+			$counter = 0;
+			foreach ($alternatives as $alternative) {
 
-				$content .= "<option value='{$alternative['id']}'>$date</option>";
+				if ($alternative['id'] != $_GET['id']) {
+					$date = $alternative['date']->format('j.n.Y');
 
-				if(++$counter>10) break;
+					$content .= "<option value='{$alternative['id']}'>$date</option>";
+
+					if (++$counter > 10) break;
+				}
 			}
-		}
-			
-		$content .= "    	
+
+			$content .= "
 			    </select>
 					<input type='hidden' name='confirmation' value='true'>
 					<input type='hidden' name='action' value='move'>
@@ -173,8 +175,17 @@ else {
 			<a href='{$root_directory}/course/{$_GET['id']}/registrants/new' class='button'>Teilnehmer hinzufügen</a>
 			<a href='{$root_directory}/course/{$_GET['id']}/registrants/print' class='button' target='_blank'>Drucken</a>";
 
-		$content_class = "registrants";
-		include('_main.php');
+			$content_class = "registrants";
+			include('_main.php');
+		}
 	}
 }
+else {
+	$title = "Teilnehmer";
+	$content = "Du hast keine Berechtigung für diesen Bereich der Website.";
+
+	$content_class = "registrants";
+	include('_main.php');
+}
+
 ?>

@@ -2472,6 +2472,7 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 }
 .course select, .user select, .archive select, .profile select, .registrants select, .settings select {
   display: block;
+  margin-bottom: 1.6em;
 }
 .course label, .user label, .archive label, .profile label, .registrants label, .settings label {
   display: block;
@@ -2696,7 +2697,7 @@ p {
 .course .add-day {
   display: block;
   margin-top: -0.2em;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 .course .course-list-month {
   display: block;

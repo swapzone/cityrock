@@ -293,7 +293,7 @@ module cityrock {
    *
    */
   export function initializeUserView() {
-    var usernameText = $("#username-text");
+    // var usernameText = $("#username-text");
     var firstNameText = $("#first-name-text");
     var lastNameText = $("#last-name-text");
     var phoneText = $("#phone-text");
@@ -307,11 +307,6 @@ module cityrock {
       if(!showSaveButton) {
         $(this).after("<input type='submit' value='Speichern' class='button'>");
       }
-
-      if(usernameText)
-        usernameText.html(function(index, oldHtml) {
-          return createInputField(oldHtml, 'username');
-        });
 
       if(firstNameText)
         firstNameText.html(function(index, oldHtml) {
@@ -471,6 +466,12 @@ module cityrock {
      */
     function createInputField(value, name, type = null) {
       if(!type) type = 'text';
+
+      var inputPosition = value.indexOf('<input type="hidden"');
+      if(inputPosition > -1) {
+        value = value.substr(0, inputPosition - 1).trim();
+      }
+
       return "<input type='" + type + "' name='" + name + "' value='" + value + "' />";
     }
   }

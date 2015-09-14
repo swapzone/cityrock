@@ -131,20 +131,34 @@ function getCourseTypes() {
 }
 
 /** 
- * Inserts a course with the given parameters into the database.
+ * Inserts a course with the given course data and dates into the database.
  *
- * @param int $course_type
- * @param int $num_registrants
- * @param int $num_staff
+ * @param array $course_data
  * @param array $dates array of dates
  * @return boolean true in case it was successful
  */
-function addCourse($course_type, $num_registrants, $num_staff, $dates) {
+function addCourse($course_data, $dates) {
 
 	$db = Database::createConnection();
-	
-	$result = $db->query("INSERT INTO course (course_type_id, max_participants, min_staff) 
-												VALUES ($course_type, $num_registrants, $num_staff);");
+
+	$key_list = "";
+	$value_list = "";
+	foreach($course_data as $key=>$value) {
+		$key_list .= ", " . $key;
+
+		if(is_numeric($value))
+			$value_list .= ", " . $value;
+		else
+			$value_list .= ", '" . $value . "'";
+	}
+	$key_list = substr($key_list, 2);
+	$value_list = substr($value_list, 2);
+
+	//echo "Keys: " . $key_list;
+	//echo "Values: " . $value_list;
+
+	$result = $db->query("INSERT INTO course ({$key_list})
+						  VALUES ({$value_list});");
 	$course_id = $db->insert_id;
 
 	if($result) {
@@ -158,7 +172,7 @@ function addCourse($course_type, $num_registrants, $num_staff, $dates) {
 								  VALUES ('$mysql_time', {$date['duration']}, $course_id);");
 		}
 	}
-	
+
 	$db->close();
 
 	return $result;
@@ -482,6 +496,29 @@ function courseSort($a, $b) {
 }
 
 /**
+ *
+ *
+ * @return array
+ */
+function getIntervals() {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("SELECT * FROM repeat_interval;");
+
+	$interval_array = array();
+
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+			$interval_array[] = $row;
+		}
+	}
+	$db->close();
+
+	return $interval_array;
+}
+
+/**
  * Returns the German month name for a given date.
  *
  * @param date $date
@@ -521,14 +558,17 @@ function renderNavigation($user) {
 	if($user->hasPermission(array('Administrator'))) {
 		$admin_menu_items = "
 			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>
+			<li><a href='{$root_directory}/archive'>Kursarchiv</a></li>
 			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
-			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
-			<li><a href='{$root_directory}/archive'>Archiv</a></li>";
+			<li><a href='{$root_directory}/settings'>Einstellungen</a></li>";
 	}
 
 	return "
 		<ul>
 			{$admin_menu_items}
+
+			<li><a href='{$root_directory}/events'>Veranstaltungen</a></li>
+			<li><a href='{$root_directory}/calendar'>Kalenderansicht</a></li>
 			<li><a href='{$root_directory}/profile'>Mein Profil</a></li>
 			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>
 		</ul>";

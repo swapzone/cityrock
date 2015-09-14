@@ -29,9 +29,50 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			$counter++;
 		}
 
+		$course_data = array();
+
+		$course_data['course_type_id'] = $_POST['type'];
+
+		if($_POST['title'])
+			$course_data['title'] = $_POST['title'];
+
+		if($_POST['interval'] >= 0)
+			$course_data['interval_designator'] = $_POST['interval'];
+
+		if($_POST['staff'])
+			$course_data['min_staff'] = $_POST['staff'];
+
+		if($_POST['staff_deadline'])
+			$course_data['staff_deadline'] = $_POST['staff_deadline'];
+
+		if($_POST['registrants'])
+			$course_data['max_participants'] = $_POST['registrants'];
+
+		if($_POST['registrants_age'])
+			$course_data['participants_age'] = $_POST['registrants_age'];
+
+		if($_POST['street'])
+			$course_data['street'] = $_POST['street'];
+
+		if($_POST['phone'])
+			$course_data['phone'] = $_POST['phone'];
+
+		if($_POST['zip_city']) {
+			$address_array = explode(" ", $_POST['zip_city']);
+
+			if (count($address_array) > 1) {
+				if (is_numeric($address_array[0])) {
+					$course_data['zip'] = $address_array[0];
+					unset($address_array[0]);
+				}
+
+				$course_data['city'] = join(' ', $address_array);
+			}
+		}
+
 		if(isset($_POST['id'])) {
 			// update course
-			$success = updateCourse($_POST['id'], $_POST['type'], $_POST['registrants'], 2, $dates);
+			//$success = updateCourse($_POST['id'], $course_data, $dates);
 
 			$title = "Kurs editieren";
 
@@ -42,7 +83,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		}
 		else {
 			// create course
-			$success = addCourse($_POST['type'], $_POST['registrants'], 2, $dates);
+			$success = addCourse($course_data, $dates);
 
 			$title = "Neuer Kurs";
 
@@ -64,12 +105,14 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<label for='type'>Kurstyp</label>
 						<select name='type' id='type'>";
 
-				foreach($course_types as $key=>$title) {
-					$content .= "<option value='{$key}'>{$title}</option>";
+				foreach($course_types as $key=>$value) {
+					$content .= "<option value='{$key}'>{$value}</option>";
 				}
 
 				$content .= "
 						</select>
+						<label for='title'>Kunde/Titel</label>
+						<input type='text' placeholder='' name='title'>
 						<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
 						<input type='text' placeholder='z.B. 02.10.2015' name='date-1' class='date'>
 						<label for='time-1'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
@@ -79,10 +122,38 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<span class='add-day'>
 							<a href='#' id='add-day'>Tag hinzufügen</a>
 						</span>
+						<label for='interval'>Wiederholen</label>
+						<select name='interval'>";
+
+				$intervalArray = getIntervals();
+
+				foreach($intervalArray as $interval) {
+					$selected = $interval['description'] == "nie" ? "selected" : "";
+
+					$content .= "<option value='{$interval['id']}' {$selected}>{$interval['description']}</option>";
+				}
+
+				$content .= "
+						</select>
+						<label for='staff'>Anzahl Übungsleiter</label>
+						<input type='text' placeholder='' name='staff'>
+						<label for='staff_deadline'>Bis wieviele Tage vorher dürfen sich ÜL noch austragen?</label>
+						<input type='text' name='staff_deadline' value='2'>
 						<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
-						<input type='text' name='registrants'>
+						<input type='text' placeholder='' name='registrants'>
+						<label for='registrants_age'>Alter der Teilnehmer</label>
+						<input type='text' placeholder='' name='registrants_age'>
+						<br />
+						<h3>Adresse der Veranstaltung</h3>
+						<label for='street'>Straße</label>
+						<input type='text' placeholder='' name='street'>
+						<label for='zip_city'>PLZ/Ort</label>
+						<input type='text' placeholder='Bitte mit Leerzeichen zwischen PLZ und Ort eingeben' name='zip_city'>
+						<label for='phone'>Telefon</label>
+						<input type='text' placeholder='' name='phone'>
+
 						<input type='hidden' value='1' name='days'>
-						<a href='./' class='button error'>Abbrechen</a>
+						<a href='{$root_directory}/course' class='button error'>Abbrechen</a>
 						<input type='submit' value='Erstellen' class='button'>
 					</form>";
 			}
