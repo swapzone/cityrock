@@ -117,25 +117,18 @@ module cityrock {
       $('.navigation-menu-toggle i').addClass('fa-bars').removeClass('fa-close');
     });
 
-    // filter element
-    var filterLinks = $('#filter').find('span');
+    // filter elements
+    $('.filter').change(function () {
+      var filterValue = $(this).val();
 
-    $(filterLinks).on('click', function (event) {
-
-      $(filterLinks).each(function (index, element) {
-        $(element).removeClass('active');
-      });
-
-      $(event.target).addClass('active');
-
-      if ($(event.target).hasClass('all')) {
+      if (filterValue == "Alle") {
         $('.list-item').each(function (index, element) {
           $(element).show(0);
         });
       }
       else {
         $('.list-item').each(function (index, element) {
-          if ($(element).attr('class').indexOf($(event.target).text().toLocaleLowerCase()) === -1) {
+          if ($(element).attr('class').indexOf(filterValue.toLocaleLowerCase()) === -1) {
             $(element).hide(0);
           }
           else {

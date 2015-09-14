@@ -195,12 +195,12 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				$title = "Nutzerübersicht";
 
 				$content = "
-				<!-- COURSE FILTER -->
-				<div class='user-filter' id='filter'>
-					<span class='all active'>Alle</span>
-					<span>Kletterbetreuer</span>
-					<span>Führerschein</span>
-				</div>";
+				<label for='user-filter'>Wähle eine Eigenschaft, um die Nutzer zu filtern: </label>
+				<select class='filter' name='user-filter'>
+					<option value='Alle'>Alle</option>
+					<option value='kletterbetreuer'>Kletterbetreuer</option>
+					<option value='führerschein'>Führerschein</option>
+				</select>";
 
 				$content .= "
 					<div class='list'>

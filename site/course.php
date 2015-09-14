@@ -357,16 +357,16 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			/***********************************************************************/
 			$title = "Kursübersicht";
 			$content = "
-				<!-- COURSE FILTER -->
-				<div class='course-filter' id='filter'>
-					<span class='all active'>Alle</span>";
+				<label for='course-filter'>Wähle einen Kurstyp, um die Liste zu filtern: </label>
+				<select class='filter' name='course-filter'>
+					<option value='Alle'>Alle</option>";
 
 			foreach($course_types as $key=>$type) {
-				$content .= "<span>{$type}</span>";
+				$content .= "<option value='$type'>{$type}</option>";
 			}
 
 			$content .= "
-				</div>
+				</select>
 				<div class='list'>
 					<span class='list-heading'>
 						<span>Kurstyp</span>
