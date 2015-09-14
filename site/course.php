@@ -95,10 +95,10 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 	}
 	else {
 		if(isset($_GET["id"])) {
-			/***********************************************************************/
-			/* Course new 										                   */
-			/***********************************************************************/
 			if($_GET["id"] == "new") {
+				/***********************************************************************/
+				/* Course new 										                   */
+				/***********************************************************************/
 				$title = "Neuer Kurs";
 				$content = "
 					<form method='post' onsubmit='return cityrock.validateForm(this);'>

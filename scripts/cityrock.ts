@@ -230,7 +230,6 @@ module cityrock {
 
     // remove day link
     $('.remove-day').on('click', function (event) {
-
       $(event.target).parent().parent().remove();
     });
 
@@ -247,6 +246,85 @@ module cityrock {
       $('.remove-move-item').on('click', function (event) {
         //$(event.target).parent().hide();
         $(event.target).parent().removeClass('show');
+      });
+    });
+
+    // subscribe user to event
+    $('.event-subscribe').click(function() {
+      var subscribeButton = $(this);
+
+      var eventId = $(this).attr('event-id');
+      var userId = $(this).attr('user-id');
+
+      var formData =
+        [
+          {
+            name: 'action',
+            value: 'COURSE_ADD_STAFF'
+          },
+          {
+            name: 'user_id',
+            value: userId
+          },
+          {
+            name: 'course_id',
+            value: eventId
+          }
+        ];
+
+      sendFormDataToApi(formData, function (err, message) {
+        if (err) {
+          subscribeButton.after("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler!</span>");
+
+          setTimeout(function () {
+            $('.status-message').remove();
+          }, 2000);
+        }
+        else {
+          location.reload();
+        }
+      });
+    });
+
+    // unsubscribe user from event
+    $('.event-unsubscribe').click(function() {
+      var unsubscribeButton = $(this);
+
+      var eventId = $(this).attr('event-id');
+      var userId = $(this).attr('user-id');
+      var deadline = $(this).attr('deadline');
+
+      var formData =
+        [
+          {
+            name: 'action',
+            value: 'COURSE_REMOVE_STAFF'
+          },
+          {
+            name: 'user_id',
+            value: userId
+          },
+          {
+            name: 'course_id',
+            value: eventId
+          },
+          {
+            name: 'deadline',
+            value: deadline
+          }
+        ];
+
+      sendFormDataToApi(formData, function (err, message) {
+        if (err) {
+          unsubscribeButton.parent().parent().after("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>" + err.message + "</span>");
+
+          setTimeout(function () {
+            $('.status-message').remove();
+          }, 2500);
+        }
+        else {
+          location.reload();
+        }
       });
     });
 
@@ -538,6 +616,11 @@ module cityrock {
 
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR) {
+      if(response.indexOf('ERROR') == 0) {
+        callback(Error(response.substr(7)), null);
+        return;
+      }
+
       callback(null, response);
     });
 

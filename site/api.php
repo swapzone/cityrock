@@ -2,80 +2,128 @@
 
 include_once('_init.php');
 
-$required_roles = array('Administrator');
+$authenticated_user = $_SESSION['user'];
 
-if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) {
+if (isset($_POST['action'])) {
 
-    if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
 
-        switch ($_POST['action']) {
+        case "COURSE_ADD_STAFF":
+            if (!$_POST['course_id'] || !$_POST['user_id']) {
+                echo "ERROR: Parameters missing";
+                break;
+            }
 
-            case "COURSE_ADD_STAFF":
-                if (!$_POST['course_id'] || !$_POST['user_id']) {
-                    echo "ERROR: Parameters missing";
+            if($authenticated_user['id'] != $_POST['user_id'] &&
+                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+
+                echo "ERROR: Not authorized";
+                break;
+            }
+
+            $success = addStaff($_POST['course_id'], $_POST['user_id']);
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+
+
+        case "COURSE_REMOVE_STAFF":
+            if (!$_POST['course_id'] || !$_POST['user_id']) {
+                echo "ERROR: Parameters missing";
+                break;
+            }
+
+            if($authenticated_user['id'] != $_POST['user_id'] &&
+                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+
+                echo "ERROR: Not authorized";
+                break;
+            }
+
+            // check deadline
+            if($authenticated_user['id'] == $_POST['user_id']) {
+
+                if(!isset($_POST['deadline'])) {
+                    echo "ERROR: Deadline not set.";
                     break;
                 }
+                else {
+                    $deadline = intval($_POST['deadline']) - 1;
+                    $course = getCourse($_POST['course_id']);
 
-                $success = addStaff($_POST['course_id'], $_POST['user_id']);
+                    $durationString = 'P' . $deadline . 'D';
+                    $deadline_date = (new DateTime())->add(new DateInterval($durationString));
 
-                if ($success) echo "SUCCESS";
-                else echo "ERROR";
-                break;
-            case "COURSE_REMOVE_STAFF":
-                if (!$_POST['course_id'] || !$_POST['user_id']) {
-                    echo "ERROR: Parameters missing";
-                    break;
+                    if($deadline_date > $course['dates'][0]['date']) {
+                        echo "ERROR: Du kannst dich nicht mehr austragen. Deadline {$deadline} Tage vor Kursbeginn.";
+                        break;
+                    }
                 }
+            }
 
-                $success = removeStaff($_POST['course_id'], $_POST['user_id']);
+            $success = removeStaff($_POST['course_id'], $_POST['user_id']);
 
-                if ($success) echo "SUCCESS";
-                else echo "ERROR";
+            if ($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+
+
+        case "USER_ADD_ROLE":
+            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                echo "ERROR: Not authorized";
                 break;
-            case "USER_ADD_ROLE":
-                if (!$_POST['user_id'] || !$_POST['role_id']) {
-                    echo "ERROR: Parameters missing";
-                    break;
-                }
-
-                $success = addRole($_POST['user_id'], $_POST['role_id']);
-
-                if ($success) echo "SUCCESS";
-                else echo "ERROR";
+            }
+            if (!$_POST['user_id'] || !$_POST['role_id']) {
+                echo "ERROR: Parameters missing";
                 break;
-            case "USER_REMOVE_ROLE":
-                if (!$_POST['user_id'] || !$_POST['role_id']) {
-                    echo "ERROR: Parameters missing";
-                    break;
-                }
+            }
 
-                $success = removeRole($_POST['user_id'], $_POST['role_id']);
+            $success = addRole($_POST['user_id'], $_POST['role_id']);
 
-                if ($success) echo "SUCCESS";
-                else echo "ERROR";
+            if ($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+
+
+        case "USER_REMOVE_ROLE":
+            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                echo "ERROR: Not authorized";
                 break;
-            case "USER_DELETE":
-                if (!$_POST['user_id']) {
-                    echo "ERROR: Parameter missing";
-                    break;
-                }
-
-                $success = deleteItem($_POST['user_id'], "user");
-
-                if ($success) echo "SUCCESS";
-                else echo "ERROR";
+            }
+            if (!$_POST['user_id'] || !$_POST['role_id']) {
+                echo "ERROR: Parameters missing";
                 break;
-            default:
-                echo "Unknown.";
+            }
+
+            $success = removeRole($_POST['user_id'], $_POST['role_id']);
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+
+
+        case "USER_DELETE":
+            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                echo "ERROR: Not authorized";
                 break;
-        }
+            }
+            if (!$_POST['user_id']) {
+                echo "ERROR: Parameter missing";
+                break;
+            }
+
+            $success = deleteItem($_POST['user_id'], "user");
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+
+
+        default:
+            echo "Unknown.";
+            break;
     }
 }
-else {
-    $title = "Warnung";
-    $content = "Du hast keine Berechtigung für diesen Bereich der Website.";
 
-    $content_class = "basic";
-    include('_main.php');
-}
 ?>

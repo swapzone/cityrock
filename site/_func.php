@@ -37,7 +37,7 @@ function getCourses($archive = false, $course_type_id = null) {
 	
 	foreach($course_array as $key=>$course) {
 		
-		$result = $db->query("SELECT start 
+		$result = $db->query("SELECT start, duration
 						      FROM date
 							  WHERE course_id={$course['id']}
 							  ORDER BY start;");
@@ -45,7 +45,8 @@ function getCourses($archive = false, $course_type_id = null) {
 		if ($result->num_rows > 0) {
 			$row = $result->fetch_assoc();
 			$course_array[$key]['date'] = new DateTime($row['start']);
-		} 
+			$course_array[$key]['duration'] = $row['duration'];
+		}
 	}
 
 	$filteredCourseArray = array();
