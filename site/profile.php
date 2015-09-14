@@ -110,7 +110,7 @@ else {
 			$content .= " 		
 					<span id='{$description}-date'>
 						Datum des Kurses? 
-						<input type='text' id='{$description}-date-input' name='date-{$qualification['id']}' placeholder='01.01.1906' value='{$qualification['date']}' />
+						<input type='text' id='{$description}-date-input' class='date' name='date-{$qualification['id']}' placeholder='01.01.1906' value='{$qualification['date']}' />
 					</span>";
 		}
 

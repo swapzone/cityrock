@@ -9345,26 +9345,10 @@ var cityrock;
     }
     cityrock.initialize = initialize;
     /**
-      *
-      *
-      */
+     *
+     *
+     */
     function initializeProfileView() {
-        //
-        var changePhoneLink = $("#link-modify-phone");
-        $("#phone-input").hide();
-        changePhoneLink.click(function () {
-            $("#phone-text").hide();
-            $(this).hide();
-            $("#phone-input").show();
-        });
-        //
-        var changePasswordLink = $("#link-modify-password");
-        $("#password-input").hide();
-        changePasswordLink.click(function () {
-            $("#password-text").hide();
-            $(this).hide();
-            $("#password-input").show();
-        });
         var firstHelp = $('#erste-hilfe-kurs');
         var firstHelpDate = $('#erste-hilfe-kurs-date');
         if (firstHelp.is(':checked'))
@@ -9384,10 +9368,6 @@ var cityrock;
                 showSaveButton = true;
             }
         });
-        function checkDateFormat() {
-            if (!$(firstHelpDate).find("input").val().match(/\d{2}.\d{2}.\d{4}/)) {
-            }
-        }
     }
     cityrock.initializeProfileView = initializeProfileView;
     /**
@@ -9521,7 +9501,6 @@ var cityrock;
         var passwordText = $("#password-text");
         $("#edit-user").click(function () {
             $(this).hide();
-            $('#delete-user').hide();
             if (!showSaveButton) {
                 $(this).after("<input type='submit' value='Speichern' class='button'>");
             }
@@ -9545,6 +9524,35 @@ var cityrock;
                 passwordText.html(function (index, oldHtml) {
                     return createInputField('', 'password', 'password');
                 });
+        });
+        $('.delete-user').click(function () {
+            var deleteButton = $(this);
+            var userId = $(this).attr('user-id');
+            var result = confirm("Willst du den Nutzer wirklich löschen?");
+            if (result) {
+                // serialize the data in the form
+                var formData = [
+                    {
+                        name: 'action',
+                        value: 'USER_DELETE'
+                    },
+                    {
+                        name: 'user_id',
+                        value: userId
+                    }
+                ];
+                sendFormDataToApi(formData, function (err, message) {
+                    if (err) {
+                        deleteButton.after("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Löschen des Benutzers.</div>");
+                        setTimeout(function () {
+                            $('.status-message').remove();
+                        }, 2000);
+                    }
+                    else {
+                        window.location.assign(window.location.protocol + "//" + window.location.hostname + rootDirectory + "/user");
+                    }
+                });
+            }
         });
         // add roles to user object
         var userRoleSelection = $('#user-add-role-selection');

@@ -18,40 +18,40 @@ module cityrock {
   export function validateForm(form) {
 
     // check time format
-    var empty = $(form).find(".time").filter(function() {
+    var empty = $(form).find(".time").filter(function () {
       //alert(this.value);
       return !(this.value).match(/\d{2}:\d{2}/);
     });
 
-    if(empty.length) {
+    if (empty.length) {
       alert('Bitte das richtige Zeitformat beachten!');
     }
     else {
       // check date format
-      empty = $(form).find(".date").filter(function() {
+      empty = $(form).find(".date").filter(function () {
         return !(this.value).match(/\d{2}.\d{2}.\d{4}/);
       });
 
-      if(empty.length) {
+      if (empty.length) {
         alert('Bitte das richtige Datumsformat beachten!');
       }
       else {
         // check duration format
-        empty = $(form).find(".duration").filter(function() {
+        empty = $(form).find(".duration").filter(function () {
           return !(this.value % 1 === 0);
         });
 
-        if(empty.length) {
+        if (empty.length) {
           alert('Bitte nur ganzzahlige Werte für die Kursdauer angeben!');
         }
         else {
           // check zip code format
-          empty = $(form).find(".zip").filter(function() {
+          empty = $(form).find(".zip").filter(function () {
             var zipCode = this.value;
-            return (Number(zipCode)===zipCode && zipCode%1===0);
+            return (Number(zipCode) === zipCode && zipCode % 1 === 0);
           });
 
-          if(empty.length) {
+          if (empty.length) {
             alert('Bitte nur gültige Postleitzahlen eingeben!');
           }
           else {
@@ -78,7 +78,7 @@ module cityrock {
    */
   export function validateProfile(form) {
 
-    if(!$('#erste-hilfe-kurs').is(':checked'))
+    if (!$('#erste-hilfe-kurs').is(':checked'))
       return true;
 
     var dateInput = $('#erste-hilfe-kurs-date-input');
@@ -86,7 +86,7 @@ module cityrock {
     // check time format
     var dateValue = dateInput.val();
 
-    if(!dateValue.match(/\d{2}.\d{2}.\d{4}/)) {
+    if (!dateValue.match(/\d{2}.\d{2}.\d{4}/)) {
       dateInput.addClass('error');
       return false;
     }
@@ -139,9 +139,9 @@ module cityrock {
     });
 
     // confirmation links
-    $('.confirm').on('click', function(event) {
+    $('.confirm').on('click', function (event) {
 
-      if(confirm("Bist du dir sicher?"))
+      if (confirm("Bist du dir sicher?"))
         $(event.target).parent().submit();
     });
 
@@ -157,68 +157,35 @@ module cityrock {
     }
   }
 
- /**
+  /**
    *
    *
    */
   export function initializeProfileView():void {
 
-   //
-   var changePhoneLink = $("#link-modify-phone");
-
-   $("#phone-input").hide();
-
-   changePhoneLink.click(function() {
-     $("#phone-text").hide();
-     $(this).hide();
-
-     $("#phone-input").show();
-   });
-
-   //
-   var changePasswordLink = $("#link-modify-password");
-
-   $("#password-input").hide();
-
-   changePasswordLink.click(function() {
-     $("#password-text").hide();
-     $(this).hide();
-
-     $("#password-input").show();
-   });
-
-
     var firstHelp = $('#erste-hilfe-kurs');
     var firstHelpDate = $('#erste-hilfe-kurs-date');
 
-    if(firstHelp.is(':checked'))
+    if (firstHelp.is(':checked'))
       firstHelpDate.css('display', 'inline-block');
 
-   firstHelp.change(function() {
-      if(this.checked) {
+    firstHelp.change(function () {
+      if (this.checked) {
         firstHelpDate.css('display', 'block');
       }
-     else {
+      else {
         firstHelpDate.css('display', 'none');
       }
-   });
+    });
 
-   // show save button if checkboxes change
-   $(":checkbox").click(function() {
+    // show save button if checkboxes change
+    $(":checkbox").click(function () {
 
-     if(!showSaveButton) {
-       $("#edit-user").after("<input type='submit' value='Speichern' class='button'>");
-       showSaveButton = true;
-     }
-   });
-
-   function checkDateFormat() {
-     if(!$(firstHelpDate).find("input")
-         .val().match(/\d{2}.\d{2}.\d{4}/)) {
-
-       // wrong date format
-     }
-   }
+      if (!showSaveButton) {
+        $("#edit-user").after("<input type='submit' value='Speichern' class='button'>");
+        showSaveButton = true;
+      }
+    });
   }
 
   /**
@@ -228,12 +195,12 @@ module cityrock {
   export function initializeCourseView():void {
 
     // add day link
-    $('#add-day').on('click', function(event) {
+    $('#add-day').on('click', function (event) {
 
       var numberOfDays:number = $(event.target).parent().parent().find('input[name=days]').val();
-      var index:number = Number(numberOfDays)  + 1;
+      var index:number = Number(numberOfDays) + 1;
 
-      if(index<6) {
+      if (index < 6) {
         // set new value for days input
         $(event.target).parent().parent().find('input[name=days]').val(index.toString());
 
@@ -262,13 +229,13 @@ module cityrock {
     });
 
     // remove day link
-    $('.remove-day').on('click', function(event) {
+    $('.remove-day').on('click', function (event) {
 
       $(event.target).parent().parent().remove();
     });
 
     // move registrant links
-    $('.move').on('click', function(event) {
+    $('.move').on('click', function (event) {
 
       var registrantId:string = $(event.target).attr('id');
       var moveControl = $("#move-registrant");
@@ -277,20 +244,20 @@ module cityrock {
       moveControl.addClass('show');
 
       // remove button
-      $('.remove-move-item').on('click', function(event) {
+      $('.remove-move-item').on('click', function (event) {
         //$(event.target).parent().hide();
         $(event.target).parent().removeClass('show');
       });
     });
 
     // add staff member
-    $('#add-staff').click(function() {
+    $('#add-staff').click(function () {
       $(this).hide();
 
       var staffList = $('#staff-list');
 
       staffList.show();
-      staffList.change(function() {
+      staffList.change(function () {
         var selectedUserId = $(this).val();
 
         var formData =
@@ -309,8 +276,8 @@ module cityrock {
             }
           ];
 
-        sendFormDataToApi(formData, function(err, message) {
-          if(err) {
+        sendFormDataToApi(formData, function (err, message) {
+          if (err) {
             staffList.before("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>Nutzer konnte nicht hinzugefügt werden.</span>");
 
             setTimeout(function () {
@@ -325,7 +292,7 @@ module cityrock {
     });
 
     // remove staff member
-    $('.remove-staff').click(function() {
+    $('.remove-staff').click(function () {
       var staffItem = $(this).parent();
       var userId = $(this).attr('user-id');
       var courseId = $('#course-id').text();
@@ -346,8 +313,8 @@ module cityrock {
           }
         ];
 
-      sendFormDataToApi(formData, function(err, message) {
-        if(err) {
+      sendFormDataToApi(formData, function (err, message) {
+        if (err) {
           staffItem.after("<span class='status-message' style='color: red; margin-bottom: 0.5em;'>Nutzer konnte nicht entfernt werden.</span>");
 
           setTimeout(function () {
@@ -373,51 +340,87 @@ module cityrock {
     var emailText = $("#email-text");
     var passwordText = $("#password-text");
 
-    $("#edit-user").click(function() {
+    $("#edit-user").click(function () {
       $(this).hide();
-      $('#delete-user').hide();
 
-      if(!showSaveButton) {
+      if (!showSaveButton) {
         $(this).after("<input type='submit' value='Speichern' class='button'>");
       }
 
-      if(firstNameText)
-        firstNameText.html(function(index, oldHtml) {
+      if (firstNameText)
+        firstNameText.html(function (index, oldHtml) {
           return createInputField(oldHtml, 'first_name');
         });
 
-      if(lastNameText)
-        lastNameText.html(function(index, oldHtml) {
+      if (lastNameText)
+        lastNameText.html(function (index, oldHtml) {
           return createInputField(oldHtml, 'last_name');
         });
 
-      if(phoneText)
-        phoneText.html(function(index, oldHtml) {
+      if (phoneText)
+        phoneText.html(function (index, oldHtml) {
           return createInputField(oldHtml, 'phone');
         });
 
-      if(emailText)
+      if (emailText)
         emailText.html(function (index, oldHtml) {
           return createInputField(oldHtml, 'email');
         });
 
-      if(passwordText)
-        passwordText.html(function(index, oldHtml) {
+      if (passwordText)
+        passwordText.html(function (index, oldHtml) {
           return createInputField('', 'password', 'password');
         });
     });
 
+
+    $('.delete-user').click(function () {
+      var deleteButton = $(this);
+      var userId = $(this).attr('user-id');
+
+      var result = confirm("Willst du den Nutzer wirklich löschen?");
+
+      if (result) {
+
+        // serialize the data in the form
+        var formData =
+          [
+            {
+              name: 'action',
+              value: 'USER_DELETE'
+            },
+            {
+              name: 'user_id',
+              value: userId
+            }
+          ];
+
+        sendFormDataToApi(formData, function (err, message) {
+
+          if (err) {
+            deleteButton.after("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Löschen des Benutzers.</div>");
+
+            setTimeout(function () {
+              $('.status-message').remove();
+            }, 2000);
+          }
+          else {
+            window.location.assign(window.location.protocol + "//" + window.location.hostname + rootDirectory + "/user");
+          }
+        });
+      }
+    });
 
     // add roles to user object
     var userRoleSelection = $('#user-add-role-selection');
     var addRoleLink = $("#user-add-role");
     var userId = parseInt($('#user-id-text').text());
 
-    addRoleLink.click(function() {
+    addRoleLink.click(function () {
       $(this).hide();
       userRoleSelection.show();
 
-      userRoleSelection.change(function() {
+      userRoleSelection.change(function () {
         var selectedRoleId = $(this).val();
 
         var formData =
@@ -436,12 +439,12 @@ module cityrock {
             }
           ];
 
-        sendFormDataToApi(formData, function(err, message) {
+        sendFormDataToApi(formData, function (err, message) {
 
-          if(err) {
+          if (err) {
             addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Hinzufügen der Rolle.</div>");
 
-            setTimeout(function() {
+            setTimeout(function () {
               $('.status-message').remove();
             }, 2000);
           }
@@ -453,7 +456,7 @@ module cityrock {
     });
 
     // delete roles from user object
-    $(".remove-role").click(function() {
+    $(".remove-role").click(function () {
       var roleId = $(this).attr('role');
 
       // serialize the data in the form
@@ -473,12 +476,12 @@ module cityrock {
           }
         ];
 
-      sendFormDataToApi(formData, function(err, message) {
+      sendFormDataToApi(formData, function (err, message) {
 
-        if(err) {
+        if (err) {
           addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Entfernen der Rolle.</div>");
 
-          setTimeout(function() {
+          setTimeout(function () {
             $('.status-message').remove();
           }, 2000);
         }
@@ -497,10 +500,10 @@ module cityrock {
      * @returns {string}
      */
     function createInputField(value, name, type = null) {
-      if(!type) type = 'text';
+      if (!type) type = 'text';
 
       var inputPosition = value.indexOf('<input type="hidden"');
-      if(inputPosition > -1) {
+      if (inputPosition > -1) {
         value = value.substr(0, inputPosition - 1).trim();
       }
 
@@ -553,11 +556,11 @@ module cityrock {
 
     filterCourses();
 
-    yearFilter.change(function() {
+    yearFilter.change(function () {
       filterCourses();
     });
 
-    monthFilter.change(function() {
+    monthFilter.change(function () {
       filterCourses();
     });
 

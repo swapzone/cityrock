@@ -353,7 +353,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		}
 		else {
 			/***********************************************************************/
-			/* Course overview																									   */
+			/* Course overview													   */
 			/***********************************************************************/
 			$title = "Kursübersicht";
 			$content = "

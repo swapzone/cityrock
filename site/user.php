@@ -17,7 +17,6 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			$user_data_array['active'] = $_POST['active'] ? 1 : 0;
 		}
 
-		$user_data_array['username'] = $_POST['username'];
 		$user_data_array['first_name'] = $_POST['first_name'];
 		$user_data_array['last_name'] = $_POST['last_name'];
 		$user_data_array['phone'] = $_POST['phone'];
@@ -49,6 +48,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 	} else {
 		if (isset($_GET["id"])) {
 			if ($_GET["id"] == "new") {
+				/***********************************************************************/
+				/* New user form													   */
+				/***********************************************************************/
 				$title = "Neuer Nutzer";
 				$content = "
 					<form method='post' onsubmit='return cityrock.validateForm(this);'>
@@ -70,7 +72,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<input type='submit' class='button' value='Hinzufügen'>
 					</form>";
 			} else {
-				// show user profile
+				/***********************************************************************/
+				/* User details and edit											   */
+				/***********************************************************************/
 				$user = User::withUserId($_GET["id"])->serialize();
 
 				$qualification_list = "<ul class='qualification-list'>";
@@ -160,21 +164,15 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<input type='hidden' name='modify' />
 							<input type='hidden' name='user_id' value='{$user['id']}' />
 						</span>
-					</form>
-					<span style='display: inline-block;' id='delete-user'>
-						<form class='inline' action='{$root_directory}/confirmation' method='post'>
-							<input type='hidden' name='confirmation' value='true'>
-							<input type='hidden' name='action' value='delete'>
-							<input type='hidden' name='description' value='Nutzer'>
-							<input type='hidden' name='table' value='user'>
-							<input type='hidden' name='id' value='{$user['id']}'>
-							<a href='#' class='button error confirm'>Löschen</a>
-						</form>
-					</span>
-					<a href='{$root_directory}/user' class='button'>Zurück</a>
-					<a href='#' id='edit-user' class='button'>Editieren</a>";
+						<a href='{$root_directory}/user' class='button'>Zurück</a>
+						<a href='#' id='edit-user' class='button'>Editieren</a>
+						<a href='#' user-id='{$user['id']}' class='button error delete-user'>Löschen</a>
+					</form>";
 			}
 		} else {
+			/***********************************************************************/
+			/* User overview													   */
+			/***********************************************************************/
 			$title = "Nutzerübersicht";
 
 			$content = "
