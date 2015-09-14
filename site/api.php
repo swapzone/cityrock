@@ -28,6 +28,28 @@ if(isset($_POST['action'])) {
             if($success) echo "SUCCESS";
             else echo "ERROR";
             break;
+        case "USER_ADD_ROLE":
+            if(!$_POST['user_id'] || !$_POST['role_id']) {
+                echo "ERROR: Parameters missing";
+                break;
+            }
+
+            $success = addRole($_POST['user_id'], $_POST['role_id']);
+
+            if($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
+        case "USER_REMOVE_ROLE":
+            if(!$_POST['user_id'] || !$_POST['role_id']) {
+                echo "ERROR: Parameters missing";
+                break;
+            }
+
+            $success = removeRole($_POST['user_id'], $_POST['role_id']);
+
+            if($success) echo "SUCCESS";
+            else echo "ERROR";
+            break;
         default:
             echo "Unknown.";
             break;

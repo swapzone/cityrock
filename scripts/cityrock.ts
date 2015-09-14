@@ -423,26 +423,30 @@ module cityrock {
         var formData =
           [
             {
+              name: 'action',
+              value: 'USER_ADD_ROLE'
+            },
+            {
               name: 'user_id',
               value: userId
             },
             {
-              name: 'role',
+              name: 'role_id',
               value: selectedRoleId
             }
           ];
 
-        sendFormData(formData, function(success) {
+        sendFormDataToApi(formData, function(err, message) {
 
-          if(success) {
-            location.reload();
-          }
-          else {
+          if(err) {
             addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Hinzufügen der Rolle.</div>");
 
             setTimeout(function() {
               $('.status-message').remove();
             }, 2000);
+          }
+          else {
+            location.reload();
           }
         });
       });
@@ -456,78 +460,33 @@ module cityrock {
       var formData =
         [
           {
+            name: 'action',
+            value: 'USER_REMOVE_ROLE'
+          },
+          {
             name: 'user_id',
             value: userId
           },
           {
-            name: 'role',
+            name: 'role_id',
             value: roleId
-          },
-          {
-            name: 'delete_role',
-            value: 1
           }
         ];
 
-      sendFormData(formData, function(success) {
+      sendFormDataToApi(formData, function(err, message) {
 
-        if(success) {
-          location.reload();
-        }
-        else {
+        if(err) {
           addRoleLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Entfernen der Rolle.</div>");
 
           setTimeout(function() {
             $('.status-message').remove();
           }, 2000);
         }
+        else {
+          location.reload();
+        }
       });
     });
-
-    /**
-     *
-     */
-    function sendFormData(formData, callback) {
-
-      // variable to hold request
-      var request;
-
-      // abort any pending request
-      if (request)
-        request.abort();
-
-      // Fire off the request to /form.php
-      request = $.ajax({
-        url: window.location.href,
-        type: "post",
-        data: formData
-      });
-
-      // Callback handler that will be called on success
-      request.done(function (response, textStatus, jqXHR) {
-
-        console.log("The response: " + response);
-
-        if(response == "SUCCESS") {
-          callback(true);
-        }
-        else {
-          callback(false);
-        }
-      });
-
-      // Callback handler that will be called on failure
-      request.fail(function (jqXHR, textStatus, errorThrown) {
-
-        // Log the error to the console
-        console.error(
-          "The following error occurred: "+
-          textStatus, errorThrown
-        );
-
-        callback(false);
-      });
-    }
 
     /**
      *
