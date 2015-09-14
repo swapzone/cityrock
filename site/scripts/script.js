@@ -9709,6 +9709,31 @@ var cityrock;
     cityrock.initializeUserView = initializeUserView;
     /**
      *
+     */
+    function initializeArchiveView() {
+        var yearFilter = $('#archive-filter-year');
+        var monthFilter = $('#archive-filter-month');
+        filterCourses();
+        yearFilter.change(function () {
+            filterCourses();
+        });
+        monthFilter.change(function () {
+            filterCourses();
+        });
+        function filterCourses() {
+            $('.list-item').each(function (index, element) {
+                if ($(element).attr('year') == yearFilter.val() && $(element).attr('month') == monthFilter.val()) {
+                    $(element).css('display', 'table-row');
+                }
+                else {
+                    $(element).css('display', 'none');
+                }
+            });
+        }
+    }
+    cityrock.initializeArchiveView = initializeArchiveView;
+    /**
+     *
      *
      * @param formData
      * @param callback
@@ -9740,31 +9765,6 @@ var cityrock;
             callback(errorThrown, null);
         });
     }
-    /**
-     *
-     */
-    function initializeArchiveView() {
-        var yearFilter = $('#archive-filter-year');
-        var monthFilter = $('#archive-filter-month');
-        filterCourses();
-        yearFilter.change(function () {
-            filterCourses();
-        });
-        monthFilter.change(function () {
-            filterCourses();
-        });
-        function filterCourses() {
-            $('.list-item').each(function (index, element) {
-                if ($(element).attr('year') == yearFilter.val() && $(element).attr('month') == monthFilter.val()) {
-                    $(element).css('display', 'table-row');
-                }
-                else {
-                    $(element).css('display', 'none');
-                }
-            });
-        }
-    }
-    cityrock.initializeArchiveView = initializeArchiveView;
 })(cityrock || (cityrock = {}));
 $(function () {
     'use strict';

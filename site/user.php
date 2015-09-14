@@ -25,7 +25,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		$success = User::updateUserData($user_data_array, $_POST['user_id']);
 
 		// modify POST user object
-		if ($success) {
+		if ($success && $_POST['user_id'] == $_SESSION['user']['id']) {
 			foreach ($user_data_array as $key => $value) {
 				$_SESSION['user'][$key] = $value;
 			}

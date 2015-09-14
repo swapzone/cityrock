@@ -17,7 +17,7 @@ if(isset($_GET["id"])) {
 
     $user_is_subscribed = false;
 
-    $staff_list = "<span style='display: block;'>";
+    $staff_list = "<span class='staff-list'>";
     foreach ($staff as $user) {
         $userObj = $user->serialize();
         $staff_list .= "<span>{$userObj['first_name']} {$userObj['last_name']}</span>";
@@ -26,7 +26,9 @@ if(isset($_GET["id"])) {
     }
     $staff_list .= "</span>";
 
-    $display_subscribe_button = $user_is_subscribed ? "display: none;" : "";
+    $staff_is_full = $staff_num >= $course['min_staff'];
+
+    $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
     $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
 
     $title = "Kursdetails";
@@ -120,9 +122,10 @@ else {
                 if($user->serialize()['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
             }
 
-            $display_subscribe_button = $user_is_subscribed ? "display: none;" : "";
-            $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
+            $staff_is_full = $staff_num >= $course['min_staff'];
 
+            $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
+            $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
 
             if ($course['date']->format('d.m.Y') != $date) {
                 $date = $course['date']->format('d.m.Y');

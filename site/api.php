@@ -42,7 +42,8 @@ if (isset($_POST['action'])) {
             }
 
             // check deadline
-            if($authenticated_user['id'] == $_POST['user_id']) {
+            if($authenticated_user['id'] == $_POST['user_id'] &&
+                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
 
                 if(!isset($_POST['deadline'])) {
                     echo "ERROR: Deadline not set.";
