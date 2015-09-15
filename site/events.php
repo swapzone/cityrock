@@ -2,12 +2,15 @@
 
 include_once('_init.php');
 
-$number_of_days = 7;
+$title = "Veranstaltungen";
+$content = "Noch nicht fertig.";
+
+$number_of_days = 14;
 $course_types = getCourseTypes();
 
 if(isset($_GET["id"])) {
     /***********************************************************************/
-    /* Event details													   */
+    /* Event details                                                       */
     /***********************************************************************/
     $course_id = $_GET["id"];
     $course = getCourse($course_id);
@@ -83,12 +86,12 @@ if(isset($_GET["id"])) {
             </span>
         </span>
         <a href='{$root_directory}/events' class='button'>Zurück</a>
-        <span><a href='#' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-subscribe button' style='{$display_subscribe_button}'>Eintragen</a></span>
-        <span><a href='#' deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
+        <span><a user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-subscribe button' style='{$display_subscribe_button}'>Eintragen</a></span>
+        <span><a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
 }
 else {
     /***********************************************************************/
-    /* Event overview													   */
+    /* Event overview                                                      */
     /***********************************************************************/
     $title = "Veranstaltungen";
 
@@ -105,21 +108,25 @@ else {
     $content = "";
 
     $courses = getCourses();
+    
+    //echo "Courses: " . count($courses);
 
-    $date = (new DateTime())->format('d.m.Y');
+    $date = new DateTime(); 
+    $date = $date->format('d.m.Y');
     $duration_string = 'P' . $number_of_days . 'D';
 
+    $temp_date = new DateTime();
+
     foreach ($courses as $course) {
-
         // check if course is within the next 7 days
-        if ($course['date'] < (new DateTime())->add(new DateInterval($duration_string))) {
-
+        if ($course['date'] < $temp_date->add(new DateInterval($duration_string))) {
             $staff = getStaff($course['id']);
             $staff_num = count($staff);
 
             $user_is_subscribed = false;
             foreach($staff as $user) {
-                if($user->serialize()['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
+                $userObj = $user->serialize();
+                if($userObj['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
             }
 
             $staff_is_full = $staff_num >= $course['min_staff'];
@@ -139,7 +146,8 @@ else {
             $course_duration = 'PT' . $hours . 'H' . $minutes . 'M';
 
             $course_end_time = clone $course['date'];
-            $course_end_time = $course_end_time->add(new DateInterval($course_duration));
+            $course_duration_object = new DateInterval($course_duration);
+            $course_end_time = $course_end_time->add($course_duration_object);
             $course_end_time = $course_end_time->format('h:i');
 
             $content .= "
@@ -153,14 +161,16 @@ else {
                     {$staff_num} / {$course['min_staff']}
                 </span>
                 <span><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
-                <span><a href='#' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a></span>
-                <span><a href='#' deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a></span>
+                <span>
+                    <a user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a>
+                    <a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
+                </span>
             </span>";
         }
     }
 
     $content .= "
-    </div>";
+    </div>"; 
 }
 
 $content_class = "course";

@@ -2287,6 +2287,7 @@ p {
 a, .link {
   color: #319aca;
   text-decoration: none;
+  cursor: pointer;
 }
 a:hover, .link:hover {
   color: #43a5d1;

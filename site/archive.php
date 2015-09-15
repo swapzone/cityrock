@@ -52,12 +52,13 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
                 <a href='{$root_directory}/archive' class='button'>Zurück</a>";
     } else {
         /***********************************************************************/
-        /* Course overview	       											   */
+        /* Course overview                                                     */
         /***********************************************************************/
         $title = "Archiv";
 
         $first_year = 2015;
-        $current_year = intval((new DateTime())->format('Y'));
+        $temp_date = new DateTime();
+        $current_year = intval($temp_date->format('Y'));
         $months = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
 
         $content .= "

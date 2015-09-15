@@ -3,6 +3,7 @@
 include_once('_init.php');
 
 $authenticated_user = $_SESSION['user'];
+$authenticated_user_object = User::withUserObjectData($_SESSION['user']);
 
 if (isset($_POST['action'])) {
 
@@ -10,21 +11,21 @@ if (isset($_POST['action'])) {
 
         case "COURSE_ADD_STAFF":
             if (!$_POST['course_id'] || !$_POST['user_id']) {
-                echo "ERROR: Parameters missing";
+                echo "ERROR: Parameter fehlen.";
                 break;
             }
 
             if($authenticated_user['id'] != $_POST['user_id'] &&
-                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                !$authenticated_user_object->hasPermission(array('Administrator'))) {
 
-                echo "ERROR: Not authorized";
+                echo "ERROR: Nicht authorisiert.";
                 break;
             }
 
             $success = addStaff($_POST['course_id'], $_POST['user_id']);
 
             if ($success) echo "SUCCESS";
-            else echo "ERROR";
+            else echo "ERROR: Datenbank Fehler.";
             break;
 
 
@@ -35,18 +36,18 @@ if (isset($_POST['action'])) {
             }
 
             if($authenticated_user['id'] != $_POST['user_id'] &&
-                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                !$authenticated_user_object->hasPermission(array('Administrator'))) {
 
-                echo "ERROR: Not authorized";
+                echo "ERROR: Nicht authorisiert.";
                 break;
             }
 
             // check deadline
             if($authenticated_user['id'] == $_POST['user_id'] &&
-                !User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
+                !$authenticated_user_object->hasPermission(array('Administrator'))) {
 
                 if(!isset($_POST['deadline'])) {
-                    echo "ERROR: Deadline not set.";
+                    echo "ERROR: Deadline nicht gesetzt.";
                     break;
                 }
                 else {
@@ -54,7 +55,8 @@ if (isset($_POST['action'])) {
                     $course = getCourse($_POST['course_id']);
 
                     $durationString = 'P' . $deadline . 'D';
-                    $deadline_date = (new DateTime())->add(new DateInterval($durationString));
+                    $temp_date = new DateTime();
+                    $deadline_date = $temp_date->add(new DateInterval($durationString));
 
                     if($deadline_date > $course['dates'][0]['date']) {
                         echo "ERROR: Du kannst dich nicht mehr austragen. Deadline {$deadline} Tage vor Kursbeginn.";
@@ -66,58 +68,58 @@ if (isset($_POST['action'])) {
             $success = removeStaff($_POST['course_id'], $_POST['user_id']);
 
             if ($success) echo "SUCCESS";
-            else echo "ERROR";
+            else echo "ERROR: Datenbank Fehler.";
             break;
 
 
         case "USER_ADD_ROLE":
-            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
-                echo "ERROR: Not authorized";
+            if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
+                echo "ERROR: Nicht authorisiert.";
                 break;
             }
             if (!$_POST['user_id'] || !$_POST['role_id']) {
-                echo "ERROR: Parameters missing";
+                echo "ERROR: Parameter fehlen.";
                 break;
             }
 
             $success = addRole($_POST['user_id'], $_POST['role_id']);
 
             if ($success) echo "SUCCESS";
-            else echo "ERROR";
+            else echo "ERROR: Datenbank Fehler.";
             break;
 
 
         case "USER_REMOVE_ROLE":
-            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
-                echo "ERROR: Not authorized";
+            if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
+                echo "ERROR: Nicht authorisiert.";
                 break;
             }
             if (!$_POST['user_id'] || !$_POST['role_id']) {
-                echo "ERROR: Parameters missing";
+                echo "ERROR: Parameter fehlen.";
                 break;
             }
 
             $success = removeRole($_POST['user_id'], $_POST['role_id']);
 
             if ($success) echo "SUCCESS";
-            else echo "ERROR";
+            else echo "ERROR: Datenbank Fehler.";
             break;
 
 
         case "USER_DELETE":
-            if(!User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
-                echo "ERROR: Not authorized";
+            if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
+                echo "ERROR: Nicht authorisiert.";
                 break;
             }
             if (!$_POST['user_id']) {
-                echo "ERROR: Parameter missing";
+                echo "ERROR: Parameter fehlt.";
                 break;
             }
 
             $success = deleteItem($_POST['user_id'], "user");
 
             if ($success) echo "SUCCESS";
-            else echo "ERROR";
+            else echo "ERROR: Datenbank Fehler.";
             break;
 
 
