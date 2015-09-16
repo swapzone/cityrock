@@ -1,4 +1,4 @@
-/// <reference path="../typings/jquery/jquery.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 
 module cityrock {
   'use strict';
@@ -620,6 +620,33 @@ module cityrock {
 
   /**
    *
+   */
+  export function initializeCalendarView() {
+
+    // calendar filter
+    var filterLinks = $('#filter').find('span');
+
+    $(filterLinks).on('click', function (event) {
+
+      $(filterLinks).each(function (index, element) {
+        $(element).removeClass('active');
+      });
+
+      $(event.target).addClass('active');
+    });
+
+
+    // initialize calendar
+    $('#calendar').fullCalendar({
+      // put your options and callbacks here
+    });
+
+
+  }
+
+
+  /**
+   *
    *
    * @param formData
    * @param callback
@@ -668,4 +695,5 @@ $(():void => {
   cityrock.initializeUserView();
   cityrock.initializeProfileView();
   cityrock.initializeArchiveView();
+  cityrock.initializeCalendarView();
 });

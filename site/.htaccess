@@ -60,8 +60,8 @@ ErrorDocument 404 http://localhost/cityrock/error.php
   # Rewrite rules for api requests
   # -----------------------------------------------------------------------------------------------
 
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^api/(.*)/?$ index.php [QSA,L] 
+	#RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteRule ^api/(.*)/?$ index.php [QSA,L]
 
   # -----------------------------------------------------------------------------------------------
   # Add .php extension from a PHP file for example yoursite.com/wallpaper.php to 

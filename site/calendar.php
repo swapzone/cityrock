@@ -3,8 +3,14 @@
 include_once('_init.php');
 
 $title = "Kalenderansicht";
-$content = "Noch nicht fertig.";
+$content = "
+<div id='filter' class='filter'>
+	<span class='active'>Alle Termine</span>
+	<span>Meine Termine</span>
+	<span>Offene Termine</span>
+</div>
+<div id='calendar'></div>";
 
-$content_class = "basic";
+$content_class = "calendar";
 include('_main.php');
 ?>

@@ -7,6 +7,9 @@
   "installed": {
     "jquery/jquery.d.ts": {
       "commit": "d73cbcb405788eb85cc4a4167b963ef4dd630cdc"
+    },
+    "fullCalendar/fullCalendar.d.ts": {
+      "commit": "5f480287834a2615274eea31574b713e64decf17"
     }
   }
 }

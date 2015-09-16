@@ -35,7 +35,8 @@ gulp.task('scripts', function() {
   return gulp.src([
     'bower_components/lodash/dist/lodash.js',
     'bower_components/jquery/dist/jquery.js',
-    'bower_components/v.js/V.js',
+    'bower_components/moment/moment.js',
+    'bower_components/fullcalendar/dist/fullcalendar.js',
     'scripts/*.ts'
   ])
   .pipe(plumber(plumberErrorHandler))
@@ -67,6 +68,7 @@ gulp.task('styles', function() {
   var dest = path.join(destPath, 'styles');
 
   return gulp.src([
+      'bower_components/fullcalendar/dist/fullcalendar.css',
       'styles/*.scss'
     ])
     .pipe(plumber(plumberErrorHandler))
