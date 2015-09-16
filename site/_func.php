@@ -14,60 +14,60 @@ require_once('inc/user.php');
  * @param int $archive
  * @return array of course arrays
  */
-function getCourses($archive = false, $course_type_id = null) {
+function getCourses($archive = false, $course_type_id = null, $start = null, $end = null) {
 
 	$db = Database::createConnection();
 	
-	$sql = "SELECT id, course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone
-		  	FROM course";
+	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration
+		  	FROM course
+		  	LEFT JOIN date
+		  	ON course.id=date.course_id";
 
 	if($course_type_id != null)
 		$sql .= " WHERE course_type_id=$course_type_id";
 
-	$sql .= ";";
+	if($start && $end) {
+		$startString = $start->format('Y-m-d H:i:s');
+		$endString = $end->format('Y-m-d H:i:s');
+
+		$sql .= " WHERE (DATE(start) BETWEEN '{$startString}' AND '{$endString}')";
+	}
+	else {
+		$tempDate = new DateTime();
+		$dateString = $tempDate->format('Y-m-d H:i:s');
+
+		if ($archive) {
+			$sql .= " WHERE DATE(start) <= '{$dateString}'";
+		}
+		else {
+			$sql .= " WHERE DATE(start) >= '{$dateString}'";
+		}
+	}
+
+	$sql .= " ORDER BY start;";
 
 	$result = $db->query($sql);
 
 	$course_array = array();
 	if ($result->num_rows > 0) {
+		$last_id = -1;
+
 		while($row = $result->fetch_assoc()) {
-	   	$course_array[] = $row;
+			if($row['id'] != $last_id) {
+				$course_array[] = $row;
+				$last_id = $row['id'];
+			}
 		}
 	} 
-	
+
 	foreach($course_array as $key=>$course) {
-		
-		$result = $db->query("SELECT start, duration
-						      FROM date
-							  WHERE course_id={$course['id']}
-							  ORDER BY start;");
-
-		if ($result->num_rows > 0) {
-			$row = $result->fetch_assoc();
-			$course_array[$key]['date'] = new DateTime($row['start']);
-			$course_array[$key]['duration'] = $row['duration'];
-		}
-	}
-
-	$filteredCourseArray = array();
-
-	$now = new DateTime();
-
-	foreach($course_array as $course) {
-		if($archive) {
-			if($course['date'] < $now)
-				$filteredCourseArray[] = $course;
-		}
-		else {
-			if($course['date'] > $now)
-				$filteredCourseArray[] = $course;
-		}
+		$course_array[$key]['date'] = new DateTime($course_array[$key]['start']);
 	}
 
 	$db->close();
 
-	usort($filteredCourseArray, "courseSort");
-	return $filteredCourseArray;
+	usort($course_array, "courseSort");
+	return $course_array;
 }
 
 /**

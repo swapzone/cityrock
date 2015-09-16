@@ -10,6 +10,12 @@
     },
     "fullCalendar/fullCalendar.d.ts": {
       "commit": "5f480287834a2615274eea31574b713e64decf17"
+    },
+    "moment/moment.d.ts": {
+      "commit": "5f480287834a2615274eea31574b713e64decf17"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "5f480287834a2615274eea31574b713e64decf17"
     }
   }
 }

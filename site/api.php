@@ -122,7 +122,6 @@ if (isset($_POST['action'])) {
             else echo "ERROR: Datenbank Fehler.";
             break;
 
-
         default:
             echo "Unknown.";
             break;

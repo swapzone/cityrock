@@ -24118,6 +24118,14 @@ var cityrock;
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek'
+            },
+            // the event generating function
+            events: rootDirectory + '/event_feed.php',
+            eventClick: function (calEvent, jsEvent, view) {
+                console.log('Event: ' + calEvent.title);
+                console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                // change the border color just for fun
+                $(this).css('border-color', 'red');
             }
         });
     }
