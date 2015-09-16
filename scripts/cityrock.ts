@@ -623,7 +623,7 @@ module cityrock {
    */
   export function initializeCalendarView() {
 
-    // calendar filter
+    // calendar events filter
     var filterLinks = $('#filter').find('span');
 
     $(filterLinks).on('click', function (event) {
@@ -635,15 +635,18 @@ module cityrock {
       $(event.target).addClass('active');
     });
 
+    var calendar = $('#calendar');
 
     // initialize calendar
-    $('#calendar').fullCalendar({
+    calendar.fullCalendar({
       // put your options and callbacks here
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek'
+      }
     });
-
-
   }
-
 
   /**
    *

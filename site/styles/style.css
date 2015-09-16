@@ -3636,13 +3636,10 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
     margin-left: 1em;
   }
   .header .header-profile {
-    width: 12.5%;
-    float: left;
-    margin-left: 2.08333%;
-    margin-right: 2.08333%;
     display: inline-block;
     padding: 1em 0;
     float: right;
+    margin-right: 1em;
   }
 }
 
@@ -3742,6 +3739,9 @@ p {
 .calendar .filter span.active {
   background-color: #319aca;
   color: white;
+}
+.calendar .fc-view-container {
+  background: #f9f9f9;
 }
 
 .course form.inline {

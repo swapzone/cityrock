@@ -37,6 +37,7 @@ gulp.task('scripts', function() {
     'bower_components/jquery/dist/jquery.js',
     'bower_components/moment/moment.js',
     'bower_components/fullcalendar/dist/fullcalendar.js',
+    'bower_components/fullcalendar/dist/lang/de.js',
     'scripts/*.ts'
   ])
   .pipe(plumber(plumberErrorHandler))
