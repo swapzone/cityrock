@@ -61,9 +61,15 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 			}
 			else {
 				$additional_staff = $row['staff_id'];
+
 				if($additional_staff) {
 					end($course_array);
-					$course_array[key($course_array)]['staff_id'] .= ',' . $additional_staff;
+
+					$all_staff = explode(",", $course_array[key($course_array)]['staff_id']);
+
+					if(!in_array($additional_staff, $all_staff))
+						$course_array[key($course_array)]['staff_id'] .= ',' . $additional_staff;
+
 					reset($course_array);
 				}
 			}
