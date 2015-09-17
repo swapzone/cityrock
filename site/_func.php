@@ -18,10 +18,12 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 
 	$db = Database::createConnection();
 	
-	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration
+	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration, course_has_staff.user_id AS staff_id
 		  	FROM course
 		  	LEFT JOIN date
-		  	ON course.id=date.course_id";
+		  	ON course.id=date.course_id
+		  		LEFT JOIN course_has_staff
+    			ON course.id=course_has_staff.course_id";
 
 	if($course_type_id != null)
 		$sql .= " WHERE course_type_id=$course_type_id";
@@ -44,7 +46,7 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 		}
 	}
 
-	$sql .= " ORDER BY start;";
+	$sql .= " ORDER BY course.id, start;";
 
 	$result = $db->query($sql);
 
@@ -56,6 +58,14 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 			if($row['id'] != $last_id) {
 				$course_array[] = $row;
 				$last_id = $row['id'];
+			}
+			else {
+				$additional_staff = $row['staff_id'];
+				if($additional_staff) {
+					end($course_array);
+					$course_array[key($course_array)]['staff_id'] .= ',' . $additional_staff;
+					reset($course_array);
+				}
 			}
 		}
 	} 

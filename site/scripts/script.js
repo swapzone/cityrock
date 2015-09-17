@@ -24102,6 +24102,9 @@ var cityrock;
      *
      */
     function initializeCalendarView() {
+        var calendar = $('#calendar');
+        var eventType = 'all';
+        var userId = '-1';
         // calendar events filter
         var filterLinks = $('#filter').find('span');
         $(filterLinks).on('click', function (event) {
@@ -24109,8 +24112,16 @@ var cityrock;
                 $(element).removeClass('active');
             });
             $(event.target).addClass('active');
+            // selected event type
+            eventType = $(event.target).attr('event-type');
+            userId = '-1';
+            if (eventType == 'user')
+                userId = $(event.target).attr('user-id');
+            // refetch events
+            calendar.fullCalendar('refetchEvents');
+            //console.log("Event type: " + eventType);
+            //console.log("User id: " + userId);
         });
-        var calendar = $('#calendar');
         // initialize calendar
         calendar.fullCalendar({
             // put your options and callbacks here
@@ -24119,13 +24130,28 @@ var cityrock;
                 center: 'title',
                 right: 'month,agendaWeek'
             },
-            // the event generating function
-            events: rootDirectory + '/event_feed.php',
+            // the event source object
+            events: {
+                url: rootDirectory + '/event_feed.php',
+                type: 'post',
+                data: {
+                    event_type: function () {
+                        return eventType;
+                    },
+                    user_id: function () {
+                        return userId;
+                    }
+                },
+                error: function () {
+                    console.error('Could not retrieve events.');
+                },
+                textColor: 'black'
+            },
             eventClick: function (calEvent, jsEvent, view) {
                 console.log('Event: ' + calEvent.title);
                 console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
                 // change the border color just for fun
-                $(this).css('border-color', 'red');
+                //$(this).css('border-color', 'red');
             }
         });
     }

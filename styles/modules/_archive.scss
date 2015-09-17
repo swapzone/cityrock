@@ -15,6 +15,15 @@
     display: none;
   }
 
+  .staff-list {
+    display: block;
+    margin-bottom: 0.3em;
+
+    & > span {
+      display: block;
+    }
+  }
+
   @include respond-above("medium") {
 
     .mobile {

@@ -3850,6 +3850,13 @@ p {
 .archive .list-item {
   display: none;
 }
+.archive .staff-list {
+  display: block;
+  margin-bottom: 0.3em;
+}
+.archive .staff-list > span {
+  display: block;
+}
 @media screen and (min-width: 720px) {
   .archive .mobile {
     display: none;

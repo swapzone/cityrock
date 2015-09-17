@@ -13,6 +13,16 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
         $course_id = $_GET["id"];
         $course = getCourse($course_id);
         $registrants = getRegistrants($course_id);
+        $staff = getStaff($course_id);
+
+        $staff_list = "<span class='staff-list''>";
+        $index = 1;
+        foreach($staff as $user) {
+            $userObj = $user->serialize();
+            $staff_list .= "<span>ÜL {$index}: {$userObj['first_name']} {$userObj['last_name']}</span>";
+            $index++;
+        }
+        $staff_list .= "</span>";
 
         $title = "Kursdetails";
         $content = "
@@ -27,8 +37,12 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
                         <span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
                     </span>
                     <span class='list-item'>
-                        <span>Bereits registrierte Teilnehmer</span>
+                        <span>Teilnehmer</span>
                         <span>" . count($registrants) . " (<a href='{$root_directory}/course/{$course_id}/registrants'>anzeigen</a>)</span>
+                    </span>
+                    <span class='list-item'>
+                        <span>Übungsleiter</span>
+                        <span>{$staff_list}</span>
                     </span>";
 
         $counter = 1;
