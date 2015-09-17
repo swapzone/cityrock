@@ -23624,13 +23624,6 @@ var cityrock;
                         alert('Bitte nur gültige Postleitzahlen eingeben!');
                     }
                     else {
-                        // check if all fields are filled with content
-                        empty = $(form).find("input").filter(function () {
-                            return this.value === "";
-                        });
-                        if (empty.length) {
-                            alert('Bitte alle Felder ausfüllen!');
-                        }
                     }
                 }
             }

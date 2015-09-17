@@ -136,11 +136,11 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				$content .= "
 						</select>
 						<label for='staff'>Anzahl Übungsleiter</label>
-						<input type='text' placeholder='' name='staff'>
+						<input type='text' name='staff' value='2'>
 						<label for='staff_deadline'>Bis wieviele Tage vorher dürfen sich ÜL noch austragen?</label>
 						<input type='text' name='staff_deadline' value='2'>
 						<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
-						<input type='text' placeholder='' name='registrants'>
+						<input type='text' name='registrants' value='10'>
 						<label for='registrants_age'>Alter der Teilnehmer</label>
 						<input type='text' placeholder='' name='registrants_age'>
 						<br />

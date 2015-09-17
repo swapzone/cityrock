@@ -37,7 +37,7 @@ foreach($events as $event) {
             "start": "' . $event_start . '",
             "end": "' . $event_end . '",
             "staff": "' . $event['staff_id'] . '",
-            "url": "' . $root_directory . '/course/' . $event['id'] . ' "
+            "url": "' . $root_directory . '/events/' . $event['id'] . ' "
         },';
     }
 }
