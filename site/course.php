@@ -378,31 +378,32 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
 			$courses = getCourses();
 
+			$cleaned_up_courses = removePastDates($courses, new DateTime());
+			$repeating_courses = createIntervalDates($courses, new DateTime());
+
+			$all_courses = array_merge($cleaned_up_courses, $repeating_courses);
+
 			$month = null;
-			foreach($courses as $course) {
+			foreach($all_courses as $course) {
 
-				// check if course was in the past
-				if($course['date'] > new DateTime()) {
+				$registrants = getRegistrants($course['id']);
+				$num_registrants = count($registrants);
 
-					$registrants = getRegistrants($course['id']);
-					$num_registrants = count($registrants);
-
-					if(getMonth($course['date']) != $month) {
-						$month = getMonth($course['date']);
-						$content .= "<span class='course-list-month'>{$month}</span>";
-					}
-
-					$item_class = strtolower($course_types[$course['course_type_id']]);
-
-					$content .= "
-						<span class='list-item $item_class'>
-							<span>{$course_types[$course['course_type_id']]}</span>
-							<span>{$course['date']->format('d.m.Y')}</span>
-							<span class='no-mobile'>{$course['max_participants']}</span>
-							<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
-							<span><a href='./course/{$course['id']}'>Details</a></span>
-						</span>";
+				if(getMonth($course['date']) != $month) {
+					$month = getMonth($course['date']);
+					$content .= "<span class='course-list-month'>{$month}</span>";
 				}
+
+				$item_class = strtolower($course_types[$course['course_type_id']]);
+
+				$content .= "
+					<span class='list-item $item_class'>
+						<span>{$course_types[$course['course_type_id']]}</span>
+						<span>{$course['date']->format('d.m.Y')}</span>
+						<span class='no-mobile'>{$course['max_participants']}</span>
+						<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>
+						<span><a href='./course/{$course['id']}'>Details</a></span>
+					</span>";
 			}
 
 			$content .= "

@@ -18,12 +18,14 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 
 	$db = Database::createConnection();
 	
-	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration, course_has_staff.user_id AS staff_id
+	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration, course_has_staff.user_id AS staff_id, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
 		  	FROM course
 		  	LEFT JOIN date
 		  	ON course.id=date.course_id
 		  		LEFT JOIN course_has_staff
-    			ON course.id=course_has_staff.course_id";
+    			ON course.id=course_has_staff.course_id
+    				LEFT JOIN repeat_interval
+        			ON course.interval_designator=repeat_interval.id";
 
 	if($course_type_id != null)
 		$sql .= " WHERE course_type_id=$course_type_id";
@@ -32,17 +34,17 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 		$startString = $start->format('Y-m-d H:i:s');
 		$endString = $end->format('Y-m-d H:i:s');
 
-		$sql .= " WHERE (DATE(start) BETWEEN '{$startString}' AND '{$endString}')";
+		$sql .= " WHERE (DATE(start) BETWEEN '{$startString}' AND '{$endString}') OR repeat_interval.num_days>0 OR repeat_interval.num_months>0";
 	}
 	else {
 		$tempDate = new DateTime();
 		$dateString = $tempDate->format('Y-m-d H:i:s');
 
 		if ($archive) {
-			$sql .= " WHERE DATE(start) <= '{$dateString}'";
+			$sql .= " WHERE DATE(start) <= '{$dateString}' AND repeat_interval.num_days=0 AND repeat_interval.num_months=0";
 		}
 		else {
-			$sql .= " WHERE DATE(start) >= '{$dateString}'";
+			$sql .= " WHERE DATE(start) >= '{$dateString}' OR repeat_interval.num_days>0 OR repeat_interval.num_months>0";
 		}
 	}
 
@@ -268,6 +270,74 @@ function getStaff($course_id) {
 	}
 
 	return $user_array;
+}
+
+/**
+ *
+ *
+ * @param $courses
+ * @param $interval_start
+ * @param $interval_end can be null, then only the next course will be returned
+ * @return array
+ */
+function createIntervalDates($courses, $interval_start, $interval_end = null) {
+
+	$interval_courses = array();
+
+	foreach($courses as $course) {
+
+		$course_date = clone $course['date'];
+
+		if($course['day_interval'] > 0) {
+
+			$weekend = $course['weekend'];
+
+			while($interval_end != null && $course_date < $interval_end || count($interval_courses) == 0) {
+				$course_date->add(new DateInterval('P' . $course['day_interval'] . 'D'));
+
+				if($course_date > $interval_start) {
+					// check if course is on weekends also
+					if($weekend || !$weekend && $course_date->format('N') < 6) {
+						$tempCourse = $course; // arrays are asigned by copy
+						$tempCourse['date'] = clone $course_date;
+						$interval_courses[] = $tempCourse;
+					}
+				}
+			}
+		}
+		else if($course['month_interval']) {
+
+			while($interval_end != null && $course_date < $interval_end || count($interval_courses) == 0) {
+				$course_date->add(new DateInterval('P' . $course['month_interval'] . 'M'));
+
+				if($course_date > $interval_start) {
+					$tempCourse = $course; // arrays are asigned by copy
+					$tempCourse['date'] = clone $course_date;
+					$interval_courses[] = $tempCourse;
+				}
+			}
+		}
+	}
+
+	return $interval_courses;
+}
+
+/**
+ *
+ *
+ * @param $courses
+ * @param $start_date
+ * @return array
+ */
+function removePastDates($courses, $start_date) {
+
+	$valid_dates = array();
+
+	foreach($courses as $course) {
+		if($course['date'] > $start_date) $valid_dates[] = $course;
+	}
+
+	return $valid_dates;
 }
 
 /*****************************************************************************/

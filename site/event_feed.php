@@ -15,11 +15,15 @@ $event_type = $_POST['event_type'];
 $user_id = $_POST['user_id'];
 
 $course_types = getCourseTypes();
-$events = getCourses(false, null, $start_date, $end_date);
+$courses = getCourses(false, null, $start_date, $end_date);
+
+$cleaned_up_events = removePastDates($courses, $start_date);
+$repeating_events = createIntervalDates($courses, $start_date, $end_date);
+
+$all_events = array_merge($cleaned_up_events, $repeating_events);
 
 $jsonString = '[';
-
-foreach($events as $event) {
+foreach($all_events as $event) {
 
     $staff = explode(",", $event['staff_id']);
 
@@ -48,5 +52,4 @@ if(strlen($jsonString) > 1)
 $jsonString .= ']';
 
 echo $jsonString;
-
 ?>
