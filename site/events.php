@@ -46,7 +46,7 @@ if(isset($_GET["id"])) {
             </span>
             <span class='list-item'>
                 <span>Kurstyp</span>
-                <span>{$course_types[$course['course_type_id']]}</span>
+                <span>{$course_types[$course['course_type_id']]['title']}</span>
             </span>
             <span class='list-item'>
                 <span>Anzahl Teilnehmer</span>
@@ -85,7 +85,7 @@ if(isset($_GET["id"])) {
                 <span>Addresse</span><span>{$course['street']}, {$course['plz']} {$course['city']}</span>
             </span>
         </span>
-        <a href='{$root_directory}/events' class='button'>Zurück</a>
+        <a href='{$root_directory}/events' class='button'>Übersicht</a>
         <span><a user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-subscribe button' style='{$display_subscribe_button}'>Eintragen</a></span>
         <span><a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
 }
@@ -107,17 +107,23 @@ else {
 
     $content = "";
 
-    $courses = getCourses();
-    
-    //echo "Courses: " . count($courses);
+    $date_object = new DateTime();
+    $date = $date_object->format('d.m.Y');
 
-    $date = new DateTime(); 
-    $date = $date->format('d.m.Y');
     $duration_string = 'P' . $number_of_days . 'D';
+    $end_date = clone $date_object;
+    $end_date->add(new DateInterval($duration_string));
+
+    $courses = getCourses(false, null, new DateTime(), $end_date);
+
+    $cleaned_up_events = removePastDates($courses, $start_date);
+    $repeating_events = createIntervalDates($courses, $start_date, $end_date);
+
+    $all_events = array_merge($cleaned_up_events, $repeating_events);
 
     $temp_date = new DateTime();
 
-    foreach ($courses as $course) {
+    foreach ($all_events as $course) {
         // check if course is within the next 7 days
         if ($course['date'] < $temp_date->add(new DateInterval($duration_string))) {
             $staff = getStaff($course['id']);
@@ -154,7 +160,7 @@ else {
             <span class='list-item $item_class'>
                 <span>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
                 <span>
-                    {$course_types[$course['course_type_id']]}
+                    {$course_types[$course['course_type_id']]['title']}
                 </span>
                 <span class='no-mobile'>{$course['title']}</span>
                 <span class='no-mobile'>

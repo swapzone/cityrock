@@ -31,7 +31,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
                         <span>Kurs ID</span><span>{$course_id}</span>
                     </span>
                     <span class='list-item'>
-                        <span>Kurstyp</span><span>{$course_types[$course['course_type_id']]}</span>
+                        <span>Kurstyp</span><span>{$course_types[$course['course_type_id']]['title']}</span>
                     </span>
                     <span class='list-item'>
                         <span>Maximale Teilnehmerzahl</span><span>{$course['max_participants']}</span>
@@ -63,7 +63,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
         $content .= "
                 </span>
-                <a href='{$root_directory}/archive' class='button'>Zurück</a>";
+                <a href='{$root_directory}/archive' class='button'>Übersicht</a>";
     } else {
         /***********************************************************************/
         /* Course overview                                                     */
@@ -116,7 +116,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
             $content .= "
                     <span class='list-item' year='{$course['date']->format('Y')}' month='{$month}'>
-                        <span>{$course_types[$course['course_type_id']]}</span>
+                        <span>{$course_types[$course['course_type_id']]['title']}</span>
                         <span>{$course['date']->format('d.m.Y')}</span>
                         <span class='no-mobile'>{$course['max_participants']}</span>
                         <span class='no-mobile'>$num_registrants (<a href='{$root_directory}/course/{$course['id']}/registrants'>Liste</a>)</span>

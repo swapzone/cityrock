@@ -33,15 +33,17 @@ foreach($all_events as $event) {
         $event_end_date = $event['date']->add(new DateInterval('PT' . $event['duration'] . 'M'));
         $event_end = $event_end_date->format('Y-m-d H:i:s');
 
-        // TODO include further event details in here
+        $event_color = $course_types[$event['course_type_id']]['color'];
 
         $jsonString .= '{
             "id": ' . $event['id'] . ',
-            "title": "' . $course_types[$event['course_type_id']] . '",
+            "title": "' . $course_types[$event['course_type_id']]['title'] . '",
             "start": "' . $event_start . '",
             "end": "' . $event_end . '",
             "staff": "' . $event['staff_id'] . '",
-            "url": "' . $root_directory . '/events/' . $event['id'] . ' "
+            "url": "' . $root_directory . '/events/' . $event['id'] . '",
+            "color": "' . $event_color . '",
+            "textColor" : "#000"
         },';
     }
 }

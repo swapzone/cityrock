@@ -120,7 +120,6 @@ else {
 
 	$content .= "
 				<input type='hidden' name='modify' />
-				<a href='{$root_directory}/' class='button'>Zurück</a>
 				<a href='#' id='edit-user' class='button'>Bearbeiten</a>
 			</span>
 		</form>";

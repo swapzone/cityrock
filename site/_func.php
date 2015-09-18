@@ -98,9 +98,11 @@ function getCourse($course_id) {
 
 	$db = Database::createConnection();
 
-	$result = $db->query("SELECT course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone
-						  FROM course 
-						  WHERE id=$course_id;");
+	$result = $db->query("SELECT course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
+						  FROM course
+						  	LEFT JOIN repeat_interval
+        					ON course.interval_designator=repeat_interval.id
+						  WHERE course.id={$course_id};");
 	
 	if ($result->num_rows > 0) {
 		$result = $result->fetch_assoc();
@@ -135,12 +137,12 @@ function getCourseTypes() {
 
 	$db = Database::createConnection();
 	
-	$result = $db->query("SELECT id, title FROM course_type;");
+	$result = $db->query("SELECT id, title, color FROM course_type;");
 
 	$course_type_array = array();
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-	   	$course_type_array[$row['id']] = $row['title'];
+	   		$course_type_array[$row['id']] = $row;
 		}
 	} 
 

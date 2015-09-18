@@ -105,8 +105,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<label for='type'>Kurstyp</label>
 						<select name='type' id='type'>";
 
-				foreach($course_types as $key=>$value) {
-					$content .= "<option value='{$key}'>{$value}</option>";
+				foreach($course_types as $key=>$course_type) {
+					$content .= "<option value='{$key}'>{$course_type['title']}</option>";
 				}
 
 				$content .= "
@@ -172,11 +172,11 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<label for='type'>Kurstyp</label>
 							<select name='type' id='type'>";
 
-					foreach($course_types as $key=>$title) {
+					foreach($course_types as $key=>$course_type) {
 						if($course['course_type_id'] == $key)
-							$content .= "<option selected value='{$key}'>{$title}</option>";
+							$content .= "<option selected value='{$key}'>{$course_type['title']}</option>";
 						else
-							$content .= "<option value='{$key}'>{$title}</option>";
+							$content .= "<option value='{$key}'>{$course_type['title']}</option>";
 					}
 
 					$content .= "
@@ -287,7 +287,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							</span>
 							<span class='list-item'>
 								<span>Kurstyp</span>
-								<span>{$course_types[$course['course_type_id']]}</span>
+								<span>{$course_types[$course['course_type_id']]['title']}</span>
 							</span>
 							<span class='list-item'>
 								<span>Maximale Teilnehmerzahl</span>
@@ -347,7 +347,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							</form>
 						</span>
 						<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Editieren</a>
-						<a href='{$root_directory}/course' class='button'>Zurück</a>";
+						<a href='{$root_directory}/course' class='button'>Übersicht</a>";
 				}
 			}
 		}
@@ -361,8 +361,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				<select class='filter' name='course-filter'>
 					<option value='Alle'>Alle</option>";
 
-			foreach($course_types as $key=>$type) {
-				$content .= "<option value='$type'>{$type}</option>";
+			foreach($course_types as $course_type) {
+				$content .= "<option value='{$course_type['title']}'>{$course_type['title']}</option>";
 			}
 
 			$content .= "
@@ -394,11 +394,11 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					$content .= "<span class='course-list-month'>{$month}</span>";
 				}
 
-				$item_class = strtolower($course_types[$course['course_type_id']]);
+				$item_class = strtolower($course_types[$course['course_type_id']]['title']);
 
 				$content .= "
 					<span class='list-item $item_class'>
-						<span>{$course_types[$course['course_type_id']]}</span>
+						<span>{$course_types[$course['course_type_id']]['title']}</span>
 						<span>{$course['date']->format('d.m.Y')}</span>
 						<span class='no-mobile'>{$course['max_participants']}</span>
 						<span class='no-mobile'>$num_registrants (<a href='./course/{$course['id']}/registrants'>Liste</a>)</span>

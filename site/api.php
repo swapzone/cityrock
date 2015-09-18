@@ -58,7 +58,7 @@ if (isset($_POST['action'])) {
                     $temp_date = new DateTime();
                     $deadline_date = $temp_date->add(new DateInterval($durationString));
 
-                    if($deadline_date > $course['dates'][0]['date']) {
+                    if($course['day_interval'] == 0 && $course['month_interval'] == 0 && $deadline_date > $course['dates'][0]['date']) {
                         echo "ERROR: Du kannst dich nicht mehr austragen. Deadline {$deadline} Tage vor Kursbeginn.";
                         break;
                     }
