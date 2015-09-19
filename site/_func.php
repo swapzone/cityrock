@@ -279,12 +279,20 @@ function getStaff($course_id) {
  *
  * @param $courses
  * @param $interval_start
- * @param $interval_end can be null, then only the next course will be returned
+ * @param $interval_end can be null, then all courses until the end of the year will be returned
  * @return array
  */
 function createIntervalDates($courses, $interval_start, $interval_end = null) {
 
 	$interval_courses = array();
+
+	if($interval_end == null) {
+		$interval_end = clone $interval_start;
+
+		$Y = $interval_end->format('Y');
+
+		$interval_end->setDate($Y , 11 , 31);
+	}
 
 	foreach($courses as $course) {
 
@@ -294,7 +302,7 @@ function createIntervalDates($courses, $interval_start, $interval_end = null) {
 
 			$weekend = $course['weekend'];
 
-			while($interval_end != null && $course_date < $interval_end || count($interval_courses) == 0) {
+			while($course_date < $interval_end) {
 				$course_date->add(new DateInterval('P' . $course['day_interval'] . 'D'));
 
 				if($course_date > $interval_start) {
@@ -309,7 +317,7 @@ function createIntervalDates($courses, $interval_start, $interval_end = null) {
 		}
 		else if($course['month_interval']) {
 
-			while($interval_end != null && $course_date < $interval_end || count($interval_courses) == 0) {
+			while($course_date < $interval_end) {
 				$course_date->add(new DateInterval('P' . $course['month_interval'] . 'M'));
 
 				if($course_date > $interval_start) {

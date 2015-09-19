@@ -382,6 +382,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			$repeating_courses = createIntervalDates($courses, new DateTime());
 
 			$all_courses = array_merge($cleaned_up_courses, $repeating_courses);
+			usort($all_courses, "courseSort");
 
 			$month = null;
 			foreach($all_courses as $course) {
