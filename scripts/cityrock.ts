@@ -196,44 +196,71 @@ module cityrock {
    */
   export function initializeCourseView():void {
 
+    var dayCounter = 1;
+
     // add day link
     $('#add-day').on('click', function (event) {
 
-      var numberOfDays:number = $(event.target).parent().parent().find('input[name=days]').val();
-      var index:number = Number(numberOfDays) + 1;
+      //console.log("Day counter: " + dayCounter);
+      var index:number = dayCounter + 1;
 
       if (index < 6) {
-        // set new value for days input
-        $(event.target).parent().parent().find('input[name=days]').val(index.toString());
+        dayCounter++;
 
-        var container:string = "<div class='day-container'>";
-        $(event.target).before($(container));
-        var heading:string = "<h3 class='inline'>Tag " + index + "</h3><span>(<a href='#' class='remove-day'>entfernen</a>)</span>";
-        $(event.target).before($(heading));
+        // set new value for days input
+        $(document).find('input[name=days]').val(dayCounter.toString());
+
+        var container:JQuery = $("<div class='day-container'>");
+        $(event.target).before(container);
+
+        var heading:JQuery = $("<h3 class='inline'>Tag " + index + "</h3><span>(<a class='remove-day'>entfernen</a>)</span>");
+        container.append(heading);
+
         var label:string = "<label for='date-" + index + "'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>";
-        $(event.target).before($(label));
+        container.append($(label));
+
         var input:string = "<input type='text' placeholder='z.B. 02.10.2015' name='date-" + index + "' class='date'>";
-        $(event.target).before($(input));
+        container.append($(input));
+
         var label:string = "<label for='time-" + index + "'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>";
-        $(event.target).before($(label));
+        container.append($(label));
+
         var input:string = "<input type='text' placeholder='z.B. 09:00' name='time-" + index + "' class='time'>";
-        $(event.target).before($(input));
-        var label:string = "<label for='duraration-" + index + "'>Dauer (in Minuten)</label>";
-        $(event.target).before($(label));
+        container.append($(input));
+
+        var label:string = "<label for='duration-" + index + "'>Dauer (in Minuten)</label>";
+        container.append($(label));
+
         var input:string = "<input type='text' name='duration-" + index + "' class='duration'>";
-        $(event.target).before($(input));
-        var container:string = "</div>";
-        $(event.target).before($(container));
+        container.append($(input));
+
+        // remove day link
+        heading.find('.remove-day').on('click', function (event) {
+
+          var elementIndex = $(".day-container").index(container);
+          if(elementIndex < dayCounter - 2)
+            alert("Du kannst nur jeweils den letzten Tag entfernen.");
+          else {
+            dayCounter--;
+            $(document).find('input[name=days]').val((dayCounter).toString());
+            $(event.target).parent().parent().remove();
+          }
+        });
       }
       else {
         alert('Es können nicht mehr als 5 Tage hinzugefügt werden.');
       }
     });
 
+    /*
     // remove day link
-    $('.remove-day').on('click', function (event) {
-      $(event.target).parent().parent().remove();
+    $(document).on('click', '.remove-day', function (event) {
+      console.log("Remove day...");
+      console.log($(event.target).parent().parent().attr('class'));
+
+      //$(event.target).parent().parent().remove();
     });
+    */
 
     // move registrant links
     $('.move').on('click', function (event) {

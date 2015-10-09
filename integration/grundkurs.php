@@ -121,8 +121,10 @@ $deadlineLimit = $config['system']['deadline'];
         <font color="#990000">Kurs ausgebucht</font><span class="ueber"><br />
 	    </span></td>
 
-			<td width="51%" valign="top"><strong><?php echo $year; ?></strong><br />
-				<br />	
+			<td width="51%" valign="top">
+				<div style='margin: 1em 0 0.5em 0;'>
+					<strong><?php echo $year; ?></strong>
+				</div>
 				<div>
 				<?php
 					foreach($courses as $course) {
@@ -132,7 +134,7 @@ $deadlineLimit = $config['system']['deadline'];
 							if($course['dates'][0]['date']->format(Y) != $year) {
 								$year = $course['dates'][0]['date']->format(Y);
 
-								echo "<div style='margin: 1em 0 0.3em 0;'><strong>{$year}</strong></div>";
+								echo "<div style='margin: 1em 0 0.5em 0;'><strong>{$year}</strong></div>";
 							}
 
 							$registrants = getRegistrants($course['id']);

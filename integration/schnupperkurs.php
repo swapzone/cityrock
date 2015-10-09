@@ -49,7 +49,7 @@ $deadlineLimit = $config['system']['deadline'];
     </tr>
   </table>	
   <span class="ueber">Kletter-Schnupperkurs<br /></span>
-  <p>Der Schnupperkurs ist die perfekte Gelegenheit, das Klettern einmal auszuprobieren. In zwei Stunden lernen die Teilnehmerinnen und Teilnehmer einige grundlegende Klettertechniken und können, gesichert von unseren erfahrenen Betreuern, ihr Klettertalent an zahlreichen Wänden testen. Die nötige  Ausrüstung gibt's natürlich dazu - und wer das Klettern als seinen Sport entdeckt hat, erhält den weiterführenden <a href="grundkurs.php">Toprope-Kurs</a> um 10,- Euro günstiger.</p>
+  <p>Der Schnupperkurs ist die perfekte Gelegenheit, das Klettern einmal auszuprobieren. In zwei Stunden lernen die Teilnehmerinnen und Teilnehmer einige grundlegende Klettertechniken und können, gesichert von unseren erfahrenen Betreuern, ihr Klettertalent an vielen verschiedenen Wänden austesten. Die nötige  Ausrüstung gibt's natürlich dazu - und wer das Klettern als seinen Sport entdeckt hat, erhält den weiterführenden <a href="grundkurs.php">Toprope-Kurs</a> um 10,- Euro günstiger.</p>
   <p><strong><br />
     Kursprogramm und Leistungen:</strong><br />
     <br />
@@ -66,70 +66,71 @@ $deadlineLimit = $config['system']['deadline'];
 <br />
     <br />
 
-    <div style='margin-bottom: 0.3em;'><b>Termine <?php echo $year; ?></b></div>
-		<table>
-		<?php
+    <div style='margin: 1em 0 0.3em 0;'>
+    	<strong>Termine <?php echo $year; ?></strong>
+    </div>
+	<table>
+	<?php
+		foreach($courses as $course) {
 
-			foreach($courses as $course) {
+			if($course['dates'][0]['date'] > new DateTime()) {	
 
-				if($course['dates'][0]['date'] > new DateTime()) {	
+				if($course['dates'][0]['date']->format(Y) != $year) {
+					$year = $course['dates'][0]['date']->format(Y);
 
-					if($course['dates'][0]['date']->format(Y) != $year) {
-						$year = $course['dates'][0]['date']->format(Y);
+					echo "<div style='margin: 1em 0 0.3em 0;'><strong>Termine {$year}</strong></div>";
+				}
 
-						echo "<div style='margin: 1em 0 0.3em 0;'><strong>Termine {$year}</strong></div>";
-					}
+				$registrants = getRegistrants($course['id']);
+				$placesAvailable = $course['max_participants'] - count($registrants);
+			
+				$date = $course['dates'][0]['date'];
+				$duration = $course['dates'][0]['duration'];
 
-					$registrants = getRegistrants($course['id']);
-					$placesAvailable = $course['max_participants'] - count($registrants);
-				
-					$date = $course['dates'][0]['date'];
-					$duration = $course['dates'][0]['duration'];
+				$deadline = clone $date;	
+				$modString = '-'.$deadlineLimit.' days';
+				$deadline->modify($modString);
 
-					$deadline = clone $date;	
-					$modString = '-'.$deadlineLimit.' days';
-					$deadline->modify($modString);
+				$day = $date->format('d.');;
+				$month = getMonth($date);
 
-					$day = $date->format('d.');;
-					$month = getMonth($date);
+				$color = "#1975FF";
+				$text = "&gt; Online-Anmeldung";
+				$link = "<a href='anmeldung.php?id={$course['id']}' style='color: {$color};'>{$text}</a>";
 
-					$color = "#1975FF";
+				if($placesAvailable < 5) {
+					$color = "#CC3300";
 					$text = "&gt; Online-Anmeldung";
 					$link = "<a href='anmeldung.php?id={$course['id']}' style='color: {$color};'>{$text}</a>";
-
-					if($placesAvailable < 5) {
-						$color = "#CC3300";
-						$text = "&gt; Online-Anmeldung";
-						$link = "<a href='anmeldung.php?id={$course['id']}' style='color: {$color};'>{$text}</a>";
-					}
-					if($placesAvailable == 0) {
-						$color = "#990000";
-						$text = "&gt; Kurs ausgebucht";
-						$link = "<span style='color: {$color};'>{$text}</span>";
-					}
-					if(new DateTime()>$deadline) {
-						$color = "#990000";
-						$text = "&gt; Anmeldung nicht mehr möglich";
-						$link = "<span style='color: {$color};'>{$text}</span>";
-					}							
-
-					echo "
-						<tr class='course-row'>
-							<td><span class='course-row-date'>{$day} {$month}</span>, {$date->format('H:i')}-" . getEndTime($date, $duration, true) . " Uhr</td>
-							<td>{$link}</td>
-						</tr>";
 				}
+				if($placesAvailable == 0) {
+					$color = "#990000";
+					$text = "&gt; Kurs ausgebucht";
+					$link = "<span style='color: {$color};'>{$text}</span>";
+				}
+				if(new DateTime()>$deadline) {
+					$color = "#990000";
+					$text = "&gt; Anmeldung nicht mehr möglich";
+					$link = "<span style='color: {$color};'>{$text}</span>";
+				}							
+
+				echo "
+					<tr class='course-row'>
+						<td><span class='course-row-date'>{$day} {$month}</span>, {$date->format('H')}-" . getEndTime($date, $duration) . " Uhr</td>
+						<td>{$link}</td>
+					</tr>";
 			}
-		?>
-		</table>
+		}
+	?>
+	</table>
     <br />
-  Für Gruppen ab 4 Personen bieten wir extra Termine auf Anfrage an.<br />
-  <br />
-<br />	
-		<b>Legende:<br /></b>
-		<font color="#1975FF">Ausreichend freie Plätze</font><br />
-		<font color="#CC3300">Wenige freie Plätze</font><br />
-		<font color="#990000">Kurs ausgebucht</font>
+  	Für Gruppen ab 4 Personen bieten wir extra Termine auf Anfrage an.<br />
+  	<br />
+	<br />	
+	<b>Legende:<br /></b>
+	<font color="#1975FF">Ausreichend freie Plätze</font><br />
+	<font color="#CC3300">Wenige freie Plätze</font><br />
+	<font color="#990000">Kurs ausgebucht</font>
 </div>
 </body>
 </html>

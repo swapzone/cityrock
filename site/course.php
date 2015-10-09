@@ -74,12 +74,12 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			// update course
 			$success = updateCourse($_POST['id'], $course_data, $dates);
 
-			$title = "Kurs editieren";
+			$title = "Kurs bearbeiten";
 
 			if($success)
-				$content = "Kurs wurde erfolgreich editiert.";
+				$content = "Kurs wurde erfolgreich bearbeitet.";
 			else
-				$content = "Fehler: Kurs konnte nicht editiert werden.";
+				$content = "Fehler: Kurs konnte nicht bearbeitet werden.";
 		}
 		else {
 			// create course
@@ -120,7 +120,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<label for='duraration-1'>Dauer (in Minuten)</label>
 						<input type='text' name='duration-1' class='duration'>
 						<span class='add-day'>
-							<a href='#' id='add-day'>Tag hinzufügen</a>
+							<a id='add-day'>Tag hinzufügen</a>
 						</span>
 						<label for='interval'>Wiederholen</label>
 						<select name='interval'>";
@@ -166,7 +166,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					$course = getCourse($course_id);
 					$number_of_days = count($course['dates']);
 
-					$title = "Kurs editieren";
+					$title = "Kurs bearbeiten";
 					$content = "
 						<form method='post' onsubmit='return cityrock.validateForm(this);'>
 							<label for='type'>Kurstyp</label>
@@ -346,7 +346,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 								<a href='#' class='button error confirm'>Löschen</a>
 							</form>
 						</span>
-						<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Editieren</a>
+						<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Bearbeiten</a>
 						<a href='{$root_directory}/course' class='button'>Übersicht</a>";
 				}
 			}

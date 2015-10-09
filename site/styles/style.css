@@ -3312,11 +3312,11 @@ Grid and Layout settings
 }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
 }
 @media screen and (min-width: 720px) {
   html {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
@@ -3333,7 +3333,7 @@ strong {
 }
 
 body {
-  font-family: "source-sans-pro", Arial, Helvetica, Verdana, sans-serif;
+  font-family: "source-sans-pro", Arial, Helvetica, Verdana, Geneva, sans-serif;
   background: #fff;
   color: #000;
 }
@@ -3365,7 +3365,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea, .butt
 }
 
 input[type="text"], input[type="password"], input[type="email"], textarea {
-  font-family: "source-sans-pro", Arial, Helvetica, Verdana, sans-serif;
+  font-family: "source-sans-pro", Arial, Helvetica, Verdana, Geneva, sans-serif;
   display: block;
   border-color: #ccc;
   width: 100%;
@@ -3485,7 +3485,7 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   /* Layout */
   display: inline-block;
   /* Looks */
-  font-family: "source-sans-pro", Arial, Helvetica, Verdana, sans-serif;
+  font-family: "source-sans-pro", Arial, Helvetica, Verdana, Geneva, sans-serif;
   background: #319aca;
   color: #fff;
   text-decoration: none;
@@ -3663,6 +3663,7 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 }
 .navigation ul {
   display: none;
+  margin-bottom: 2em;
 }
 .is-expanded.navigation {
   background-color: white;
@@ -3694,7 +3695,7 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   }
   .navigation li {
     margin: 0.8em 0;
-    padding-bottom: 0.3em;
+    padding-bottom: 0.1em;
     line-height: 1em;
     font-weight: 700;
   }
@@ -3763,6 +3764,7 @@ p {
 .course .course-list-month {
   display: block;
   color: #999;
+  margin-top: 0.8em;
   margin-bottom: 0.4em;
   border-bottom: 1px solid #ccc;
 }

@@ -33,9 +33,9 @@ function getCourses($course_type_id) {
 	foreach($course_array as $key=>$course) {
 		
 		$result = $db->query("SELECT start, duration
-													FROM date 
-													WHERE course_id={$course['id']} 
-													ORDER BY start;");
+							  FROM date 
+							  WHERE course_id={$course['id']} 
+							  ORDER BY start;");
 		
 		$dates_array = array();
 		if ($result->num_rows > 0) {

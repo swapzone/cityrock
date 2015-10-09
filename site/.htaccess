@@ -9,7 +9,7 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 # Requires mod_rewrite
 # -----------------------------------------------------------------------------------------------
 
-<IfModule mod_rewrite.c>
+#<IfModule mod_rewrite.c>
 
   RewriteEngine On
   AddDefaultCharset UTF-8
@@ -71,4 +71,4 @@ ErrorDocument 404 http://localhost/cityrock/error.php
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^([^\.]+)$ $1.php [L] #[NC,L]
 
-</IfModule>
+#</IfModule>

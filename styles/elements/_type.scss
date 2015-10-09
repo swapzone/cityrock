@@ -1,4 +1,4 @@
-$ff-backup--sans: Arial, Helvetica, Verdana, sans-serif;
+$ff-backup--sans: Arial, Helvetica, Verdana, Geneva, sans-serif;
 $ff-backup--serif: Georgia, 'Times New Roman', serif;
 
 $ff-body: 'source-sans-pro', #{$ff-backup--sans};
@@ -73,9 +73,9 @@ $text-sizing: (
 }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
   @include respond-above("medium") {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 

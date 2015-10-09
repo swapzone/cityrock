@@ -8,7 +8,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
     $course_types = getCourseTypes();
 
-    if (isset($_GET["id"])) {
+    if (isset($_GET["id"])) {        
         // course details
         $course_id = $_GET["id"];
         $course = getCourse($course_id);

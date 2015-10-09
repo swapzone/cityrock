@@ -165,7 +165,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<input type='hidden' name='user_id' value='{$user['id']}' />
 						</span>
 						<a href='{$root_directory}/user' class='button'>Übersicht</a>
-						<a href='#' id='edit-user' class='button'>Editieren</a>
+						<a href='#' id='edit-user' class='button'>Bearbeiten</a>
 						<a href='#' user-id='{$user['id']}' class='button error delete-user'>Löschen</a>
 					</form>";
 			}

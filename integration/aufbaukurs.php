@@ -64,66 +64,74 @@ $deadlineLimit = $config['system']['deadline'];
 		<div id="content"> 
       <table width="450" border="0" align="right" cellpadding="0" cellspacing="0">
 				<tr>
-			   	<td width="670" height="600" align="right" valign="top"><img src="img/fotos/kurse1.jpg" width="400" height="489" alt="Vorstiegskurs im Cityrock" /><br /></td>
+			   	<td width="670" height="600" align="right" valign="top"><img src="img/fotos/vorstieg1.jpg" width="400" alt="Vorstiegskurs" /><br />
+			   	  <br />
+			   	  <img src="img/fotos/vorstieg2.jpg" width="400" alt="Vorstiegskurs" /><br />
+			   	  <br />
+			   	  <br />
+			   	  <br /><br />
+				</td>
 		    </tr>
 			</table>	 
 			<span class="ueber">Aufbaukurs Vorstiegsklettern</span><br /><br />
-			<p>
+			
 				Der Aufbaukurs &quot;Vorstiegsklettern&quot; ist ideal für Kletterer, 
-				die das Topropeklettern bereits beherrschen und nun den nächsten Schritt - das Vorstiegsklettern - erlernen möchten.<br />
+				die das Topropeklettern bereits beherrschen und nun den nächsten Schritt wagen wollen.<br />
 				<br />
-Insbesondere beim Vorstiegsklettern und -sichern wird ein Kurs unter professioneller Anleitung   dringend empfohlen. Um Sicherungsfehler zu vermeiden, ist nicht nur viel Aufmerksamkeit, sondern auch einige Erfahrung notwendig. In diesem Kurs erlernt ihr Schritt für Schritt das richtige Sicherungsverhalten von Profis. Um eine solide Basis zu schaffen, bleibt zudem viel Zeit, das Gelernte ausführlich zu üben.<br />
-				<br />
-		      <strong>Nach erfolgreicher Teilnahme erhält jede/r TeilnehmerIn den Kletterschein &quot;Vorstieg&quot; des DAV</strong> und ist in der Lage, selbstständig und sicher an künstlichen Kletterwänden  im Vorstieg zu klettern und zu sichern.<br />
-				<br />
-				Der Kurs dauert zweimal vier Stunden und findet an zwei aufeinanderfolgenden Tagen statt. 
-				[cityrock]® stellt für die Dauer des Kurses das benötigte Material zur Verfügung. Eigenes Material darf auch verwendet werden.
+				Beim Vorstiegsklettern wird ein Kurs unter professioneller Anleitung   dringend empfohlen. Um Sicherungsfehler zu vermeiden, ist viel Aufmerksamkeit und einige Erfahrung notwendig. In diesem Kurs erlernt ihr Schritt für Schritt das richtige Sicherungsverhalten von Profis und habt viel Zeit, das Gelernte ausführlich zu üben. Mit diesen soliden Kenntnissen könnt ihr euch sowohl im Toprope als auch im Vorstieg absolut sicher  an künstlichen Kletterwänden bewegen - außerdem erhält jede/r TeilnehmerIn nach dem Kurs den <strong>Kletterschein &quot;Vorstieg&quot; des DAV</strong>.<br />
+				</p>
+				<p><strong>Voraussetzungen: </strong><br />
+				Teilnehmen kann jeder, der den Schwerigkeitsgrad <strong>5+ (UIAA)</strong> im Toprope sowie die<strong> Toprope-Sicherungstechnik 
+      			mit mindestens einem Sicherungsgerät</strong> sicher beherrscht. Die Teilnahme an einem Toprope-Kletterkurs ist keine zwingende Voraussetzung.<br />
+      			<br />
+				[cityrock]® stellt für die Dauer des Kurses das benötigte Material zur Verfügung. Eigenes Material darf auch mitgebracht werden.
 			<br />
-			</p>
-<p><strong>Voraussetzungen: </strong>Teilnehmen kann jeder, der den Schwerigkeitsgrad <strong>5+ (UIAA)</strong> im Toprope sowie die Toprope-Sicherungstechnik 
-      mit mindestens einem Sicherungsgerät sicher beherrscht. Die Teilnahme an einem Toprope-Kletterkurs ist keine zwingende Voraussetzung. </p>
-			<p>
-				<br />
-				<br />
-			</p>  
+		    </p>
+			<p>&nbsp;</p>  
 
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<table width="40%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 				  <td valign="top"><span class="ueber">Eckdaten</span><br />
 			      <br /></td>
 				  <td valign="top">&nbsp;</td>
-				  <td colspan="2" valign="top"><strong class="ueber">Termine</strong></td>
 			  </tr>
 				<tr>
 					<td width="15%" valign="top">
-						Dauer:<br /><br /><br /><br />
+						Dauer:<br /><br /><br />
 						Alter:<br /><br />
 						Kosten:<br /><br />
 						Teilnehmer:<br />
-			      <br />
-			      <b>Legende:</b></td>
-					<td width="34%" valign="top">Zweitägig (jws. 4 Stunden)<br />
-				    Uhrzeit siehe Termine<br /><br /><br />
-				    Ab 14 Jahre<br /><br />
-				    € 95,-<br /><br />
-				    Maximal 12 Personen<br /><br />
-				    <font color="#1975FF">Ausreichend freie Plätze</font><br />
-                    <font color="#CC3300">Wenige freie Plätze</font><br />
-                    <font color="#990000">Kurs ausgebucht</font></td>
-					<td width="51%" colspan="2" valign="top"><strong><?php echo $year; ?></strong><br />
+		              	<br />
+		              	<br />
 						<br />
+					</td>
+				  	<td width="34%" valign="top">Zweitägig (jws. 4 Stunden)<br />
+					    Uhrzeit siehe Termine<br /><br />
+					    Ab 14 Jahre<br /><br />
+					    € 95,-<br /><br />
+					    Maximal 12 Personen
+					    <br />
+	                    <br />
+	                    <br />
+	                </td>
+				</tr>
+				<tr>
+					<td colspan="2" valign="top"><strong class="ueber">Termine</strong>
+					    <div style='margin: 1em 0 0.5em 0;'>
+							<strong><?php echo $year; ?></strong>
+						</div>
 						<div>
 						<?php
 							foreach($courses as $course) {
 
-								if($course['dates'][0]['date'] > new DateTime()) {		
-			
+								if($course['dates'][0]['date'] > new DateTime()) {	
+
 									if($course['dates'][0]['date']->format(Y) != $year) {
 										$year = $course['dates'][0]['date']->format(Y);
 
-										echo "<div style='margin: 1em 0 0.3em 0;'><strong>{$year}</strong></div>";
-									}
-									
+										echo "<div style='margin: 1em 0 0.5em 0;'><strong>{$year}</strong></div>";
+									}	
+			
 									$registrants = getRegistrants($course['id']);
 									$placesAvailable = $course['max_participants'] - count($registrants);
 
@@ -132,7 +140,7 @@ Insbesondere beim Vorstiegsklettern und -sichern wird ein Kurs unter professione
 									$deadline->modify($modString);
 
 									$datesString = "";
-	
+
 									foreach($course['dates'] as $date) {
 										$duration = $date['duration'];
 										$date = $date['date'];
@@ -180,17 +188,18 @@ Insbesondere beim Vorstiegsklettern und -sichern wird ein Kurs unter professione
 							}
 						?>
 						</div>          
-					  <br />
-					  Für Gruppen ab 4 Personen bieten wir Kurse zu extra Terminen an. Für eine Anfrage bitte <a href="kontakt.php">Kontakt</a> zu uns aufnehmen.
-					</td>
-				</tr>
-				<tr>
-					<td valign="top">&nbsp;</td>
-					<td valign="top">&nbsp;</td>
-					<td>&nbsp;</td>
+						<br />
+					    Für Gruppen ab 4 Personen bieten wir Kurse zu extra Terminen an. Für eine Anfrage bitte <a href="kontakt.php">Kontakt</a> zu uns aufnehmen.<br />
+					    <br />
+					    Legende:<br />
+					    <font color="#1975FF">Ausreichend freie Plätze</font><br />
+	                    <font color="#CC3300">Wenige freie Plätze</font><br />
+	                    <font color="#990000">Kurs ausgebucht</font>
+	                    <br />
+                    </td>
 				</tr>
 			</table>
-		  <br />
+    		<br />
 			<br />
 			<br />
 		</div>
