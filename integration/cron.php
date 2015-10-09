@@ -13,9 +13,12 @@
 	// get all courses within the given deadlines
 	$db = createConnection();
 	
-	$result = $db->query("SELECT start, course_id
-												FROM date 
-												ORDER BY course_id, start;"); 
+	$result = $db->query("SELECT date.start, course_id, course_type_id
+						  FROM date 
+						  	LEFT JOIN course 
+					      	ON date.course_id = course.id
+						  WHERE start > NOW() AND course_type_id IN (1, 2, 3)
+						  ORDER BY course_id, start"); 
 	
 	$reminderArray = array();
 	$administrationArray = array();
@@ -40,7 +43,7 @@
 					$reminderArray[] = $row['course_id'];
 	
 				// check for administration deadlines
-				$modString = '-'.$deadlineAdministration.' days';
+				$modString = '-'. $deadlineAdministration.' days';
 				$deadline = clone $courseDate;
 				$deadline->modify($modString);
 
