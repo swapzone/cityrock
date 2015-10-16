@@ -67,9 +67,8 @@ else {
 		if(document.forms["anmeldung"]["name"].value == "" || document.forms["anmeldung"]["firstname"].value == "" || 
 			document.forms["anmeldung"]["street"].value == "" || document.forms["anmeldung"]["postal"].value == "" || 
 			document.forms["anmeldung"]["city"].value == "" || document.forms["anmeldung"]["birthday"].value == "" || 
-			document.forms["anmeldung"]["email"].value == "" || document.forms["anmeldung"]["phone"].value == "" ||
-			document.forms["anmeldung"]["id"].value == "" ) {
-
+			document.forms["anmeldung"]["email"].value == "" || document.forms["anmeldung"]["id"].value == "" ||
+			document.forms["anmeldung"]["phone"].value == "" ) {
 				alert(unescape("Bitte alle Felder ausf%FCllen%21"));
 		  		return false;
 			}

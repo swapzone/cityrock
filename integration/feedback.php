@@ -19,7 +19,7 @@
 	$phone = $_POST['phone'];
 
 	if($courseId == "" || $email == "" || $lastname == "" || $firstname == "" || $street == "" || $postal == "" || $city == "" || $birthday == "" || $phone == "") {
-		echo "<script language=javascript>window.location = 'http://www.cityrock.de/anmeldung.php';</script>";
+		echo "Leider sind die Eingaben aus dem Formular nicht vollständig. Bitte probiere es nochmal.";
 	}
 	else {
 		// add registrant to list and retrieve confirmation code
