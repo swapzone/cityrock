@@ -23765,7 +23765,6 @@ var cityrock;
                     if (elementIndex < dayCounter - 2)
                         alert("Du kannst nur jeweils den letzten Tag entfernen.");
                     else {
-                        console.log("Element index: " + elementIndex);
                         dayCounter--;
                         $(document).find('input[name=days]').val((dayCounter).toString());
                         $(event.target).parent().parent().remove();

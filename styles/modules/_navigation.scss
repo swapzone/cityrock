@@ -17,7 +17,6 @@ $logo-width: 280px;
 
   ul {
     display: none;
-    margin-bottom: 2em;
   }
 
   &.is-expanded {
@@ -56,10 +55,14 @@ $logo-width: 280px;
       padding-bottom: 0.1em;
       line-height: 1em;
       font-weight: 700;
-    }
 
-    li.mobile {
-      display: none;
+      &.mobile {
+        display: none;
+      }
+
+      &.menu-separator {
+        margin-bottom: 2em;
+      }
     }
   }
 

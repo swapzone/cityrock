@@ -727,29 +727,23 @@ function renderNavigation($user) {
 
 	if($user->hasPermission(array('Administrator', 'Verwaltung'))) {
 		$administration_menu = "
-			<ul>
-				<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>
-				<li><a href='{$root_directory}/archive'>Kursarchiv</a></li>
-			</ul>";
+			<li class='active'><a href='{$root_directory}/course'>Kursverwaltung</a></li>
+			<li class='menu-separator'><a href='{$root_directory}/archive'>Kursarchiv</a></li>";
 	}
 
 	if($user->hasPermission(array('Administrator'))) {
 		$admin_menu= "
-			<ul>
-				<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
-				<li><a href='{$root_directory}/settings'>Einstellungen</a></li>
-			</ul>";
+			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
+			<li class='menu-separator'><a href='{$root_directory}/settings'>Einstellungen</a></li>";
 	}
 
 	return "
 		<ul>
 			<li><a href='{$root_directory}/calendar'>Belegungsplan</a></li>
 			<li><a href='{$root_directory}/events'>Terminliste</a></li>
-			<li><a href='{$root_directory}/profile'>Mein Profil</a></li>
-		</ul>
-		{$administration_menu}
-		{$admin_menu}
-		<ul>
+			<li class='menu-separator'><a href='{$root_directory}/profile'>Mein Profil</a></li>
+			{$administration_menu}
+			{$admin_menu}
 			<li class='mobile'><a href='{$root_directory}/index?logout'>Logout</a></li>
 		</ul>";
 }

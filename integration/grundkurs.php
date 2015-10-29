@@ -172,7 +172,7 @@ $deadlineLimit = $config['system']['deadline'];
 								$text = "&gt; Online-Anmeldung";
 								$link = "<a href='anmeldung.php?id={$course['id']}' style='color: {$color};'>{$text}</a>";
 							}
-							if($placesAvailable == 0) {
+							if($placesAvailable <= 0) {
 								$color = "#990000";
 								$text = "&gt; Kurs ausgebucht";
 								$link = "<span style='color: {$color};'>{$text}</span>";

@@ -3663,7 +3663,6 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
 }
 .navigation ul {
   display: none;
-  margin-bottom: 2em;
 }
 .is-expanded.navigation {
   background-color: white;
@@ -3701,6 +3700,9 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   }
   .navigation li.mobile {
     display: none;
+  }
+  .navigation li.menu-separator {
+    margin-bottom: 2em;
   }
 }
 
