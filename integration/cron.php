@@ -84,14 +84,15 @@
 
 			// retrieve participants list
 			$registrants = getRegistrants($courseId);
-		
-			foreach($registrants as $registrant) {			
+			$registrantsEmail = array_unique(array_map("mapRegistrantToEmail", $registrants));
+
+			foreach($registrantsEmail as $registrant) {			
 				
 				// send mail to every participant
-				$success = sendMail($registrant['email'], $subject, $body);
+				$success = sendMail($registrant, $subject, $body);
 
 				if(!$success) {
-					echo "Erinnerungsmail an {$registrant['email']} für Kurs mit der
+					echo "Erinnerungsmail an {$registrant} für Kurs mit der
 								Kurs-ID $courseId konnte nicht gesendet werden.";
 				}
 			}
@@ -105,13 +106,6 @@
 		$subject = "Teilnehmerliste für bevorstehenden Kletterkurs";
 		
 		foreach($administrationArray as $courseId) {
-
-			// retrieve course data
-			$courseData = getCourse($courseId);
-
-			// retrieve participants list
-			$registrants = getRegistrants($courseId);
-
 			// create the link for the participants list for the given course
 			// http://www.cityrock.de/verwaltung/course/$id/registrants/print
 
@@ -135,6 +129,13 @@
 				}
 			}
 		}
+	}
+
+	/**
+	 * Map registrant object to email address.
+	 */
+	function mapRegistrantToEmail($registrant) {
+		return $registrant['email'];
 	}
 
 	/**

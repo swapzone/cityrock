@@ -71,14 +71,19 @@ $deadlineLimit = $config['system']['deadline'];
     </div>
 	<table>
 	<?php
+		$now = new DateTime();
+
 		foreach($courses as $course) {
 
-			if($course['dates'][0]['date'] > new DateTime()) {	
+			if($course['dates'][0]['date'] > $now) {	
 
 				if($course['dates'][0]['date']->format(Y) != $year) {
 					$year = $course['dates'][0]['date']->format(Y);
 
-					echo "<div style='margin: 1em 0 0.3em 0;'><strong>Termine {$year}</strong></div>";
+					echo "
+						</table>
+						<div style='margin: 1em 0 0.3em 0;'><strong>Termine {$year}</strong></div>
+						<table>";
 				}
 
 				$registrants = getRegistrants($course['id']);
@@ -108,7 +113,7 @@ $deadlineLimit = $config['system']['deadline'];
 					$text = "&gt; Kurs ausgebucht";
 					$link = "<span style='color: {$color};'>{$text}</span>";
 				}
-				if(new DateTime()>$deadline) {
+				if($now>$deadline) {
 					$color = "#990000";
 					$text = "&gt; Anmeldung nicht mehr möglich";
 					$link = "<span style='color: {$color};'>{$text}</span>";
