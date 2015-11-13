@@ -28,7 +28,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		include('_main.php');
 	} else {
 		$course = getCourse($_GET['id']);
+		$courseType = getCourseTypes();
 		$registrants = getRegistrants($_GET['id']);
+		usort($registrants, "registrantSort");
 
 		if (isset($_GET['action'])) {
 			if ($_GET['action'] == 'print') {
@@ -36,8 +38,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				/***********************************************************************/
 				/* Print registrant list																						   */
 				/***********************************************************************/
-				$title = utf8_decode("Teilnehmerliste für den");
-				$title .= " " . $course['dates'][0]['date']->format('j.n.Y');
+				$title = utf8_decode("Teilnehmerliste ");
+				$title .= $courseType[$course['course_type_id']]['title'] . "kurs (";
+				$title .= $course['dates'][0]['date']->format('j.n.Y') . ")";
 
 				$pdf = new FPDF();
 				$pdf->SetMargins(15, 20);

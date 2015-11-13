@@ -664,6 +664,18 @@ function courseSort($a, $b) {
 	return $a['date'] > $b['date'];
 }
 
+
+/**
+ * Sort function for registrant arrays.
+ *
+ * @param array $a
+ * @param array $b
+ * @return boolean true if $a is later than $b
+ */
+function registrantSort($a, $b) {
+	return $a['last_name'] > $b['last_name'];
+}
+
 /**
  *
  *

@@ -28,7 +28,7 @@
 
 		while($row = $result->fetch_assoc()) {
 			// only take first day of each course to compare against
-			if($tempCourseId && $row['course_id'] != $tempCourseId) {
+			if(!$tempCourseId || $tempCourseId && $row['course_id'] != $tempCourseId) {
 
 				$courseDate = new DateTime($row['start']);
 				$currentDate = new DateTime();
