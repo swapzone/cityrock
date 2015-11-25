@@ -68,39 +68,19 @@ $deadlineLimit = $config['system']['deadline'];
 <div id="content">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
-		  <td width="308" height="250" valign="top"><span class="ueber">Kletterschein Toprope</span><br />
+		  <td width="330" height="250" valign="top"><span class="ueber">Kletterschein Toprope</span><br />
 		    <br />
-		    Der Kurs <b>Kletterschein Toprope</b> bietet den perfekten Einstieg in die Sportkletterei. 
-				Neben klettertechnischen Basics wird insbesondere die Sicherungstechnik in Toproperouten vermittelt.<br />
-		    <br />
-		    Ideal ist der Kurs für Kletteranfänger, die unter fachmännischer Anleitung eine solide Basis schaffen wollen, 
-				um sich sicher und verantwortungsbewusst an künstlichen Kletterwänden bewegen zu können. 
-				Außerdem bietet der Kurs die Möglichkeit, vorhandenes Wissen aufzufrischen und zu erweitern. 
-				Wie bei all unseren Kursen werden die Teilnehmer von erfahrenen, ausgebildeten Trainern betreut.<br />
-		    <br />
-		    Der Kurs dauert zweimal vier Stunden und findet am Samstag und Sonntag eines Wochenendes statt. 
-				Mit erfolgreicher Teilnahme an diesem Kurs erhält die/der TeilnehmerIn den Kletterschein &quot;Toprope&quot; des DAV.<br />
-	      <br />
-	      <br />
-	      <strong>Ausrüstung</strong><br />
-				<br />
-		    [cityrock]® stellt an beiden Tagen alles benötigte Klettermaterial zur Verfügung, 
-				eigenes Material kann natürlich auch verwendet werden. Mitzubringen sind Hallenschuhe und bequeme Sportkleidung, 
-				für Verpflegung muss selbst gesorgt werden.<br />	          
-			</td>
-      <td width="477" align="right" valign="top"><img src="img/fotos/toprope1.jpg" alt="Kletterschein Toprope" /></td>
-    </tr>
-  </table>
-	<br />
-	<br />
-	<br />
-
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		   Der Kurs <strong>Kletterschein Toprope</strong> bietet den perfekten Einstieg in die Sportkletterei. Hier lernt ihr neben klettertechnischen Basics insbesondere die <strong>Toprope-Sicherungstechnik</strong> unter fachmännischer Anleitung - nach dem Kurs könnt ihr euch selbstständig und sicher an allen künstlichen Kletterwänden  mit Toprope-Routen bewegen.
+		    <p>Ideal ist der Kurs insbesondere für Neulinge, die eine solide Basis schaffen wollen - Vorkenntnisse sind nicht erforderlich. Auch für erfahrene Kletterer, die vorhandenes Wissen auffrischen und erweitern möchten, ist der Kurs empfehlenswert. Wie bei all unseren Kursen werden die Teilnehmer von erfahrenen, ausgebildeten Trainern betreut.</p>
+		    <p>Mit erfolgreicher Teilnahme am Kurs erhält die/der TeilnehmerIn den <strong>Kletterschein &quot;Toprope&quot; des DAV</strong>.</p>
+		    <p>[cityrock]® stellt an beiden Tagen das benötigte Klettermaterial zur Verfügung. Eigenes Material darf mitgebracht werden.<br />
+<br />
+		    </p>
+		    <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 		  <td valign="top"><span class="ueber">Eckdaten</span><br />
 	      <br /></td>
 		  <td valign="top">&nbsp;</td>
-		  <td valign="top"><strong class="ueber">Termine</strong></td>
 	  </tr>
 		<tr>
      	<td valign="top" width="12%">Dauer:<br /><br /><br />
@@ -113,30 +93,29 @@ $deadlineLimit = $config['system']['deadline'];
       	Uhrzeit siehe Termin<br />
       	<br />
       	Ab 14 Jahre<br /><br />				&euro; 95,-<br /><br />
-      	Maximal 12 Personen<br />
+      	Maximal 12 Personen<span class="ueber"><br />
       	<br />
-      	<b>Legende:<br />
-      	</b> <font color="#1975FF">Ausreichend freie Plätze</font><br />
-        <font color="#CC3300">Wenige freie Plätze</font><br />
-        <font color="#990000">Kurs ausgebucht</font><span class="ueber"><br />
+<br />
 	    </span></td>
-
-			<td width="51%" valign="top">
-				<div style='margin: 1em 0 0.5em 0;'>
-					<strong><?php echo $year; ?></strong>
-				</div>
-				<div>
-				<?php
+		</tr>
+			
+		<tr>
+			<td colspan="2" valign="top"><strong class="ueber">Termine<br />
+			  <br />
+			</strong><strong><?php echo $year; ?></strong><br />
+            <br />
+            <div>
+              <?php
 					foreach($courses as $course) {
 
-						if($course['dates'][0]['date'] > new DateTime()) {		
-		
+						if($course['dates'][0]['date'] > new DateTime()) {
+
 							if($course['dates'][0]['date']->format(Y) != $year) {
 								$year = $course['dates'][0]['date']->format(Y);
 
 								echo "<div style='margin: 1em 0 0.5em 0;'><strong>{$year}</strong></div>";
-							}
-
+							}		
+		
 							$registrants = getRegistrants($course['id']);
 							$placesAvailable = $course['max_participants'] - count($registrants);
 							
@@ -191,24 +170,30 @@ $deadlineLimit = $config['system']['deadline'];
 						}
 					}
 				?>
-				</div>
-				<br />
-				Für Gruppen ab 4 Personen bieten wir Kletterkurse zu extra Terminen an. Für eine Terminvereinbarung bitte Kontakt zu uns aufnehmen. 
-		  </td>			
-		</tr>
-			
-		<tr>
-			<td valign="top">&nbsp;</td>
-      <td valign="top">&nbsp;</td>
-      <td valign="top">&nbsp;</td>
+            </div>
+            <br />
+            <b>Legende:<br />
+            </b> <font color="#1975FF">Ausreichend freie Plätze</font><br />
+            <font color="#CC3300">Wenige freie Plätze</font><br />
+            <font color="#990000">Kurs ausgebucht</font><br />
+            <br />
+            Für Gruppen ab 4 Personen bieten wir Kletterkurse zu extra Terminen an. Für eine Terminvereinbarung bitte Kontakt zu uns aufnehmen. <strong class="ueber">		</strong></td>
+      </tr>
+	</table>	          
+			</td>
+      <td width="477" align="right" valign="top"><img src="img/fotos/toprope3.jpg" alt="Kletterschein Toprope" width="400" /><br />
+<br />
+
+<img src="img/fotos/kurse3.jpg" alt="Toprope-Kurs" /><br />
+<br /><img src="img/fotos/toprope4.jpg" width="400" alt="Toprope-Kurs" />
+<br /><br /></td>
     </tr>
-	 	<tr>
-			<td valign="top">&nbsp;</td>
-			<td valign="top">&nbsp;</td>
-			<td>
-				<br /></td>
-		</tr>
-	</table>	
+  </table>
+  <br />
+	<br />
+	<br />
+
+		
 
   <br />
   <br />

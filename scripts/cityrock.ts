@@ -675,7 +675,7 @@ module cityrock {
       if(eventType == 'user')
         userId = $(event.target).attr('user-id');
 
-      // refetch events
+      // re-fetch events
       calendar.fullCalendar( 'refetchEvents' );
 
       //console.log("Event type: " + eventType);
@@ -707,10 +707,29 @@ module cityrock {
         textColor: 'black'
       },
 
+
+      dayClick: function(fullDate:moment.Moment, jsEvent:MouseEvent, view:FullCalendar.View) {
+
+        //console.log('Clicked on: ' + fullDate.toString());
+        //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+        var date = fullDate.format("DD.MM.YYYY").replace(/\./g, '-I-');
+        var time = fullDate.format("HH:mm");
+
+        var newUrl = "course/new/" + date;
+
+        if(fullDate.hour() > 0)
+          newUrl += "-S-" + time;
+
+        //console.log(newUrl);
+        window.location.href = newUrl;
+      },
+
       eventClick: function(calEvent, jsEvent, view) {
 
         console.log('Event: ' + calEvent.title);
         console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
 
         // change the border color just for fun
         //$(this).css('border-color', 'red');

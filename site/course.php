@@ -96,6 +96,21 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 	else {
 		if(isset($_GET["id"])) {
 			if($_GET["id"] == "new") {
+
+				$dateString = "";
+				$timeString = "";
+
+				if(isset($_GET["date"])) {
+					$fullDate = str_replace('-I-', '.', $_GET["date"]);
+					$dateArray = explode("-S-", $fullDate);
+					
+					$dateString = $dateArray[0];
+
+					if(count($dateArray) > 1) {
+						$timeString = $dateArray[1];
+					}
+				}
+
 				/***********************************************************************/
 				/* Course new 										                   */
 				/***********************************************************************/
@@ -114,9 +129,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						<label for='title'>Kunde/Titel</label>
 						<input type='text' placeholder='' name='title'>
 						<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
-						<input type='text' placeholder='z.B. 02.10.2015' name='date-1' class='date'>
+						<input type='text' placeholder='z.B. 02.10.2015' name='date-1' value='{$dateString}' class='date'>
 						<label for='time-1'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-						<input type='text' placeholder='z.B. 09:00' name='time-1' class='time'>
+						<input type='text' placeholder='z.B. 09:00' name='time-1' value='{$timeString}' class='time'>
 						<label for='duraration-1'>Dauer (in Minuten)</label>
 						<input type='text' name='duration-1' class='duration'>
 						<span class='add-day'>

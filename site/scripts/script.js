@@ -24126,7 +24126,7 @@ var cityrock;
             userId = '-1';
             if (eventType == 'user')
                 userId = $(event.target).attr('user-id');
-            // refetch events
+            // re-fetch events
             calendar.fullCalendar('refetchEvents');
             //console.log("Event type: " + eventType);
             //console.log("User id: " + userId);
@@ -24155,6 +24155,17 @@ var cityrock;
                     console.error('Could not retrieve events.');
                 },
                 textColor: 'black'
+            },
+            dayClick: function (fullDate, jsEvent, view) {
+                //console.log('Clicked on: ' + fullDate.toString());
+                //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                var date = fullDate.format("DD.MM.YYYY").replace(/\./g, '-I-');
+                var time = fullDate.format("HH:mm");
+                var newUrl = "course/new/" + date;
+                if (fullDate.hour() > 0)
+                    newUrl += "-S-" + time;
+                //console.log(newUrl);
+                window.location.href = newUrl;
             },
             eventClick: function (calEvent, jsEvent, view) {
                 console.log('Event: ' + calEvent.title);

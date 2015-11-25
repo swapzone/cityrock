@@ -25,6 +25,10 @@
     background: #f9f9f9;
   }
 
+  .fc-day {
+    //cursor: crosshair;
+  }
+
   @include respond-above("medium") {
 
   }

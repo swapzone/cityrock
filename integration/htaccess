@@ -1,4 +1,75 @@
-<Files "cron.php">
-	Order Allow,Deny
-	Deny from all
-</Files>
+# -----------------------------------------------------------------------------------------------
+# Set default directory index files
+# -----------------------------------------------------------------------------------------------
+
+DirectoryIndex index.php index.html index.htm
+ErrorDocument 404 http://localhost/cityrock/error.php
+
+# -----------------------------------------------------------------------------------------------
+# Requires mod_rewrite
+# -----------------------------------------------------------------------------------------------
+
+#<IfModule mod_rewrite.c>
+
+  RewriteEngine On
+  AddDefaultCharset UTF-8
+
+	# Cross domain access # NOT WORKING
+	#Header add Access-Control-Allow-Origin "*"
+	#Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+	#Header add Access-Control-Allow-Methods "PUT, GET, POST, OPTIONS"
+
+  # -----------------------------------------------------------------------------------------------
+  # Access Restrictions: Keep web users out of dirs that begin with a period
+  # -----------------------------------------------------------------------------------------------
+
+  RewriteRule "(^|/)\." - [F]
+
+  # -----------------------------------------------------------------------------------------------
+  # OPTIONAL: Redirect users to the 'www.' version of the site (uncomment to enable).
+  # -----------------------------------------------------------------------------------------------
+
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # -----------------------------------------------------------------------------------------------
+  # Remove trailing slashes from URL.
+  # -----------------------------------------------------------------------------------------------
+
+	#RewriteCond %{REQUEST_FILENAME} !-d
+	#RewriteRule ^(.*)\/(\?.*)?$ /cityrock/$1 [L,R=301]
+
+  # -----------------------------------------------------------------------------------------------
+  # The Apache rewrite engine is mainly used to turn dynamic url’s such as 
+	# www.yoursite.com/product.php?id=123 into static and user friendly url’s such as 
+	# www.yoursite.com/product/123
+  # ----------------------------------------------------------------------------------------------- 
+
+	RewriteRule ^course/([^/.]+)/([^/.]+)/?$ course.php?id=$1&date=$2 [L]
+  RewriteRule ^course/([^/.]+)/?$ course.php?id=$1 [L]
+	RewriteRule ^course/([^/.]+)/registrants/?$ registrants.php?id=$1 [L]
+	RewriteRule ^course/([^/.]+)/registrants/([^/.]+)/?$ registrants.php?id=$1&action=$2 [L]
+	RewriteRule ^course/([^/.]+)/([^/.]+)/?$ course.php?id=$1&action=$2 [L]
+
+	RewriteRule ^user/([^/.]+)/?$ user.php?id=$1 [L]
+
+	RewriteRule ^events/([^/.]+)/?$ events.php?id=$1 [L]
+
+	RewriteRule ^archive/([^/.]+)/?$ archive.php?id=$1 [L]
+
+  # -----------------------------------------------------------------------------------------------
+  # Rewrite rules for api requests
+  # -----------------------------------------------------------------------------------------------
+
+	#RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteRule ^api/(.*)/?$ index.php [QSA,L]
+
+  # -----------------------------------------------------------------------------------------------
+  # Add .php extension from a PHP file for example yoursite.com/wallpaper.php to 
+	# yoursite.com/wallpaper
+  # -----------------------------------------------------------------------------------------------
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^([^\.]+)$ $1.php [L] #[NC,L]
+
+#</IfModule>
