@@ -55,13 +55,21 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 	$course_array = array();
 	if ($result->num_rows > 0) {
 		$last_id = -1;
+		$last_date = null;
 
 		while($row = $result->fetch_assoc()) {
 			if($row['id'] != $last_id) {
 				$course_array[] = $row;
+
 				$last_id = $row['id'];
+				$last_date = $row['start'];
 			}
 			else {
+				if($last_date != $row['start']) {
+					$course_array[] = $row;
+					$last_date = $row['start'];
+				}
+
 				$additional_staff = $row['staff_id'];
 
 				if($additional_staff) {
