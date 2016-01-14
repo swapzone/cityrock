@@ -21,7 +21,20 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			'administration' => $_POST['administration'],
 			'administration-list' => "{$_POST['administration-list']}");
 
-		if ($config->save()) {
+		$result = $config->save();
+
+		$typeColorArray = array();
+
+		// save course type colors
+		foreach($_POST as $key => $value) {
+		    if(strpos($key, 'type-color-') === 0) {
+		        $typeColorArray[substr($key, 11)] = $value;
+		    } 
+		}
+
+		$result = $result && saveCourseTypeColors($typeColorArray);
+
+		if ($result) {
 			$title = "Einstellungen";
 			$content = "Einstellungen wurden gespeichert.";
 		} else {
@@ -30,6 +43,27 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		}
 	} else {
 		$title = "Einstellungen";
+
+		$courseColors = "<h3>Farbcodierung der Kursarten</h3>
+			<span class='table'>";
+
+		$courseTypes = getCourseTypes();
+
+		foreach ($courseTypes as $courseType) {
+			$courseColors .= "
+				<span class='table-row'>
+					<span class='table-cell'>{$courseType['title']}</span>
+					<span class='table-cell'>
+						<input type='text' value='" . $courseType['color'] . "' name='type-color-" . $courseType['id'] . "'>
+					</span>
+					<span class='table-cell'>
+						<span style='display: block; width: 2em; height: 2.3em; background-color: {$courseType['color']}'></span>
+					</span>
+				</span>";
+		}
+
+		$courseColors .= "</span>";
+
 		$content = "
 			<form method='post'>
 				<h3>Email Editor</h3>
@@ -51,7 +85,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				<label for='administration'>Wieviel Tage vor Kursbeginn soll die Teilnehmerliste an die Verwaltung geschickt werden?</label>
 				<input type='text' value='{$config['system']['administration']}' name='administration'>
 				<label for='administration-list'>An welche Email-Adressen soll die Liste geschickt werden? <br />Bitte die Adressen mit // voneinander trennen.</label>
-				<textarea name='administration-list' rows='6'>{$config['system']['administration-list']}</textarea>
+				<textarea name='administration-list' rows='6'>{$config['system']['administration-list']}</textarea>" .
+				$courseColors . "
 				<input type='hidden' name='save' value='1'>
 				<p>Keine weiteren Einstellungen vorhanden.</p>
 				<a href='./' class='button error'>Abbrechen</a>

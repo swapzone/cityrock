@@ -151,6 +151,27 @@ function getCourseTypes() {
 	return $course_type_array;
 }
 
+/**
+ * Sets the color for all course types.
+ *
+ * @return true if successful
+ */
+function saveCourseTypeColors($typeColorArray) {
+
+	$db = Database::createConnection();
+
+	$result = true;
+
+	foreach ($typeColorArray as $key => $value) {
+
+		$result = $result && $db->query("UPDATE course_type 
+									     SET color='{$value}'
+										 WHERE id=$key;");
+	}
+
+	return $result;
+}
+
 /** 
  * Inserts a course with the given course data and dates into the database.
  *

@@ -721,7 +721,6 @@ module cityrock {
         if(fullDate.hour() > 0)
           newUrl += "-S-" + time;
 
-        //console.log(newUrl);
         window.location.href = newUrl;
       },
 

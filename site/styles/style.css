@@ -3581,6 +3581,20 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   display: none;
 }
 
+.table {
+  display: table;
+}
+
+.table-row {
+  display: table-row;
+}
+
+.table-cell {
+  display: table-cell;
+  padding-right: 1em;
+  vertical-align: top;
+}
+
 .header {
   padding: 0.7em 0;
 }

@@ -24164,7 +24164,6 @@ var cityrock;
                 var newUrl = "course/new/" + date;
                 if (fullDate.hour() > 0)
                     newUrl += "-S-" + time;
-                //console.log(newUrl);
                 window.location.href = newUrl;
             },
             eventClick: function (calEvent, jsEvent, view) {
