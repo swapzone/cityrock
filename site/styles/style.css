@@ -3634,6 +3634,9 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   padding-right: 1em;
   vertical-align: top;
 }
+.table-cell:first-of-type {
+  padding-top: 0.8em;
+}
 
 .header {
   padding: 0.7em 0;

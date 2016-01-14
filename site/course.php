@@ -260,8 +260,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				}
 				else {
 					/***********************************************************************/
-					/* Course details																										   */
+					/* Course details													   */
 					/***********************************************************************/
+
 					$course_id = $_GET["id"];
 					$course = getCourse($course_id);
 					$registrants = getRegistrants($course_id);

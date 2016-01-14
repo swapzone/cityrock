@@ -2,6 +2,9 @@
 
 include_once('_init.php');
 
+$authenticated_user = $_SESSION['user'];
+$authenticated_user_object = User::withUserObjectData($_SESSION['user']);
+
 $title = "Veranstaltungen";
 $content = "Noch nicht fertig.";
 
@@ -85,7 +88,13 @@ if(isset($_GET["id"])) {
                 <span>Addresse</span><span>{$course['street']}, {$course['plz']} {$course['city']}</span>
             </span>
         </span>
-        <a href='{$root_directory}/events' class='button'>Übersicht</a>
+        <a href='{$root_directory}/events' class='button'>Übersicht</a>";
+
+    if($authenticated_user_object->hasPermission(array('Administrator'))) {
+        $content .= "<a href='{$root_directory}/course/{$course_id}/edit' class='button'>Bearbeiten</a>";
+    }
+
+    $content .= "
         <span><a user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-subscribe button' style='{$display_subscribe_button}'>Eintragen</a></span>
         <span><a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
 }
