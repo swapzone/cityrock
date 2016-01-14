@@ -71,6 +71,25 @@ if (isset($_POST['action'])) {
             else echo "ERROR: Datenbank Fehler.";
             break;
 
+        case "COURSE_ADD_EXCEPTION":
+            if (!$_POST['course_id'] || !$_POST['date'] || !$_POST['user_id']) {
+                echo "ERROR: Parameter fehlen.";
+                break;
+            }
+
+            if($authenticated_user['id'] != $_POST['user_id'] &&
+                !$authenticated_user_object->hasPermission(array('Administrator'))) {
+
+                echo "ERROR: Nicht authorisiert.";
+                break;
+            }
+
+            $cancellation = isset($_POST['cancellation']) && $_POST['cancellation'] == 1;
+            $success = addCourseException($_POST['course_id'], $_POST['date'], $cancellation);
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR: Datenbank Fehler.";
+            break;
 
         case "USER_ADD_ROLE":
             if(!$authenticated_user_object->hasPermission(array('Administrator'))) {

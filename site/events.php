@@ -96,14 +96,14 @@ else {
     $title = "Veranstaltungen";
 
     $table_heading = "
-    <span class='list-heading'>
-        <span>Uhrzeit</span>
-        <span>Art</span>
-        <span class='no-mobile'>Titel</span>
-        <span class='no-mobile'>Übungsleiter</span>
-        <span></span>
-        <span></span>
-    </span>";
+        <span class='list-heading'>
+            <span>Uhrzeit</span>
+            <span>Art</span>
+            <span class='no-mobile'>Titel</span>
+            <span class='no-mobile'>Übungsleiter</span>
+            <span></span>
+            <span></span>
+        </span>";
 
     $content = "";
 
@@ -116,10 +116,11 @@ else {
 
     $courses = getCourses(false, null, new DateTime(), $end_date);
 
-    $cleaned_up_events = removePastDates($courses, $start_date);
-    $repeating_events = createIntervalDates($courses, $start_date, $end_date);
+    $cleaned_up_events = removePastDates($courses, $date_object);
+    $repeating_events = createIntervalDates($courses, $date_object, $end_date);
 
-    $all_events = array_merge($cleaned_up_events, $repeating_events);
+    $merged_events = array_merge($cleaned_up_events, $repeating_events);
+    $all_events = removeDateExceptions($merged_events);
 
     $temp_date = new DateTime();
 

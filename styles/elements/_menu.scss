@@ -1,0 +1,40 @@
+.context-menu {
+  position: absolute;
+  z-index: 10;
+  background-color: #fff;
+  padding: 0.3em 0.7em;
+  border: 1px solid $c-border;
+}
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.context-menu--active {
+  display: block;
+}
+
+.context-menu-list {
+	list-style: none;
+}
+
+.context-menu-link {
+	color: #000;
+	text-decoration: none;
+
+	&:hover {
+		color: #000;
+  	text-decoration: none;
+  	border-bottom: none;
+	}
+}
+
+.fc-content, .fc-title {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

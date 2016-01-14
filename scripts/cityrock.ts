@@ -1,6 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 
 module cityrock {
+
   'use strict';
 
   // configuration
@@ -8,6 +9,11 @@ module cityrock {
 
   // state variables
   var showSaveButton = false;
+
+  var menu;
+  var menuState = 0;
+  var active = "context-menu--active";
+  var activeEvent = null;
 
   /**
    *
@@ -105,6 +111,8 @@ module cityrock {
 
     var html = $('html');
     var navigation = $('#navigation');
+
+    menu = document.querySelector("#context-menu");
 
     // responsive menu
     $('.navigation-menu-toggle').on('click', function (event) {
@@ -682,6 +690,7 @@ module cityrock {
       //console.log("User id: " + userId);
     });
 
+    calendar.on('contextmenu', function(e) { e.preventDefault() });
 
     // initialize calendar
     calendar.fullCalendar({
@@ -725,15 +734,130 @@ module cityrock {
       },
 
       eventClick: function(calEvent, jsEvent, view) {
-
         console.log('Event: ' + calEvent.title);
         console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+      },
 
+      eventRender: function (event, element:any) {
 
-        // change the border color just for fun
-        //$(this).css('border-color', 'red');
+        element.bind('mousedown', function (e) {
+
+          if (e.which == 3) {
+            e.preventDefault();
+            //console.log(JSON.stringify(event, null, 2));
+
+            activeEvent = event;
+
+            toggleMenuOn();
+            positionMenu(e);
+
+            return false;
+          }
+        });
       }
     });
+  }
+
+  /**
+   *
+   */
+  function toggleMenuOn() {
+    if ( menuState !== 1 ) {
+      menuState = 1;
+      menu.classList.add(active);
+
+      $('.context-menu-link.cancel').first().on('click', function() {
+
+        var userId = $(this).attr('user-id');
+
+        // cancel event
+        var formData =
+          [
+            {
+              name: 'action',
+              value: 'COURSE_ADD_EXCEPTION'
+            },
+            {
+              name: 'user_id',
+              value: userId
+            },
+            {
+              name: 'course_id',
+              value: activeEvent['id']
+            },
+            {
+              name: 'date',
+              value: activeEvent['start'].format("YYYY-MM-DD HH:mm:ss")
+            },
+            {
+              name: 'cancellation',
+              value: 1
+            }
+          ];
+
+        sendFormDataToApi(formData, function (err, message) {
+
+          if (err) {
+            console.error(err);
+          }
+          else {
+            location.reload();
+          }
+        });
+      });
+    }
+  }
+
+  /**
+   *
+   */
+  export function toggleMenuOff() {
+    if ( menuState !== 0 ) {
+      menuState = 0;
+      menu.classList.remove(active);
+
+      activeEvent = null;
+    }
+  }
+
+  /**
+   *
+   *
+   * @param e
+   */
+  function positionMenu(e) {
+    var menuPosition = getPosition(e);
+
+    menu.style.left = menuPosition.x + 5 + "px";
+    menu.style.top = menuPosition.y + 5 + "px";
+  }
+
+  /**
+   *
+   *
+   * @param e
+   * @returns {{x: number, y: number}}
+   */
+  function getPosition(e) {
+    var posx = 0;
+    var posy = 0;
+
+    if (!e) e = window.event;
+
+    if (e.pageX || e.pageY) {
+      posx = e.pageX;
+      posy = e.pageY;
+    } else if (e.clientX || e.clientY) {
+      posx = e.clientX + document.body.scrollLeft +
+        document.documentElement.scrollLeft;
+      posy = e.clientY + document.body.scrollTop +
+        document.documentElement.scrollTop;
+    }
+
+    return {
+      x: posx,
+      y: posy
+    }
   }
 
   /**
@@ -779,6 +903,7 @@ module cityrock {
 }
 
 $(():void => {
+
   'use strict';
 
   cityrock.initialize();
@@ -787,4 +912,11 @@ $(():void => {
   cityrock.initializeProfileView();
   cityrock.initializeArchiveView();
   cityrock.initializeCalendarView();
+
+  document.addEventListener( "click", function(e) {
+    var button = e.which || e.button;
+    if ( button === 1 ) {
+      cityrock.toggleMenuOff();
+    }
+  });
 });

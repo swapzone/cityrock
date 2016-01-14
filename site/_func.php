@@ -41,10 +41,10 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 		$dateString = $tempDate->format('Y-m-d H:i:s');
 
 		if ($archive) {
-			$sql .= " WHERE DATE(start) <= '{$dateString}' AND repeat_interval.num_days=0 AND repeat_interval.num_months=0";
+			$sql .= " WHERE DATE(start) <= '{$dateString}' AND repeat_interval.num_days=0 AND repeat_interval.num_months=0"; 
 		}
 		else {
-			$sql .= " WHERE DATE(start) >= '{$dateString}' OR repeat_interval.num_days>0 OR repeat_interval.num_months>0";
+			$sql .= " WHERE DATE(start) >= '{$dateString}' OR repeat_interval.num_days>0 OR repeat_interval.num_months>0"; 
 		}
 	}
 
@@ -130,6 +130,38 @@ function getCourse($course_id) {
 	} 
 	
 	$result['dates'] = $dates_array;
+
+	$db->close();
+
+	return $result;
+}
+
+function getCourseExceptions($course_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("SELECT date, cancelled
+					      FROM date_exception
+					      WHERE course_id={$course_id};");
+
+	$db->close();
+
+	$exception_array = array();
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+			$exception_array[] = $row;
+		}
+	}
+
+	return $exception_array;
+}
+
+function addCourseException($course_id, $date, $cancelled = true) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("INSERT INTO date_exception (course_id, date, cancelled) 
+						  VALUES ({$course_id}, '{$date}', {$cancelled});");
 
 	$db->close();
 
@@ -377,6 +409,36 @@ function removePastDates($courses, $start_date) {
 	}
 
 	return $valid_dates;
+}
+
+/**
+ *
+ *
+ * @param $courses
+ * @return array
+ */
+function removeDateExceptions($courses) {
+	$result_courses = array();
+
+	foreach($courses as $course) {
+		$course_exceptions = getCourseExceptions($course['id']);
+	    $is_exception = false;
+	    
+	    foreach ($course_exceptions as $exception) {   
+	        $exception_date = new DateTime($exception['date']);
+
+	        if($exception_date->format('Y-m-d H:i') == $course['date']->format('Y-m-d H:i')) {
+	            $is_exception = true;
+	        }
+	        
+	    }
+
+	    if(!$is_exception) {
+	    	$result_courses[] = $course;
+	    }
+	}
+
+	return $result_courses;
 }
 
 /*****************************************************************************/

@@ -20,7 +20,8 @@ $courses = getCourses(false, null, $start_date, $end_date);
 $cleaned_up_events = removePastDates($courses, $start_date);
 $repeating_events = createIntervalDates($courses, $start_date, $end_date);
 
-$all_events = array_merge($cleaned_up_events, $repeating_events);
+$merged_events = array_merge($cleaned_up_events, $repeating_events);
+$all_events = removeDateExceptions($merged_events);
 
 $jsonString = '[';
 foreach($all_events as $event) {
@@ -28,6 +29,7 @@ foreach($all_events as $event) {
     $staff = explode(",", $event['staff_id']);
 
     if($event_type == 'all' || $event_type == 'user' && in_array($user_id, $staff) || $event_type == 'open' && count($staff) < $event['min_staff']) {
+       
         $event_start = $event['date']->format('Y-m-d H:i:s');
 
         $event_end_date = $event['date']->add(new DateInterval('PT' . $event['duration'] . 'M'));

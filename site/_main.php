@@ -108,6 +108,15 @@ if(!$content_class)
 			<img src="<?php echo $root_directory; ?>/images/clowdfish.png" alt="clowdfish Logo" />
 		</div>
 	</footer>
+	<nav class="context-menu" id="context-menu">
+	  <ul class="context-menu-list">
+	    <li class="context-menu-item">
+	      <a href="#" class="context-menu-link cancel" user-id='{$_SESSION['user']['id']}' >
+	        <i class="fa fa-times"></i> Aussetzen
+	      </a>
+	    </li>
+	  </ul>
+	</nav>
   <script type="text/javascript" src="<?php echo $root_directory; ?>/scripts/script.min.js"></script>
 </body>
 </html>
