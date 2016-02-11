@@ -11,6 +11,10 @@ $content = "Noch nicht fertig.";
 $number_of_days = 14;
 $course_types = getCourseTypes();
 
+// include config_lite library
+require_once('lib/config/Lite.php');
+$config = new Config_Lite('basic.cfg');
+
 if(isset($_GET["id"])) {
     /***********************************************************************/
     /* Event details                                                       */
@@ -96,7 +100,7 @@ if(isset($_GET["id"])) {
 
     $content .= "
         <span><a user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-subscribe button' style='{$display_subscribe_button}'>Eintragen</a></span>
-        <span><a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
+        <span><a deadline='{$config['system']['staff-cancel-deadline ']}' user-id='{$_SESSION['user']['id']}' event-id='{$course_id}' class='event-unsubscribe button' style='{$display_unsubscribe_button}'>Austragen</a></span>";
 }
 else {
     /***********************************************************************/
@@ -179,7 +183,7 @@ else {
                 <span><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
                 <span>
                     <a user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a>
-                    <a deadline='{$course['staff_deadline']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
+                    <a deadline='{$config['system']['staff-cancel-deadline ']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
                 </span>
             </span>";
         }

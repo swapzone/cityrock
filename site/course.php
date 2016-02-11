@@ -20,8 +20,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 			if($_POST["date-$counter"]) {
 				$date = array(
 					"date" => $_POST["date-$counter"],
-					"time" => $_POST["time-$counter"],
-					"duration" => $_POST["duration-$counter"]
+					"start" => $_POST["start-$counter"],
+					"end" => $_POST["end-$counter"]
 				);
 
 				$dates[] = $date;
@@ -42,8 +42,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		if($_POST['staff'])
 			$course_data['min_staff'] = $_POST['staff'];
 
-		if($_POST['staff_deadline'])
-			$course_data['staff_deadline'] = $_POST['staff_deadline'];
+		if(isset($_POST['staff_cancel']))
+			$course_data['staff_cancel'] = 1;
 
 		if($_POST['registrants'])
 			$course_data['max_participants'] = $_POST['registrants'];
@@ -128,12 +128,12 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						</select>
 						<label for='title'>Kunde/Titel</label>
 						<input type='text' placeholder='' name='title'>
-						<label for='date-1'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
+						<label for='date-1'>Datum</label>
 						<input type='text' placeholder='z.B. 02.10.2015' name='date-1' value='{$dateString}' class='date'>
-						<label for='time-1'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-						<input type='text' placeholder='z.B. 09:00' name='time-1' value='{$timeString}' class='time'>
-						<label for='duraration-1'>Dauer (in Minuten)</label>
-						<input type='text' name='duration-1' class='duration'>
+						<label for='start-1'>Uhrzeit Start</label>
+						<input type='text' placeholder='z.B. 09:00' name='start-1' value='{$timeString}' class='time'>
+						<label for='end-1'>Uhrzeit Ende</label>
+						<input type='text' placeholder='z.B. 12:00' name='end-1' class='time'>
 						<span class='add-day'>
 							<a id='add-day'>Tag hinzufügen</a>
 						</span>
@@ -152,14 +152,15 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						</select>
 						<label for='staff'>Anzahl Übungsleiter</label>
 						<input type='text' name='staff' value='2'>
-						<label for='staff_deadline'>Bis wieviele Tage vorher dürfen sich ÜL noch austragen?</label>
-						<input type='text' name='staff_deadline' value='2'>
-						<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
+						<input type='checkbox' name='staff_cancel' checked>
+						<label for='staff_cancel'>Übungsleiter dürfen sich selbst wieder austragen</label>
+						<br />				
+						<label for='registrants'>Anzahl an Teilnehmern</label>
 						<input type='text' name='registrants' value='10'>
 						<label for='registrants_age'>Alter der Teilnehmer</label>
 						<input type='text' placeholder='' name='registrants_age'>
 						<br />
-						<h3>Adresse der Veranstaltung</h3>
+						<h3>Adresse der Veranstaltung/des Kunden</h3>
 						<label for='street'>Straße</label>
 						<input type='text' placeholder='' name='street'>
 						<label for='zip_city'>PLZ/Ort</label>
@@ -204,12 +205,12 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 						$content .= "
 							<div class='day-container'>
 								<h3 class='inline'>Tag {$counter}</h3><span>(<a href='#' class='remove-day'>entfernen</a>)</span>
-								<label for='date-{$counter}'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>
+								<label for='date-{$counter}'>Datum</label>
 								<input type='text' value='{$date['date']->format('d.m.Y')}' name='date-{$counter}' class='date'>
-								<label for='{$counter}'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>
-								<input type='text' value='{$date['date']->format('h:i')}' name='time-{$counter}' class='time'>
-								<label for='duraration-{$counter}'>Dauer (in Minuten)</label>
-								<input type='text' name='duration-{$counter}' class='duration' value='{$date['duration']}'>
+								<label for='start-{$counter}'>Uhrzeit Start</label>
+								<input type='text' value='{$date['date']->format('h:i')}' name='start-{$counter}' class='time'>
+								<label for='end-{$counter}'>Uhrzeit Ende</label>
+								<input type='text' name='end-{$counter}' class='time' value='" . getEndTime($date['date'], $date['duration']) . "'>
 							</div>";
 
 						$counter++;
@@ -237,9 +238,11 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							</select>
 							<label for='staff'>Anzahl Übungsleiter</label>
 							<input type='text' name='staff' value='{$course['min_staff']}'>
-							<label for='staff_deadline'>Bis wieviele Tage vorher dürfen sich ÜL noch austragen?</label>
-							<input type='text' name='staff_deadline' value='{$course['staff_deadline']}'>
-							<label for='registrants'>Maximale Anzahl an Teilnehmern</label>
+							
+							<input type='checkbox' name='staff_cancel' value='{$course['staff_cancel']}'>
+							<label for='staff_cancel'>Übungsleiter dürfen sich selbst wieder austragen</label>
+							<br />
+							<label for='registrants'>Anzahl an Teilnehmern</label>
 							<input type='text' name='registrants' value='{$course['max_participants']}'>
 							<label for='registrants_age'>Alter der Teilnehmer</label>
 							<input type='text' name='registrants_age' value='{$course['participants_age']}'>

@@ -42,29 +42,9 @@ $inputs-check: 'input[type="checkbox"], input[type="radio"]';
 /*
  * Checkboxes
  */
-input[type="checkbox"] {
-  display: none;
-  & + label::before {
-    @include fa-icon();
-    content: $fa-var-square-o;
-    width: 1em;
-    color: $c-text;
-    vertical-align: middle;
-    margin-right: .5em;
-  }
-  &:checked + label::before {
-    content: $fa-var-check-square-o;
-  }
-  &:disabled + label::before {
-    color: $c-text-light;
-  }
-  & + label {
-    cursor: pointer;
-    display: block;
-  }
-  &:disabled + label {
-    cursor: default;
-  }
+input[type="checkbox"] + label {
+  display: inline-block;
+  margin-bottom: 1.5em;
 }
 
 /*

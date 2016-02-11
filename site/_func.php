@@ -18,7 +18,7 @@ function getCourses($archive = false, $course_type_id = null, $start = null, $en
 
 	$db = Database::createConnection();
 	
-	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_deadline, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration, course_has_staff.user_id AS staff_id, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
+	$sql = "SELECT course.id, course.course_type_id, course.title, course.max_participants, course.participants_age, course.min_staff, course.staff_cancel, course.interval_designator, course.street, course.zip, course.city, course.phone, date.start, date.duration, course_has_staff.user_id AS staff_id, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
 		  	FROM course
 		  	LEFT JOIN date
 		  	ON course.id=date.course_id
@@ -106,7 +106,7 @@ function getCourse($course_id) {
 
 	$db = Database::createConnection();
 
-	$result = $db->query("SELECT course_type_id, title, max_participants, participants_age, min_staff, staff_deadline, interval_designator, street, zip, city, phone, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
+	$result = $db->query("SELECT course_type_id, title, max_participants, participants_age, min_staff, staff_cancel, interval_designator, street, zip, city, phone, repeat_interval.num_days AS day_interval, repeat_interval.num_months AS month_interval, repeat_interval.weekend
 						  FROM course
 						  	LEFT JOIN repeat_interval
         					ON course.interval_designator=repeat_interval.id
@@ -246,12 +246,17 @@ function addCourse($course_data, $dates) {
 	if($result) {
 		foreach($dates as $date) {
 
-			$datetime_string = $date['date'] . " " . $date['time'];
-			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
-			$mysql_time = $datetime->format('Y-m-d H:i:s');
+			$datetime_start_string = formatDate($date['date']) . " " . formatTime($date['start']);
+			$datetime_start = DateTime::createFromFormat('d.m.Y G:i', $datetime_start_string);
+
+			$datetime_end_string = formatDate($date['date']) . " " . formatTime($date['end']);
+			$datetime_end = DateTime::createFromFormat('d.m.Y G:i', $datetime_end_string);
+
+			$mysql_time = $datetime_start->format('Y-m-d H:i:s');
+			$duration = ($datetime_end - $datetime_start ) / 60;
 
 			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-								  VALUES ('$mysql_time', {$date['duration']}, $course_id);");
+								  VALUES ('$mysql_time', $duration, $course_id);");
 		}
 	}
 
@@ -295,12 +300,18 @@ function updateCourse($id, $course_data, $dates) {
 	if($result) {
 		foreach($dates as $date) {
 
-			$datetime_string = $date['date'] . " " . $date['time'];
-			$datetime = DateTime::createFromFormat('d.m.Y G:i', $datetime_string);
-			$mysql_time = $datetime->format('Y-m-d H:i:s');
+			$datetime_start_string = formatDate($date['date']) . " " . formatTime($date['start']);
+			$datetime_start = DateTime::createFromFormat('d.m.Y G:i', $datetime_start_string);
+
+			$datetime_end_string = formatDate($date['date']) . " " . formatTime($date['end']);
+			$datetime_end = DateTime::createFromFormat('d.m.Y G:i', $datetime_end_string);
+
+
+			$mysql_time = $datetime_start->format('Y-m-d H:i:s');
+			$duration = ($datetime_end - $datetime_start ) / 60;
 
 			$result = $db->query("INSERT INTO date (start, duration, course_id) 
-								  VALUES ('$mysql_time', {$date['duration']}, $id);");
+								  VALUES ('$mysql_time', $duration, $id);");
 		}
 	}
 
@@ -309,8 +320,66 @@ function updateCourse($id, $course_data, $dates) {
 	return $result;
 }
 
-/**
+/** 
+ * Formats a date string to match the requirements of the MySQL date format.
  *
+ * @param string $dateString 
+ * @return string
+ */
+function formatDate($dateString) {
+
+	$dateArray = explode(".", $dateString);
+
+	$resultString = "";
+
+	foreach($dateArray as $dateComponent) {
+		if(intval($dateComponent) < 10)
+			$resultString .= "0" . $dateComponent . ".";
+		else
+			$resultString .= $dateComponent . ".";
+	}
+
+	return substr($resultString, 0, -1);
+}
+
+/** 
+ * Formats a time string to match the requirements of the MySQL time format.
+ *
+ * @param string $timeString 
+ * @return string
+ */
+function formatTime($timeString) {
+
+	if(count($timeString) < 2) 
+		return $timeString . "0:00";
+	else if(count($timeString) < 3)
+		return $timeString . ":00";
+	else {
+		$colonPosition = strpos($timeString, ':');
+		if ($colonPosition !== false) {
+
+		    if(count($timeString) == 4)
+		    	return "0" . $timeString;
+		    else 
+		    	return $timeString;
+
+		}
+
+		$dotPosition = strpos($timeString, '.');
+		if ($dotPosition !== false) {
+			
+		    if(count($timeString) == 4)
+		    	return "0" . str_replace(".", ":", $timeString);
+		    else 
+		    	return str_replace(".", ":", $timeString);
+		}
+
+		return $timeString;
+	}	
+}
+
+/**
+ * 
  *
  * @param $course_id
  * @return array

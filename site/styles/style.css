@@ -3385,34 +3385,9 @@ input.error[type="text"], input.error[type="password"], input.error[type="email"
 /*
  * Checkboxes
  */
-input[type="checkbox"] {
-  display: none;
-}
-input[type="checkbox"] + label::before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "";
-  width: 1em;
-  color: #000;
-  vertical-align: middle;
-  margin-right: .5em;
-}
-input[type="checkbox"]:checked + label::before {
-  content: "";
-}
-input[type="checkbox"]:disabled + label::before {
-  color: #8c8c8c;
-}
 input[type="checkbox"] + label {
-  cursor: pointer;
-  display: block;
-}
-input[type="checkbox"]:disabled + label {
-  cursor: default;
+  display: inline-block;
+  margin-bottom: 1.5em;
 }
 
 /*

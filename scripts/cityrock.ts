@@ -26,7 +26,13 @@ module cityrock {
     // check time format
     var empty = $(form).find(".time").filter(function () {
       //alert(this.value);
-      return !(this.value).match(/\d{2}:\d{2}/);
+      var validFormat = false;
+
+      validFormat = validFormat || !!(this.value).match(/\d{1,2}:\d{2}/); // 9:00 or 09:00
+      validFormat = validFormat || !!(this.value).match(/\d{1,2}/) && this.value.length <= 2 ; // 9 or 12
+      validFormat = validFormat || !!(this.value).match(/\d{1,2}\.\d{2}/); // 9.00 or 9.00
+
+      return !validFormat;
     });
 
     if (empty.length) {
@@ -35,7 +41,7 @@ module cityrock {
     else {
       // check date format
       empty = $(form).find(".date").filter(function () {
-        return !(this.value).match(/\d{2}.\d{2}.\d{4}/);
+        return !(this.value).match(/\d{1,2}.\d{1,2}.\d{4}/);
       });
 
       if (empty.length) {
@@ -94,7 +100,7 @@ module cityrock {
     // check time format
     var dateValue = dateInput.val();
 
-    if (!dateValue.match(/\d{2}.\d{2}.\d{4}/)) {
+    if (!dateValue.match(/\d{1,2}.\d{1,2}.\d{4}/)) {
       dateInput.addClass('error');
       return false;
     }
@@ -224,22 +230,22 @@ module cityrock {
         var heading:JQuery = $("<h3 class='inline'>Tag " + index + "</h3><span>(<a class='remove-day'>entfernen</a>)</span>");
         container.append(heading);
 
-        var label:string = "<label for='date-" + index + "'>Datum (in der Form <span class='italic'>dd.mm.yyyy</span>)</label>";
+        var label:string = "<label for='date-" + index + "'>Datum</label>";
         container.append($(label));
 
         var input:string = "<input type='text' placeholder='z.B. 02.10.2015' name='date-" + index + "' class='date'>";
         container.append($(input));
 
-        var label:string = "<label for='time-" + index + "'>Startuhrzeit (in der Form <span class='italic'>hh:mm</span>)</label>";
+        var label:string = "<label for='start-" + index + "'>Uhrzeit Start</label>";
         container.append($(label));
 
-        var input:string = "<input type='text' placeholder='z.B. 09:00' name='time-" + index + "' class='time'>";
+        var input:string = "<input type='text' placeholder='z.B. 09:00' name='start-" + index + "' class='time'>";
         container.append($(input));
 
-        var label:string = "<label for='duration-" + index + "'>Dauer (in Minuten)</label>";
+        var label:string = "<label for='end-" + index + "'>Uhrzeit Ende</label>";
         container.append($(label));
 
-        var input:string = "<input type='text' name='duration-" + index + "' class='duration'>";
+        var input:string = "<input type='text' name='end-" + index + "' class='time'>";
         container.append($(input));
 
         // remove day link

@@ -19,7 +19,8 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
 		$config['system'] = array('deadline' => $_POST['deadline'],
 			'administration' => $_POST['administration'],
-			'administration-list' => "{$_POST['administration-list']}");
+			'administration-list' => "{$_POST['administration-list']}",
+			'staff-cancel-deadline' => "{$_POST['staff-deadline']}" ); 
 
 		$result = $config->save();
 
@@ -85,7 +86,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				<label for='administration'>Wieviel Tage vor Kursbeginn soll die Teilnehmerliste an die Verwaltung geschickt werden?</label>
 				<input type='text' value='{$config['system']['administration']}' name='administration'>
 				<label for='administration-list'>An welche Email-Adressen soll die Liste geschickt werden? <br />Bitte die Adressen mit // voneinander trennen.</label>
-				<textarea name='administration-list' rows='6'>{$config['system']['administration-list']}</textarea>" .
+				<textarea name='administration-list' rows='6'>{$config['system']['administration-list']}</textarea>
+				<label for='staff-deadline'>Bis wieviele Tage vor Kursbeginn können sich Mitarbeiter wieder austragen?</label>
+				<input type='text' value='{$config['system']['staff-cancel-deadline']}' name='staff-deadline'>" .
 				$courseColors . "
 				<input type='hidden' name='save' value='1'>
 				<p>Keine weiteren Einstellungen vorhanden.</p>
