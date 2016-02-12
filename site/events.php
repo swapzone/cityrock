@@ -118,7 +118,18 @@ else {
             <span></span>
         </span>";
 
-    $content = "";
+    $user_id = $authenticated_user['id'];
+
+    $all_active = $_GET['filter'] === 'all' || !isset($_GET['filter']) ? 'active' : '';
+    $user_active = $_GET['filter'] === 'user' ? 'active' : '';
+    $open_active = $_GET['filter'] === 'open' ? 'active' : '';
+
+    $content = "
+    <div id='event-filter' class='filter'>
+        <span event-type='all' class='all {$all_active}'>Alle Termine</span>
+        <span event-type='user' class='{$user_active}'>Meine Termine</span>
+        <span event-type='open' class='{$open_active}'>Offene Termine</span>
+    </div>";
 
     $date_object = new DateTime();
     $date = $date_object->format('d.m.Y');
@@ -138,6 +149,16 @@ else {
     $temp_date = new DateTime();
 
     foreach ($all_events as $course) {
+        $staff = getStaff($course['id']);
+        $staff_num = count($staff);
+        $staff_is_full = $staff_num >= $course['min_staff'];
+
+        $user_is_subscribed = false;
+        foreach($staff as $user) {
+            $userObj = $user->serialize();
+            if($userObj['id'] == $authenticated_user['id']) $user_is_subscribed = true;
+        }
+
         // check if couse shall be shown (active property of course type)
         if(intval($course_types[$course['course_type_id']]['active']) === 0)
             continue;
@@ -146,16 +167,13 @@ else {
         if ($course['date'] > $temp_date->add(new DateInterval($duration_string))) 
             continue;
 
-        $staff = getStaff($course['id']);
-        $staff_num = count($staff);
+        // check if authenticated user is registered for this course
+        if($user_active && !$user_is_subscribed)
+            continue; 
 
-        $user_is_subscribed = false;
-        foreach($staff as $user) {
-            $userObj = $user->serialize();
-            if($userObj['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
-        }
-
-        $staff_is_full = $staff_num >= $course['min_staff'];
+        // check if course has missing staff
+        if($open_active && $staff_is_full)
+            continue;
 
         $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
         $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";

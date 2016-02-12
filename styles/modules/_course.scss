@@ -44,6 +44,26 @@
     display: none;
   }
 
+  .filter {
+    display: inline-block;
+    margin-right: 1em;
+    margin-bottom: 2em;
+
+    span {
+      display: inline-block;
+      background-color: lighten($c-primary, 40%);
+      padding: 0.6em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &.active {
+        background-color: $c-primary;
+        color: white;
+      }
+    }
+  }
+
   @include respond-above("medium") {
 
     .mobile {

@@ -3813,6 +3813,23 @@ p {
 .course .no-mobile {
   display: none;
 }
+.course .filter {
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: 2em;
+}
+.course .filter span {
+  display: inline-block;
+  background-color: #d3eaf4;
+  padding: 0.6em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.course .filter span.active {
+  background-color: #319aca;
+  color: white;
+}
 @media screen and (min-width: 720px) {
   .course .mobile {
     display: none;

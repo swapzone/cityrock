@@ -672,7 +672,7 @@ module cityrock {
     var userId = '-1';
 
     // calendar events filter
-    var filterLinks = $('#filter').find('span');
+    var filterLinks = $('#calendar-filter').find('span');
 
     $(filterLinks).on('click', function (event) {
 
@@ -882,7 +882,7 @@ module cityrock {
       request.abort();
 
     var url = window.location.protocol + "//" + window.location.hostname + rootDirectory + "/api";
-    console.log(url);
+    //console.log(url);
 
     // Fire off the request to /form.php
     request = $.ajax({
@@ -906,6 +906,21 @@ module cityrock {
       callback(errorThrown, null);
     });
   }
+
+  /**
+   *
+   */
+  export function initializeEventView() {
+
+    // calendar events filter
+    var filterLinks = $('#event-filter').find('span');
+
+    $(filterLinks).on('click', function (event) {
+
+      var url = window.location.href.split('?')[0] + '?filter=' + $(event.target).attr('event-type');
+      window.location.href = url;
+    });
+  }
 }
 
 $(():void => {
@@ -914,6 +929,7 @@ $(():void => {
 
   cityrock.initialize();
   cityrock.initializeCourseView();
+  cityrock.initializeEventView();
   cityrock.initializeUserView();
   cityrock.initializeProfileView();
   cityrock.initializeArchiveView();
