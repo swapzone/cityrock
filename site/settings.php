@@ -29,8 +29,25 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		// save course type colors
 		foreach($_POST as $key => $value) {
 		    if(strpos($key, 'type-color-') === 0) {
-		        $typeColorArray[substr($key, 11)] = $value;
+		    	$courseTypeId = substr($key, 11);
+
+		    	if(array_key_exists($courseTypeId, $typeColorArray)) {
+					$typeColorArray[$courseTypeId]['color'] = $value;
+		    	}
+		    	else {
+		    		$typeColorArray[$courseTypeId] = array('color' => $value);
+		    	}
 		    } 
+		    else if(strpos($key, 'type-active-') === 0) {
+				$courseTypeId = substr($key, 12);
+
+		    	if(array_key_exists($courseTypeId, $typeColorArray)) {
+					$typeColorArray[$courseTypeId]['active'] = 1;
+		    	}
+		    	else {
+		    		$typeColorArray[$courseTypeId] = array('active' => 1);
+		    	}
+		    }
 		}
 
 		$result = $result && saveCourseTypeColors($typeColorArray);
@@ -46,11 +63,21 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		$title = "Einstellungen";
 
 		$courseColors = "<h3>Farbcodierung der Kursarten</h3>
-			<span class='table'>";
+			<span class='table'>
+				<thead>
+					<tr>
+						<span class='table-cell'>Kursart</span>
+						<span class='table-cell'>Farbcode</span>		
+						<span class='table-cell'></span>
+						<span class='table-cell'>Terminliste</span>				
+					</tr>
+				</thead>";
 
 		$courseTypes = getCourseTypes();
 
 		foreach ($courseTypes as $courseType) {
+			$checked = intval($courseType['active']) === 1 ? 'checked' : '';
+
 			$courseColors .= "
 				<span class='table-row'>
 					<span class='table-cell'>{$courseType['title']}</span>
@@ -60,6 +87,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 					<span class='table-cell'>
 						<span style='display: block; width: 2em; height: 2.3em; background-color: {$courseType['color']}'></span>
 					</span>
+					<span class='table-cell'><input type='checkbox' name='type-active-" . $courseType['id'] . "' {$checked} /><label for='type-active-" . $courseType['id'] . "'>Aktiv</label></span>
 				</span>";
 		}
 

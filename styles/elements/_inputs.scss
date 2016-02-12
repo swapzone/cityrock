@@ -42,6 +42,10 @@ $inputs-check: 'input[type="checkbox"], input[type="radio"]';
 /*
  * Checkboxes
  */
+input[type="checkbox"] {
+  margin-right: 0.8em;
+}
+
 input[type="checkbox"] + label {
   display: inline-block;
   margin-bottom: 1.5em;

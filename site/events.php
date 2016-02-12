@@ -138,55 +138,60 @@ else {
     $temp_date = new DateTime();
 
     foreach ($all_events as $course) {
+        // check if couse shall be shown (active property of course type)
+        if(intval($course_types[$course['course_type_id']]['active']) === 0)
+            continue;
+
         // check if course is within the next 7 days
-        if ($course['date'] < $temp_date->add(new DateInterval($duration_string))) {
-            $staff = getStaff($course['id']);
-            $staff_num = count($staff);
+        if ($course['date'] > $temp_date->add(new DateInterval($duration_string))) 
+            continue;
 
-            $user_is_subscribed = false;
-            foreach($staff as $user) {
-                $userObj = $user->serialize();
-                if($userObj['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
-            }
+        $staff = getStaff($course['id']);
+        $staff_num = count($staff);
 
-            $staff_is_full = $staff_num >= $course['min_staff'];
-
-            $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
-            $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
-
-            if ($course['date']->format('d.m.Y') != $date) {
-                $date = $course['date']->format('d.m.Y');
-                $content .= "<span class='course-list-month'>{$date}</span>
-                {$table_heading}";
-            }
-
-            $hours = floor($course['duration'] / 60);
-            $minutes = ($course['duration'] / 60 - $hours) * 60;
-
-            $course_duration = 'PT' . $hours . 'H' . $minutes . 'M';
-
-            $course_end_time = clone $course['date'];
-            $course_duration_object = new DateInterval($course_duration);
-            $course_end_time = $course_end_time->add($course_duration_object);
-            $course_end_time = $course_end_time->format('h:i');
-
-            $content .= "
-            <span class='list-item $item_class'>
-                <span>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
-                <span>
-                    {$course_types[$course['course_type_id']]['title']}
-                </span>
-                <span class='no-mobile'>{$course['title']}</span>
-                <span class='no-mobile'>
-                    {$staff_num} / {$course['min_staff']}
-                </span>
-                <span><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
-                <span>
-                    <a user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a>
-                    <a deadline='{$config['system']['staff-cancel-deadline ']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
-                </span>
-            </span>";
+        $user_is_subscribed = false;
+        foreach($staff as $user) {
+            $userObj = $user->serialize();
+            if($userObj['id'] == $_SESSION['user']['id']) $user_is_subscribed = true;
         }
+
+        $staff_is_full = $staff_num >= $course['min_staff'];
+
+        $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
+        $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
+
+        if ($course['date']->format('d.m.Y') != $date) {
+            $date = $course['date']->format('d.m.Y');
+            $content .= "<span class='course-list-month'>{$date}</span>
+            {$table_heading}";
+        }
+
+        $hours = floor($course['duration'] / 60);
+        $minutes = ($course['duration'] / 60 - $hours) * 60;
+
+        $course_duration = 'PT' . $hours . 'H' . $minutes . 'M';
+
+        $course_end_time = clone $course['date'];
+        $course_duration_object = new DateInterval($course_duration);
+        $course_end_time = $course_end_time->add($course_duration_object);
+        $course_end_time = $course_end_time->format('h:i');
+
+        $content .= "
+        <span class='list-item $item_class'>
+            <span>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
+            <span>
+                {$course_types[$course['course_type_id']]['title']}
+            </span>
+            <span class='no-mobile'>{$course['title']}</span>
+            <span class='no-mobile'>
+                {$staff_num} / {$course['min_staff']}
+            </span>
+            <span><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
+            <span>
+                <a user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a>
+                <a deadline='{$config['system']['staff-cancel-deadline ']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
+            </span>
+        </span>";
     }
 
     $content .= "

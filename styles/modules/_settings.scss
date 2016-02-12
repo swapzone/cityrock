@@ -10,6 +10,16 @@
     margin-right: 0.4em;
   }
 
+  .table-cell {
+    display: table-cell;
+    padding-right: 1em;
+    vertical-align: top;
+
+    &:first-of-type, &:last-of-type {
+      padding-top: 0.8em;
+    }
+  }
+
   @include respond-above("medium") {
 
   }

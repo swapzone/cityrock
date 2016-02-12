@@ -3385,6 +3385,10 @@ input.error[type="text"], input.error[type="password"], input.error[type="email"
 /*
  * Checkboxes
  */
+input[type="checkbox"] {
+  margin-right: 0.8em;
+}
+
 input[type="checkbox"] + label {
   display: inline-block;
   margin-bottom: 1.5em;
@@ -3608,9 +3612,6 @@ fieldset.is-invalid input[type="checkbox"] + label::before, fieldset.is-invalid 
   display: table-cell;
   padding-right: 1em;
   vertical-align: top;
-}
-.table-cell:first-of-type {
-  padding-top: 0.8em;
 }
 
 .header {
@@ -3954,6 +3955,14 @@ p {
 }
 .settings .button {
   margin-right: 0.4em;
+}
+.settings .table-cell {
+  display: table-cell;
+  padding-right: 1em;
+  vertical-align: top;
+}
+.settings .table-cell:first-of-type, .settings .table-cell:last-of-type {
+  padding-top: 0.8em;
 }
 
 .login {

@@ -177,7 +177,7 @@ function getCourseTypes() {
 
 	$db = Database::createConnection();
 	
-	$result = $db->query("SELECT id, title, color FROM course_type;");
+	$result = $db->query("SELECT id, title, color, active FROM course_type;");
 
 	$course_type_array = array();
 	if ($result->num_rows > 0) {
@@ -204,8 +204,11 @@ function saveCourseTypeColors($typeColorArray) {
 
 	foreach ($typeColorArray as $key => $value) {
 
+		if(!isset($value['active']))
+			$value['active'] = 0;
+
 		$result = $result && $db->query("UPDATE course_type 
-									     SET color='{$value}'
+									     SET color='{$value['color']}', active={$value['active']}
 										 WHERE id=$key;");
 	}
 
