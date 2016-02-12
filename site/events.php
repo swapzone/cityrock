@@ -110,9 +110,8 @@ else {
 
     $table_heading = "
         <span class='list-heading'>
-            <span>Uhrzeit</span>
             <span>Art</span>
-            <span class='no-mobile'>Titel</span>
+            <span>Uhrzeit</span>
             <span class='no-mobile'>Übungsleiter</span>
             <span></span>
             <span></span>
@@ -153,9 +152,14 @@ else {
         $staff_num = count($staff);
         $staff_is_full = $staff_num >= $course['min_staff'];
 
+        $user_list = "";
+
         $user_is_subscribed = false;
         foreach($staff as $user) {
             $userObj = $user->serialize();
+
+            $user_list .= $userObj['first_name'] . ' ' . $userObj['last_name'] . '<br />';
+
             if($userObj['id'] == $authenticated_user['id']) $user_is_subscribed = true;
         }
 
@@ -178,9 +182,13 @@ else {
         $display_subscribe_button = $user_is_subscribed || $staff_is_full ? "display: none;" : "";
         $display_unsubscribe_button = $user_is_subscribed ? "" : "display: none;";
 
+        $day_color = date('N', strtotime($date)) >= 6 ? '#990000' : '';
+
         if ($course['date']->format('d.m.Y') != $date) {
-            $date = $course['date']->format('d.m.Y');
-            $content .= "<span class='course-list-month'>{$date}</span>
+            $date = $course['date']->format('l, d.m.Y');
+            $date = strtr($date, $day_translations);
+
+            $content .= "<span class='course-list-month' style='color: {$day_color};'>{$date}</span>
             {$table_heading}";
         }
 
@@ -194,18 +202,24 @@ else {
         $course_end_time = $course_end_time->add($course_duration_object);
         $course_end_time = $course_end_time->format('h:i');
 
+        $course_type_title = $course_types[$course['course_type_id']]['title'];
+        $course_type_color = $course_types[$course['course_type_id']]['color'];
+
+        $status_color = $staff_is_full ? 'green' : 'red';
+
         $content .= "
         <span class='list-item $item_class'>
-            <span>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
-            <span>
-                {$course_types[$course['course_type_id']]['title']}
+            <span style='vertical-align: top;'>
+                <span style='display: inline-block; width: 1em; height: 1em; margin-right: 0.2em; background-color: {$course_type_color}'></span>
+                <span style='vertical-align: top;'>{$course_type_title}</span>
             </span>
-            <span class='no-mobile'>{$course['title']}</span>
-            <span class='no-mobile'>
-                {$staff_num} / {$course['min_staff']}
+            <span style='vertical-align: top;'>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
+            <span class='no-mobile' style='vertical-align: top;'>
+                <div style='float: left; font-size: 0.9em; color: {$status_color}'>{$staff_num}/{$course['min_staff']}</div>
+                <div style='float: left; margin-left: 1.5em; font-size: 0.9em;'>{$user_list}</div>
             </span>
-            <span><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
-            <span>
+            <span style='vertical-align: top;'><a href='{$root_directory}/events/{$course['id']}'>Details</a></span>
+            <span style='vertical-align: top;'>
                 <a user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-subscribe' style='{$display_subscribe_button}'>Eintragen</a>
                 <a deadline='{$config['system']['staff-cancel-deadline ']}' user-id='{$_SESSION['user']['id']}' event-id='{$course['id']}' class='event-unsubscribe' style='{$display_unsubscribe_button}'>Austragen</a>
             </span>

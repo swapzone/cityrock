@@ -1,5 +1,7 @@
 <?php
 
+setlocale (LC_ALL, 'de_DE');
+
 require_once('_func.php');
 include_once('inc/user.php');
 
@@ -23,5 +25,15 @@ if(isset($_SESSION['user'])) {
 
 $content_class = null;
 $hide_navigation = false;
+
+$day_translations = array(
+    'Monday'    => 'Montag',
+    'Tuesday'   => 'Dienstag',
+    'Wednesday' => 'Mittwoch',
+    'Thursday'  => 'Donnerstag',
+    'Friday'    => 'Freitag',
+    'Saturday'  => 'Samstag',
+    'Sunday'    => 'Sonntag'
+);
 
 ?>
