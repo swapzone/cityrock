@@ -460,6 +460,7 @@ module cityrock {
     var phoneText = $("#phone-text");
     var emailText = $("#email-text");
     var passwordText = $("#password-text");
+    var passwordContainer = $("#password-container");
 
     $("#edit-user").click(function () {
       $(this).hide();
@@ -488,6 +489,7 @@ module cityrock {
           return createInputField(oldHtml, 'email');
         });
 
+      $(passwordContainer).css('visibility', 'visible');
       if (passwordText)
         passwordText.html(function (index, oldHtml) {
           return createInputField('', 'password', 'password');

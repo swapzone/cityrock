@@ -21,6 +21,7 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		$user_data_array['last_name'] = $_POST['last_name'];
 		$user_data_array['phone'] = $_POST['phone'];
 		$user_data_array['email'] = $_POST['email'];
+		$user_data_array['password'] = md5($_POST['password']);
 
 		$success = User::updateUserData($user_data_array, $_POST['user_id']);
 
@@ -133,13 +134,30 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 								<span>Telefonnummer</span>
 								<span id='phone-text'>{$user['phone']}</span>
 							</span>
-						</span>
-						<span class='list'>
-							<span class='list-item'>
-								Der Nutzer hat folgende Qualifikationen: {$qualification_list}
+							<span id='password-container' class='list-item' style='visibility: hidden;'>
+								<span>Passwort</span>
+								<span id='password-text'></span>
 							</span>
 						</span>
-						<span class='list'>
+						<span class='list' style='margin-bottom: 0.5em;'>
+							<span class='list-item'>
+								Der Nutzer hat folgende Qualifikationen: {$qualification_list}";
+
+/*
+								"<a href='#' id='user-add-qualification'>Weitere Qualifikation hinzufügen</a>
+								<select id='user-add-qualification-selection' name='qualification' style='display: none;'>
+									<option style='display: none;' selected></option>";
+
+				foreach ($user['qualifications'] as $qualification) {
+					$content .= "<option value='{$qualification['id']}'>{$qualification['description']}</option>";
+				}
+
+				$content .= "
+								</select>"; */
+				$content .= "				
+							</span>
+						</span>
+						<span class='list' style='margin-bottom: 0.5em;'>
 							<span class='list-item'>
 								Der Nutzer hat folgende Rollen: {$roles_list}
 								<a href='#' id='user-add-role'>Weitere Rolle hinzufügen</a>
