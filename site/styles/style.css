@@ -3830,6 +3830,12 @@ p {
   background-color: #319aca;
   color: white;
 }
+.course .title-col {
+  min-width: 11em;
+}
+.course .staff-col {
+  min-width: 12em;
+}
 @media screen and (min-width: 720px) {
   .course .mobile {
     display: none;

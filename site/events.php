@@ -110,9 +110,9 @@ else {
 
     $table_heading = "
         <span class='list-heading'>
-            <span>Art</span>
+            <span class='title-col'>Art</span>
             <span>Uhrzeit</span>
-            <span class='no-mobile'>Übungsleiter</span>
+            <span class='staff-col' class='no-mobile'>Übungsleiter</span>
             <span></span>
             <span></span>
         </span>";
@@ -209,12 +209,12 @@ else {
 
         $content .= "
         <span class='list-item $item_class'>
-            <span style='vertical-align: top;'>
+            <span class='title-col' style='vertical-align: top;'>
                 <span style='display: inline-block; width: 1em; height: 1em; margin-right: 0.2em; background-color: {$course_type_color}'></span>
                 <span style='vertical-align: top;'>{$course_type_title}</span>
             </span>
             <span style='vertical-align: top;'>{$course['date']->format('h:i')} - {$course_end_time} Uhr</span>
-            <span class='no-mobile' style='vertical-align: top;'>
+            <span class='no-mobile staff-col' style='vertical-align: top;'>
                 <div style='float: left; font-size: 0.9em; color: {$status_color}'>{$staff_num}/{$course['min_staff']}</div>
                 <div style='float: left; margin-left: 1.5em; font-size: 0.9em;'>{$user_list}</div>
             </span>
