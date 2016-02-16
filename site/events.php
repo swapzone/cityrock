@@ -25,6 +25,7 @@ if(isset($_GET["id"])) {
     $staff = getStaff($course_id);
     $staff_num = count($staff);
 
+    $registrants = getRegistrants($course_id);
     $user_is_subscribed = false;
 
     $staff_list = "<span class='staff-list'>";

@@ -23,7 +23,8 @@ $repeating_events = createIntervalDates($courses, $start_date, $end_date);
 $merged_events = array_merge($cleaned_up_events, $repeating_events);
 $all_events = removeDateExceptions($merged_events);
 
-$jsonString = '[';
+$jsonString = '['; 
+
 foreach($all_events as $event) {
 
     $staff = explode(",", $event['staff_id']);

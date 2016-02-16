@@ -19,9 +19,9 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 		while($counter < 6) {
 			if($_POST["date-$counter"]) {
 				$date = array(
-					"date" => $_POST["date-$counter"],
-					"start" => $_POST["start-$counter"],
-					"end" => $_POST["end-$counter"]
+					"date" => $_POST["date-{$counter}"],
+					"start" => $_POST["start-{$counter}"],
+					"end" => $_POST["end-{$counter}"]
 				);
 
 				$dates[] = $date;

@@ -291,8 +291,6 @@ function updateCourse($id, $course_data, $dates) {
 	}
 	$update_list = substr($update_list, 2);
 
-	//echo "Update List: " . $update_list. "<br />";
-
 	$db->query("UPDATE course 
 				SET {$update_list}
 				WHERE id=$id;");
@@ -304,14 +302,14 @@ function updateCourse($id, $course_data, $dates) {
 		foreach($dates as $date) {
 
 			$datetime_start_string = formatDate($date['date']) . " " . formatTime($date['start']);
-			$datetime_start = DateTime::createFromFormat('d.m.Y G:i', $datetime_start_string);
+			$datetime_start = DateTime::createFromFormat('d.m.Y H:i', $datetime_start_string);
 
 			$datetime_end_string = formatDate($date['date']) . " " . formatTime($date['end']);
-			$datetime_end = DateTime::createFromFormat('d.m.Y G:i', $datetime_end_string);
+			$datetime_end = DateTime::createFromFormat('d.m.Y H:i', $datetime_end_string);
 
+			$duration = $datetime_start->diff($datetime_end)->h * 60 + $datetime_start->diff($datetime_end)->i; 
 
 			$mysql_time = $datetime_start->format('Y-m-d H:i:s');
-			$duration = ($datetime_end - $datetime_start ) / 60;
 
 			$result = $db->query("INSERT INTO date (start, duration, course_id) 
 								  VALUES ('$mysql_time', $duration, $id);");
@@ -337,7 +335,7 @@ function formatDate($dateString) {
 
 	foreach($dateArray as $dateComponent) {
 		if(intval($dateComponent) < 10)
-			$resultString .= "0" . $dateComponent . ".";
+			$resultString .= "0" . intval($dateComponent) . ".";
 		else
 			$resultString .= $dateComponent . ".";
 	}
@@ -353,15 +351,15 @@ function formatDate($dateString) {
  */
 function formatTime($timeString) {
 
-	if(count($timeString) < 2) 
-		return $timeString . "0:00";
-	else if(count($timeString) < 3)
+	if(strlen($timeString) < 2) 
+		return "0" . $timeString . ":00";
+	else if(strlen($timeString) < 3)
 		return $timeString . ":00";
 	else {
 		$colonPosition = strpos($timeString, ':');
 		if ($colonPosition !== false) {
 
-		    if(count($timeString) == 4)
+		    if(strlen($timeString) == 4)
 		    	return "0" . $timeString;
 		    else 
 		    	return $timeString;
@@ -371,7 +369,7 @@ function formatTime($timeString) {
 		$dotPosition = strpos($timeString, '.');
 		if ($dotPosition !== false) {
 			
-		    if(count($timeString) == 4)
+		    if(strlen($timeString) == 4)
 		    	return "0" . str_replace(".", ":", $timeString);
 		    else 
 		    	return str_replace(".", ":", $timeString);
