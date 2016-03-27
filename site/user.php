@@ -2,9 +2,7 @@
 
 include_once('_init.php');
 
-$required_roles = array('Administrator');
-
-if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) {
+if(User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrator'))) {
 
 	/***********************************************************************/
 	/* Process form data												   */
@@ -104,6 +102,17 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 				}
 				$roles_list .= "</ul>";
 
+				$event_whitelist = "<ul class='event-whitelist'>";
+
+				$event_whitelist_array = split(',', $user['event_whitelist']);
+				foreach ($event_whitelist_array as $event_id) {
+					if($event_id != '') {
+						$event_title = getCourseTypes()[$event_id]['title'];
+						$event_whitelist .= "<li>{$event_title} <a href='#' class='remove-event' event='{$event_id}' style='margin-left: 1em;'>Entfernen</a></li>";
+					}
+				}
+				$event_whitelist .= "</ul>";
+
 				$checked = $user['active'] ? 'checked' : '';
 				$deactivateCheckbox = $user['id'] === $_SESSION['user']['id'] ? 'disabled' : '';
 
@@ -143,17 +152,6 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 							<span class='list-item'>
 								Der Nutzer hat folgende Qualifikationen: {$qualification_list}";
 
-/*
-								"<a href='#' id='user-add-qualification'>Weitere Qualifikation hinzufügen</a>
-								<select id='user-add-qualification-selection' name='qualification' style='display: none;'>
-									<option style='display: none;' selected></option>";
-
-				foreach ($user['qualifications'] as $qualification) {
-					$content .= "<option value='{$qualification['id']}'>{$qualification['description']}</option>";
-				}
-
-				$content .= "
-								</select>"; */
 				$content .= "				
 							</span>
 						</span>
@@ -166,6 +164,21 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
 				foreach (getRoles() as $role) {
 					$content .= "<option value='{$role['id']}'>{$role['title']}</option>";
+				}
+
+				$content .= "
+								</select>
+							</span>
+						</span>
+						<span class='list' style='margin-bottom: 0.5em;'>
+							<span class='list-item'>
+								Der Nutzer kann sich für folgende Veranstaltungstypen eintragen: {$event_whitelist}
+								<a href='#' id='user-add-event'>Für weiteren Veranstaltungstypen freischalten</a>
+								<select id='user-add-event-whitelist' name='event' style='display: none;'>
+									<option style='display: none;' selected></option>";
+
+				foreach (getCourseTypes() as $courseType) {
+					$content .= "<option value='{$courseType['id']}'>{$courseType['title']}</option>";
 				}
 
 				$content .= "
@@ -262,8 +275,106 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission($required_roles)) 
 
 }
 else {
-	$title = "Nutzerübersicht";
-	$content = "Du hast keine Berechtigung für diesen Bereich der Website.";
+	if (isset($_GET["id"])) {
+		/***********************************************************************/
+		/* User details 													   */
+		/***********************************************************************/
+		$user = User::withUserId($_GET["id"])->serialize();
+
+		$title = "Nutzerübersicht";
+
+		$qualification_list = "<ul class='qualification-list'>";
+		foreach ($user['qualifications'] as $qualification) {
+
+			$description = $qualification['description'];
+			$hasQualification = $qualification['user_id'] != null;
+
+			if ($hasQualification) {
+				$qualification_list .= "<li>{$description}";
+
+				if ($qualification['date'])
+					$qualification_list .= " vom {$qualification['date']}</li>";
+				else
+					$qualification_list .= "</li>";
+			}
+		}
+		$qualification_list .= "</ul>";
+
+		if ($qualification_list == "<ul class='qualification-list'></ul>")
+			$qualification_list = "<p style='font-style: italic; margin-top: 0.5em; margin-bottom: 0.2em;'>Es wurden noch keine Qualifikationen hinterlegt.</p>";
+
+		$content .= "
+			<span class='list'>
+				<span class='list-item'>
+					<span>Vorname</span>
+					<span id='first-name-text'>{$user['first_name']}</span>
+				</span>
+				<span class='list-item'>
+					<span>Nachname</span>
+					<span id='last-name-text'>{$user['last_name']}</span>
+				</span>
+				<span class='list-item'>
+					<span>Email</span>
+					<span id='email-text'>{$user['email']}</span>
+				</span>
+				<span class='list-item'>
+					<span>Telefonnummer</span>
+					<span id='phone-text'>{$user['phone']}</span>
+				</span>
+			</span>
+
+			Der Nutzer hat folgende Qualifikationen:
+			{$qualification_list}			
+			<a href='{$root_directory}/user' class='button'>Übersicht</a>";
+	}
+	else {
+		/***********************************************************************/
+		/* User overview													   */
+		/***********************************************************************/
+		$title = "Nutzerübersicht";
+
+		$content = "
+		<label for='user-filter'>Wähle eine Eigenschaft, um die Nutzer zu filtern: </label>
+		<select class='filter' name='user-filter'>
+			<option value='Alle'>Alle</option>
+			<option value='kletterbetreuer'>Kletterbetreuer</option>
+			<option value='führerschein'>Führerschein</option>
+		</select>";
+
+		$content .= "
+			<div class='list'>
+				<span class='list-heading'>
+					<span>Nutzername</span>
+					<span>Rolle</span>
+				</span>";
+
+		$users = getUsers();
+
+		foreach ($users as $user) {
+			$user = $user->serialize();
+
+			$roles_list = "";
+			foreach ($user['roles'] as $role) {
+				$roles_list .= ", " . $role['title'];
+			}
+			$roles_list = substr($roles_list, 2);
+
+			$qualifications_list = "";
+			foreach ($user['qualifications'] as $qualification) {
+				if ($qualification['user_id'] != null)
+					$qualifications_list .= " " . strtolower($qualification['description']);
+			}
+
+			$content .= "
+				<span class='list-item {$qualifications_list}'>
+					<span><a href='?id={$user['id']}'>{$user['first_name']} {$user['last_name']}</a></span>
+					<span>{$roles_list}</span>
+				</span>";
+		}
+
+		$content .= "
+				</div>";
+	}
 
 	$content_class = "user";
 	include('_main.php');

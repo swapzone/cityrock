@@ -3871,13 +3871,13 @@ p {
   background-color: #319aca;
   color: white;
 }
-.user .qualification-list, .user .roles-list {
+.user .qualification-list, .user .roles-list, .user .event-whitelist {
   margin: 0.5em 2em;
 }
-.user .qualification-list > li, .user .roles-list > li {
+.user .qualification-list > li, .user .roles-list > li, .user .event-whitelist > li {
   line-height: 1.4em;
 }
-.user .qualification-list > li.missing:after, .user .roles-list > li.missing:after {
+.user .qualification-list > li.missing:after, .user .roles-list > li.missing:after, .user .event-whitelist > li.missing:after {
   font-weight: bold;
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;

@@ -104,8 +104,10 @@ if(!$content_class)
 	<!-- footer -->
 	<footer class="footer">
 		<div class="reference">
+			<!--
 			Powered by <a href="http://www.clowdfish.com" target="_blank">clowdfish.com</a>
 			<img src="<?php echo $root_directory; ?>/images/clowdfish.png" alt="clowdfish Logo" />
+			-->
 		</div>
 	</footer>
 	<nav class="context-menu" id="context-menu">

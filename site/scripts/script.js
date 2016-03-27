@@ -24073,6 +24073,72 @@ var cityrock;
                 }
             });
         });
+        // add events to user event whitelist
+        var eventWhitelistSelection = $('#user-add-event-whitelist');
+        var addEventLink = $("#user-add-event");
+        var userId = parseInt($('#user-id-text').text());
+        addEventLink.click(function () {
+            $(this).hide();
+            eventWhitelistSelection.show();
+            eventWhitelistSelection.change(function () {
+                var selectedEventId = $(this).val();
+                var formData = [
+                    {
+                        name: 'action',
+                        value: 'USER_ADD_EVENT'
+                    },
+                    {
+                        name: 'user_id',
+                        value: userId
+                    },
+                    {
+                        name: 'event_id',
+                        value: selectedEventId
+                    }
+                ];
+                sendFormDataToApi(formData, function (err, message) {
+                    if (err) {
+                        addEventLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Hinzufügen des Veranstaltungstypen.</div>");
+                        setTimeout(function () {
+                            $('.status-message').remove();
+                        }, 2000);
+                    }
+                    else {
+                        location.reload();
+                    }
+                });
+            });
+        });
+        // delete roles from user object
+        $(".remove-event").click(function () {
+            var eventId = $(this).attr('event');
+            // serialize the data in the form
+            var formData = [
+                {
+                    name: 'action',
+                    value: 'USER_REMOVE_EVENT'
+                },
+                {
+                    name: 'user_id',
+                    value: userId
+                },
+                {
+                    name: 'event_id',
+                    value: eventId
+                }
+            ];
+            sendFormDataToApi(formData, function (err, message) {
+                if (err) {
+                    addEventLink.before("<div class='status-message' style='color: red; margin-bottom: 0.5em;'>Fehler beim Entfernen des Veranstaltungstypen.</div>");
+                    setTimeout(function () {
+                        $('.status-message').remove();
+                    }, 2000);
+                }
+                else {
+                    location.reload();
+                }
+            });
+        });
         /**
          *
          *

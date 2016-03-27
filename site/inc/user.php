@@ -14,6 +14,7 @@ class User {
 	private $deletable;
 	private $roles;
 	private $qualifications;
+	private $event_whitelist;
 
 	/**
 	 * Create a new user object.
@@ -44,6 +45,11 @@ class User {
 			$this->email = $user_data['email'];
 			$this->active = $user_data['active'];
 			$this->deletable = $user_data['deletable'];
+
+			if(is_string($user_data['event_whitelist']))
+				$this->event_whitelist = split(',', $user_data['event_whitelist']);
+			else
+				$this->event_whitelist = $user_data['event_whitelist'];
 		}
 
 		if(!$user_qualifications)
@@ -78,7 +84,8 @@ class User {
 			'phone' => $user_array['phone'],
 			'email' => $user_array['email'],
 			'active' => $user_array['active'],
-			'deletable' => $user_array['deletable']
+			'deletable' => $user_array['deletable'],
+			'event_whitelist' => $user_array['event_whitelist']
 		);
 
 		return new self($user_array['id'], $user_array['roles'], $user_data, $user_array['qualifications']);
@@ -94,7 +101,7 @@ class User {
 
 		$db = Database::createConnection();
 
-		$result = $db->query("SELECT username, first_name, last_name, phone, email, active, deletable
+		$result = $db->query("SELECT username, first_name, last_name, phone, email, active, deletable, event_whitelist
 							  FROM user
 							  WHERE id={$user_id};");
 
@@ -196,7 +203,8 @@ class User {
 			'active' => $this->active,
 			'deletable' => $this->deletable,
 			'roles' => $this->roles,
-			'qualifications' => $this->qualifications
+			'qualifications' => $this->qualifications,
+			'event_whitelist' => join(',', $this->event_whitelist)
 		);
 	}
 

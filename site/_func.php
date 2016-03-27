@@ -613,6 +613,76 @@ function removeRole($user_id, $role_id) {
 }
 
 /**
+ * Add new event to user event whitelist.
+ *
+ * @param $user_id
+ * @param $role_id
+ * @return boolean true in case it was successful
+ */
+function addEventToWhitelist($user_id, $event_id) {
+
+	$db = Database::createConnection();
+
+	$result = $db->query("SELECT event_whitelist
+					      FROM user
+					      WHERE id={$user_id};");
+
+	if ($result->num_rows > 0) {
+		$whitelist = $result->fetch_assoc()['event_whitelist'];
+
+		$event_array = split(',', $whitelist);
+		if(!in_array($event_id, $event_array)) {
+			$event_array[] = $event_id;
+			$whitelist = join(',', $event_array);
+
+			$result = $db->query("UPDATE user
+								  SET event_whitelist='{$whitelist}'
+							      WHERE id={$user_id};");
+		}
+	}
+
+	$db->close();
+
+	return $result;
+}
+
+/**
+ * Remove event from user event whitelist.
+ *
+ * @param $user_id
+ * @param $role_id
+ * @return boolean true in case it was successful
+ */
+function removeEventFromWhitelist($user_id, $event_id) {
+
+$db = Database::createConnection();
+
+	$result = $db->query("SELECT event_whitelist
+					      FROM user
+					      WHERE id={$user_id};");
+
+	if ($result->num_rows > 0) {
+		$whitelist = $result->fetch_assoc()['event_whitelist'];
+
+		$event_array = split(',', $whitelist);
+
+		if (($key = array_search($event_id, $event_array)) !== false) {
+		    unset($event_array[$key]);
+
+		    $whitelist = join(',', $event_array);
+
+			$result = $db->query("UPDATE user
+								  SET event_whitelist='{$whitelist}'
+							      WHERE id={$user_id};");
+		}
+	}
+
+	$db->close();
+
+	return $result;
+}
+
+/**
  * Finds and returns all user roles.
  *
  * @return array of user roles
@@ -908,6 +978,10 @@ function renderNavigation($user) {
 		$admin_menu= "
 			<li><a href='{$root_directory}/user'>Nutzerverwaltung</a></li>
 			<li class='menu-separator'><a href='{$root_directory}/settings'>Einstellungen</a></li>";
+	}
+	else {
+		$admin_menu= "
+			<li><a href='{$root_directory}/user'>Nutzerübersicht</a></li>";
 	}
 
 	return "

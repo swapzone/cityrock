@@ -132,6 +132,38 @@ if (isset($_POST['action'])) {
             else echo "ERROR: Datenbank Fehler.";
             break;
 
+        case "USER_ADD_EVENT":
+            if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
+                echo "ERROR: Nicht authorisiert.";
+                break;
+            }
+            if (!$_POST['user_id'] || !$_POST['event_id']) {
+                echo "ERROR: Parameter fehlen.";
+                break;
+            }
+
+            $success = addEventToWhitelist($_POST['user_id'], $_POST['event_id']);
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR: Datenbank Fehler.";
+            break;
+
+
+        case "USER_REMOVE_EVENT":
+            if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
+                echo "ERROR: Nicht authorisiert.";
+                break;
+            }
+            if (!$_POST['user_id'] || !$_POST['event_id']) {
+                echo "ERROR: Parameter fehlen.";
+                break;
+            }
+
+            $success = removeEventFromWhitelist($_POST['user_id'], $_POST['event_id']);
+
+            if ($success) echo "SUCCESS";
+            else echo "ERROR: Datenbank Fehler.";
+            break;
 
         case "USER_DELETE":
             if(!$authenticated_user_object->hasPermission(array('Administrator'))) {
