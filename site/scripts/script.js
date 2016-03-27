@@ -23826,7 +23826,7 @@ var cityrock;
             ];
             sendFormDataToApi(formData, function (err, message) {
                 if (err) {
-                    subscribeButton.after("<span class='status-message' style='color: red; margin-left: 0.3em;'>Fehler!</span>");
+                    subscribeButton.after("<div class='status-message' style='color: red; margin-top: 0.5em;'>" + err.message + "!</div>");
                     setTimeout(function () {
                         $('.status-message').remove();
                     }, 2000);

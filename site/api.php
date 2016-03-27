@@ -22,6 +22,12 @@ if (isset($_POST['action'])) {
                 break;
             }
 
+            if(!userIsAuthorizedForCourse($_POST['user_id'], $_POST['course_id'])) {
+
+                echo "ERROR: Du bist für diesen Veranstaltungstypen nicht freigeschalten.";
+                break;
+            }
+
             $success = addStaff($_POST['course_id'], $_POST['user_id']);
 
             if ($success) echo "SUCCESS";

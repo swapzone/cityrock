@@ -616,7 +616,7 @@ function removeRole($user_id, $role_id) {
  * Add new event to user event whitelist.
  *
  * @param $user_id
- * @param $role_id
+ * @param $event_id
  * @return boolean true in case it was successful
  */
 function addEventToWhitelist($user_id, $event_id) {
@@ -650,12 +650,12 @@ function addEventToWhitelist($user_id, $event_id) {
  * Remove event from user event whitelist.
  *
  * @param $user_id
- * @param $role_id
+ * @param $event_id
  * @return boolean true in case it was successful
  */
 function removeEventFromWhitelist($user_id, $event_id) {
 
-$db = Database::createConnection();
+	$db = Database::createConnection();
 
 	$result = $db->query("SELECT event_whitelist
 					      FROM user
@@ -680,6 +680,45 @@ $db = Database::createConnection();
 	$db->close();
 
 	return $result;
+}
+
+/**
+ * Check if user is authorized for this event and return true in case he is.
+ *
+ * @param $user_id
+ * @param $event_id
+ * @return boolean true in case it was successful
+ */
+function userIsAuthorizedForCourse($user_id, $event_id) {
+
+	$db = Database::createConnection();
+
+	$isAuthorized = false;
+
+	$result = $db->query("SELECT event_whitelist
+					      FROM user
+					      WHERE id={$user_id};");
+
+	if ($result->num_rows > 0) {
+		$whitelist = $result->fetch_assoc()['event_whitelist'];
+		$event_array = split(',', $whitelist);
+
+		$result = $db->query("SELECT course_type_id
+						      FROM course
+						      WHERE id={$event_id};");
+
+		if ($result->num_rows > 0) {
+			$course_type_id = $result->fetch_assoc()['course_type_id'];
+
+			if (($key = array_search($course_type_id, $event_array)) !== false) {
+			    $isAuthorized = true;
+			}
+		}
+	}
+
+	$db->close();
+
+	return $isAuthorized;
 }
 
 /**
