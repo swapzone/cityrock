@@ -113,16 +113,17 @@ if(User::withUserObjectData($_SESSION['user'])->hasPermission(array('Administrat
 				}
 				$event_whitelist .= "</ul>";
 
+				if ($event_whitelist == "<ul class='event-whitelist'></ul>")
+					$event_whitelist = "<p style='font-style: italic; margin-top: 0.5em; margin-bottom: 0.2em;'>Der Nutzer kann sich bisher für keine Veranstaltungen eintragen.</p>";
+
+
 				$checked = $user['active'] ? 'checked' : '';
 				$deactivateCheckbox = $user['id'] === $_SESSION['user']['id'] ? 'disabled' : '';
 
 				$content .= "
 					<form id='user_data_form' method='post' onsubmit='return cityrock.validateProfile(this);'>
+						<span id='user-id-text' style='display: none;'>{$user['id']}</span>
 						<span class='list'>
-							<span class='list-item'>
-								<span>Nutzer ID</span>
-								<span id='user-id-text'>{$user['id']}</span>
-							</span>
 							<span class='list-item'>
 								<span>Nutzername</span>
 								<span id='username-text'>{$user['username']}</span>
