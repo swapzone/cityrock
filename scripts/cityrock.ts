@@ -804,9 +804,7 @@ module cityrock {
         textColor: 'black'
       },
 
-
-      dayClick: function(fullDate:moment.Moment, jsEvent:MouseEvent, view:FullCalendar.View) {
-
+      dayClick: function(fullDate:any, fullDay:boolean, jsEvent:MouseEvent, view:FullCalendar.ViewObject) {
         //console.log('Clicked on: ' + fullDate.toString());
         //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
 
